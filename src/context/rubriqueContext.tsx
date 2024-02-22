@@ -145,7 +145,7 @@ export const RubriqueContextProvider: React.FC<
                 getList();
                 return;
             } else {
-                setModifyRubriqueError("Erreur à la modification");
+                setAddRubriqueSucces("Erreur à la modification");
             }
         },
         [getList]
@@ -159,7 +159,7 @@ export const RubriqueContextProvider: React.FC<
             getList();
             return;
         } else {
-            setDeleteRubriqueError("Erreur lors de  la suppression");
+            setDeleteRubriqueSucces("Erreur lors de  la suppression");
         }
     }, [getList]);
 
