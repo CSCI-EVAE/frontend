@@ -186,7 +186,7 @@ questionContextProviderProps
             if (response) {
                 setQuestionintitule("");
                 setModifyQuestionError("");
-                setAddQuestionSucces("Question modifiée avec succès");
+                setModifyQuestionSucces("Question modifiée avec succès");
                 getList();
                 return;
             } else {
@@ -200,7 +200,7 @@ questionContextProviderProps
         const response = await deleteQuestion(question_id);
         if (response) {
             setDeleteQuestionError("");
-            setAddQuestionSucces("Question supprimée avec succès");
+            setDeleteQuestionSucces("Question supprimée avec succès");
             getList();
             return;
         } else {

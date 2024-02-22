@@ -47,11 +47,11 @@ const Error = () => {
             </Link>
           </Grid>
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <img
+            {/* <img
               src="./404.jpg"
               alt=""
               style={{ width: '100%', maxHeight: '70vh', objectFit: 'contain' }}
-            />
+            /> */}
           </Grid>
         </Grid>
       </Container>
