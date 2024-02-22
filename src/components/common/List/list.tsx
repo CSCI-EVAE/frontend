@@ -76,6 +76,12 @@ const ListComponent: React.FC<Props> = ({
         useContext(ListContext);
     const [selectedAction, setSelectedActions] = useState<any | null>(null);
     
+    const textStyle: React.CSSProperties = {
+        fontFamily: "cursive",
+        color: "#e3a12f",
+        marginTop: "20px",
+        marginBottom: "50px"
+      }
 
     const handleFilterChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -139,12 +145,14 @@ const ListComponent: React.FC<Props> = ({
          <div
             style={{
                 maxWidth: "90%",
-                margin: "auto",
+                marginLeft:"150px",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "flex-start",
+                
             }}
         >
+            
         <ButtonComponent
                 text="Retour"
                 variant="contained"
@@ -163,7 +171,7 @@ const ListComponent: React.FC<Props> = ({
                 alignItems: "center",
             }}
         >
-            <h2>{title}</h2>
+            <h2 style={textStyle}>{title}</h2>
             <ButtonComponent
                 text="Ajouter"
                 variant="contained"
@@ -174,7 +182,7 @@ const ListComponent: React.FC<Props> = ({
                     updateSelectedRow({});
                 }}
             />
-             
+            <div style={{width:"90%"}}>
             <div
                 style={{
                     border: "3px solid #3c768c",
@@ -203,7 +211,7 @@ const ListComponent: React.FC<Props> = ({
                     />
                 ))}
             </div>
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} >
                 <Table>
                     <TableHead>
                         <TableRow >
@@ -323,6 +331,7 @@ const ListComponent: React.FC<Props> = ({
                     </DragDropContext>
                 </Table>
             </TableContainer>
+            </div>
 
             {selectedRow && actions && selectedAction && (
                 <Dialog

@@ -8,6 +8,10 @@ import {
     supprimerColonnesId,
     trouverIdQualificatif,
 } from "../../context/qualificatifContext";
+import Header from "../../components/Layout/Header";
+import Sidebar from "../../components/Layout/sideBar/SidebarPage";
+import Alert from "@mui/material/Alert";
+
 
 const QualificatifPage: React.FC = () => {
     const {
@@ -39,34 +43,59 @@ const QualificatifPage: React.FC = () => {
     };
 
     return (
-        <div>
-            <div style={{ textAlign: "center", color: "red" }}>
-                {qualificatifListError && qualificatifListError}
-                {deleteQualificatifError && deleteQualificatifError}
-                {modifyQualificatifError&& modifyQualificatifError}
-            </div>
-            <ListComponent
+        <>
+        <Sidebar />
+            <Header />
             
-                title={"Liste des qualificatifs"}
-                columns={QUALIFICATIF_COLUMNS}
-                data={dat.reverse()}
-                actions={true}
-                remove={true}
-                deleteHandler={handleDelete}
-                modify={true}
-                modifyElement={
-                    <div>
-                        <QualificatifForm add={false} />
-                    </div>
-                }
-                modifyHandler={handleEdit}
-                addElement={
-                    <div>
-                        <QualificatifForm add={true} />
-                    </div>
-                }
-            />
-        </div>
+            <div>
+                <div style={{ textAlign: "center", color: "red" }}>
+                    {qualificatifListError && (
+                        <Alert variant="outlined" severity="error" style={{ width: '600px', margin: '0 auto' }}>
+                            {qualificatifListError}
+                        </Alert>
+
+                    )}
+
+                    {deleteQualificatifError && (
+                        <Alert variant="outlined" severity="error" style={{ width: '600px', margin: '0 auto' }}>
+                            {deleteQualificatifError}
+                        </Alert>
+
+                    )}
+
+                    {modifyQualificatifError && (
+                        <Alert variant="outlined" severity="error" style={{ width: '600px', margin: '0 auto' }}>
+                            {modifyQualificatifError}
+                        </Alert>
+
+                    )}
+
+
+
+                </div>
+                <ListComponent
+
+                    title={"Liste des qualificatifs"}
+                    columns={QUALIFICATIF_COLUMNS}
+                    data={dat.reverse()}
+                    actions={true}
+                    remove={true}
+                    deleteHandler={handleDelete}
+                    modify={true}
+                    modifyElement={
+                        <div>
+                            <QualificatifForm add={false} />
+                        </div>
+                    }
+                    modifyHandler={handleEdit}
+                    addElement={
+                        <div>
+                            <QualificatifForm add={true} />
+                        </div>
+                    }
+                />
+            </div>
+        </>
     );
 };
 

@@ -8,6 +8,9 @@ import {
     supprimerColonnesId,
     
 } from "../../context/questionContext";
+import Header from "../../components/Layout/Header";
+import Sidebar from "../../components/Layout/sideBar/SidebarPage";
+import Alert from "@mui/material/Alert";
 
 const QuestionPage: React.FC = () => {
     const {
@@ -42,11 +45,33 @@ const QuestionPage: React.FC = () => {
     };
 
     return (
+        <>
+        <Sidebar />
+        <Header />
+       
         <div>
              <div style={{ textAlign: "center", color: "red" }}>
-                {questionListError && questionListError}
-                {deleteQuestionError && deleteQuestionError}
-                {modifyQuestionError&& modifyQuestionError}
+            
+                {questionListError && (
+                        <Alert variant="outlined" severity="error" style={{ width: '600px', margin: '0 auto' }}>
+                            {questionListError}
+                        </Alert>
+
+                    )}
+
+                    {deleteQuestionError && (
+                        <Alert variant="outlined" severity="error" style={{ width: '600px', margin: '0 auto' }}>
+                            {deleteQuestionError}
+                        </Alert>
+
+                    )}
+
+                    {modifyQuestionError && (
+                        <Alert variant="outlined" severity="error" style={{ width: '600px', margin: '0 auto' }}>
+                            {modifyQuestionError}
+                        </Alert>
+
+                    )}
             </div>
             <ListComponent
                 title={"Liste des questions"}
@@ -69,6 +94,7 @@ const QuestionPage: React.FC = () => {
                 }
             /> 
         </div>
+        </>
     );
 };
 
