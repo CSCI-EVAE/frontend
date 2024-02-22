@@ -1,0 +1,33 @@
+{
+    "message": "Evaluation list retrieved successfully",
+    "success": true,
+    "data": [
+      {
+        "id": 1,
+        "codeFormation": "INFO",
+        "anneeUniversitaire": "2023-2024",
+        "nomEnseignant": "ENS porf",
+        "noEvaluation": 1,
+        "designation": "Evaluation 1",
+        "etat": "En cours",
+        "periode": "Période 1",
+        "noEtudiant": "ETU456",
+        "debutReponse": "2024-02-15",
+        "finReponse": "2024-02-28"
+      },
+      {
+        "id": 2,
+        "codeFormation": "INFO",
+        "anneeUniversitaire": "2023-2024",
+        "nomEnseignant": "ENS porf",
+        "noEvaluation": 2,
+        "designation": "Evaluation 2",
+        "etat": "Terminé",
+        "periode": "Période 2",
+        "noEtudiant": "ETU789",
+        "debutReponse": "2024-03-01",
+        "finReponse": "2024-03-15"
+      }
+    ]
+  }
+  
