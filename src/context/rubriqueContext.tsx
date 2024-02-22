@@ -141,11 +141,11 @@ export const RubriqueContextProvider: React.FC<
                 setRubrique({});
                 
                 setModifyRubriqueError("");
-                setAddRubriqueSucces("Rubrique modifiée avec succès")
+                setModifyRubriqueSucces("Rubrique modifiée avec succès")
                 getList();
                 return;
             } else {
-                setAddRubriqueSucces("Erreur à la modification");
+                setAddRubriqueError("Erreur à la modification");
             }
         },
         [getList]
@@ -155,11 +155,11 @@ export const RubriqueContextProvider: React.FC<
         const response = await deleteRubrique(rubrique_id);
         if (response) {
             setDeleteRubriqueError("");
-            setAddRubriqueSucces("Rubrique supprimée avec succès")
+            setDeleteRubriqueSucces("Rubrique supprimée avec succès")
             getList();
             return;
         } else {
-            setDeleteRubriqueSucces("Erreur lors de  la suppression");
+            setDeleteRubriqueError("Erreur lors de  la suppression");
         }
     }, [getList]);
 
