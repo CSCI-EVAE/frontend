@@ -6,6 +6,7 @@ import ListSubheader from "@mui/material/ListSubheader";
 import { useParams, useLocation } from 'react-router-dom';
 import { DetailsEvaluationContext } from "../../context/detailsEvaluationContext";
 import { Evaluation } from "../../types/EvaluationTypes";
+import Header from "../../components/Layout/Header";
 
 const DetailsEvaluationPage: React.FC = () => {
   const { id_eva } = useParams();
@@ -56,21 +57,31 @@ const ordonnerRubrique= trierEvaluations(evaluationDetails);
   return (
 
     <>
-    <div style={{"margin":"100px"}}>
-    <h3>{infoGenerale.nomFormation}</h3>
-    <h2>{infoGenerale.anneePro}</h2>
-    <h2>{infoGenerale.codeUE}</h2>
-    <h2>{infoGenerale.codeEC}</h2>
-    <h2>{infoGenerale.debutReponse}</h2>
-    <h2>{infoGenerale.finReponse}</h2>
-    </div>
+
+    <Header />
+    <div style={{ margin: "50px"}}>
+  <div style={{"display":"inline-block", "marginRight":"250px", marginLeft:"100px"}}>
+    <h3>Formation : {infoGenerale.nomFormation}</h3>
+    <h3>Unité Enseignement : {infoGenerale.codeUE}</h3>
+  </div>
+
+  <div style={{"display":"inline-block"}}>
+   
+    <h3>Promotion : {infoGenerale.anneePro}</h3>
+    <h3>Element Constitutif : {infoGenerale.codeEC}</h3>
+  </div>
+
+  <div style={{"display":"inline-block", marginLeft:"100px"}}>
+  <h3>Période : De {infoGenerale.debutReponse} à {infoGenerale.finReponse}</h3>
+  </div>
+</div>
 
     <List
-      sx={{ width: "100%", maxWidth: 800, bgcolor: "background.paper", margin: "auto" }}
+      sx={{ width: "100%", maxWidth: 800, bgcolor: "background.paper", margin: "auto"}}
       component="nav"
       aria-labelledby="nested-list-subheader"
       subheader={
-        <ListSubheader component="div" id="nested-list-subheader" sx={{ fontSize: "18px", fontWeight: "bold" }}>
+        <ListSubheader component="div" id="nested-list-subheader" sx={{ fontSize: "25px", fontWeight: "bold" }}>
           {evaluationDetails.designation}
         </ListSubheader>
       }

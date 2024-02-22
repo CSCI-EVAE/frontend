@@ -109,17 +109,26 @@ const ListComponent: React.FC<Props> = ({
         });
     });
 
+
+    const textStyle: React.CSSProperties = {
+        fontFamily: "cursive",
+        color: "#e3a12f",
+        marginTop: "20px",
+        marginBottom: "50px"
+      }
+
     return (
         <div
             style={{
-                maxWidth: "90%",
+                maxWidth: "80%",
                 margin: "auto",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
+                marginBottom:"100px"
             }}
         >
-            <h2>{title}</h2>
+            <h2 style={textStyle}>{title}</h2>
        
 
             <div
@@ -144,11 +153,11 @@ const ListComponent: React.FC<Props> = ({
             </div>
             <TableContainer component={Paper}>
                 <Table>
-                    <TableHead>
-                        <TableRow style={{ backgroundColor: "#d1def0" }}>
+                    <TableHead >
+                        <TableRow >
                             {columns.map((column) => (
-                                <TableCell
-                                    style={{ fontWeight: "bold" }}
+                                <TableCell 
+                                    style={{ fontWeight: "bold", color:"white" }}
                                     key={column.id}
                                 >
                                     {" "}
@@ -156,7 +165,7 @@ const ListComponent: React.FC<Props> = ({
                                 </TableCell>
                             ))}
                             {actions && (
-                                <TableCell style={{ fontWeight: "bold" }}>
+                                <TableCell style={{ fontWeight: "bold",color:"white"  }}>
                                     ACTIONS
                                 </TableCell>
                             )}

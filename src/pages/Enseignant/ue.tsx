@@ -6,6 +6,7 @@ import { UE } from "../../types/UeTypes";
 import { DetailsEvaluationContext } from "../../context/detailsEvaluationContext";
 import { useNavigate } from "react-router-dom";
 import { SoumettreEvaluationContext } from "../../context/soumettreEvaluationContext";
+import Header from "../../components/Layout/Header";
 
 const UePage: React.FC = () => {
 
@@ -130,17 +131,21 @@ const UePage: React.FC = () => {
   const myData = ueList.map(extractNeededInfo);
   console.log(myData)
 
+
+  
+
   
   
 
   return (
     <div>
+      <Header />
       <div style={{ textAlign: "center", color: "red" }}>
         {ueListError && ueListError}
       </div>
       <h1>{myData.some(item => item.detailsValue)}</h1>
       <ListComponent
-        title={"Liste des UE"}
+        title={"Liste des Unités d'enseignements"}
         columns={UE_COLUMNS}
         actions={true}
         remove={false}

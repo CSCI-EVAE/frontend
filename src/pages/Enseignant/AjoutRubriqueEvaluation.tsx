@@ -11,6 +11,7 @@ import { LIST_ACTIONS } from '../../constants';
 import { RubriqueCompose, questionsInRubrique } from '../../types/rubriquesComposeTypes ';
 import { RubriqueEnseignantContext } from '../../context/rubriqueEnseignantContext';
 import AjoutQuestionEvaluation from './AjoutQuestionEvaluation';
+import Header from '../../components/Layout/Header';
 
 
 
@@ -71,6 +72,9 @@ const AjoutRubriqueEvaluation = () => {
   }
 
   return (
+
+    <>
+    <Header />
     <div  
     style={{
       maxWidth: "70%",
@@ -80,6 +84,8 @@ const AjoutRubriqueEvaluation = () => {
       alignItems: "center",
     }}
   >
+
+    
      <ListItemButton sx={{ display: "flex",
                           flexDirection: "column",
                           alignItems: "center",
@@ -213,6 +219,7 @@ const AjoutRubriqueEvaluation = () => {
                     </DialogActions>
                 </Dialog>
   </div>
+  </>
   
   );
 };
