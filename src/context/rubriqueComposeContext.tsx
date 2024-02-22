@@ -103,7 +103,7 @@ export const RubriqueComposeContextProvider: React.FC<
                 setRubriqueCompose({});
                 
                 setModifyRubriqueComposeError("");
-                setAddRubriqueComposeSucces("Rubrique Composée modifiée avec succès")
+                setModifyRubriqueComposeSucces("Rubrique Composée modifiée avec succès")
                 getList();
                 return;
             } else {
@@ -117,7 +117,7 @@ export const RubriqueComposeContextProvider: React.FC<
         const response = await deleteRubriqueCompose(rubriqueCompose_id);
         if (response) {
             setDeleteRubriqueComposeError("");
-            setAddRubriqueComposeSucces("Rubrique Composée supprimée avec succès")
+            setDeleteRubriqueComposeSucces("Rubrique Composée supprimée avec succès")
             getList();
             return;
         } else {
