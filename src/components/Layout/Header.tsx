@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
-import {  useTheme,} from '@mui/material/styles';
 import BtnComponent from "../common/Button/btn";
 import logo from "../../images/echoSim.png";
 import PersonIcon from "@mui/icons-material/Person";
@@ -25,12 +24,12 @@ const Header: React.FC = () => {
     const [open, setOpen] = useState(false); // État pour contrôler l'ouverture de la boîte de dialogue
 
     const isAuth = isAuthenticated();
-    const [prenom, setPrenom] = useState("");
+   
     const [role, setRole] = useState("");
 
     useEffect(() => {
         if (isAuth) {
-            setPrenom(userInfos().prenom);
+            
             setRole(userInfos().role);
         }
     }, [isAuth]);
@@ -53,7 +52,7 @@ const Header: React.FC = () => {
     const handleLogin = () => {
         navigate("/login");
     };
-    const myTheme  = useTheme();
+ 
 
     return (
         <>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Grid, Paper, Typography, Divider } from '@mui/material';
+import { Container, Grid, Paper, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Icon } from '@mui/material';
 import { ADMIN_DASHBOARD } from '../../constants';

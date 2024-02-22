@@ -6,8 +6,6 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Logout from "./components/Logout"; // Adjust the import path based on your file structure
 import { Box } from "@mui/material";
 import Page404 from "./pages/Page404";
-
-import Sidebar from "./components/Layout/Sidebar";
 import { ThemeProvider } from '@mui/material/styles';
 import theme from "./constants/theme";
 
