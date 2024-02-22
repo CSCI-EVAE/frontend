@@ -1,21 +1,28 @@
-/**
- * Page404 Component
- *
- * @component
- * @description Ce fichier exporte le composant Page404, qui est utilisé pour afficher un message
- * indiquant qu'une page n'a pas été trouvée (erreur 404).
- *
- * @exports {Page404} Composant React pour la gestion des pages non trouvées.
-
-
- * @returns {ReactElement} Composant Page404.
- */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, Container, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 
-export default function Error() {
+const Error = () => {
+  const [redirect, setRedirect] = useState(false);
+
+  // Utilisation de useEffect pour déclencher la navigation après 10 secondes
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      // Mettez à jour l'état pour déclencher la redirection
+      setRedirect(true);
+    }, 20000); // 10000 millisecondes = 10 secondes
+
+    // Assurez-vous de nettoyer le timeout lors du démontage du composant
+    return () => clearTimeout(timeoutId);
+  }, []);
+
+  // Si l'état de redirection est vrai, rediriger vers la page d'accueil
+  if (redirect) {
+    return <Navigate to="/" />;
+  }
+
+  // Sinon, afficher la page 404 avec le délai d'attente
   return (
     <Box
       sx={{
@@ -33,10 +40,10 @@ export default function Error() {
               404
             </Typography>
             <Typography variant="h3" sx={{ fontSize: '3rem', marginBottom: '2rem' }}>
-              The page you’re looking for doesn’t exist.
+              Cette page n'éxiste pas.
             </Typography>
             <Link to="/">
-              <Button variant="contained">Back Home</Button>
+              <Button variant="contained">Retour à l'accueil</Button>
             </Link>
           </Grid>
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -50,5 +57,6 @@ export default function Error() {
       </Container>
     </Box>
   );
-}
+};
 
+export default Error;

@@ -20,7 +20,10 @@ const QuestionPage: React.FC = () => {
         deleteQuestionError,
         modifyQuestionError,
         updateQuestionintitule,
-        updateCoupleQualificatif
+        updateCoupleQualificatif,
+        deleteQuestionSucces,
+        addQuestionSucces,
+        modifyQuestionSucces
     } = useContext(QuestionContext);
 
    // Données fictives
@@ -50,6 +53,34 @@ const QuestionPage: React.FC = () => {
         <Header />
        
         <div>
+
+        <div style={{ textAlign: "center", color: "green" }}>
+                    {addQuestionSucces && (
+                        <Alert severity="success" variant="outlined" style={{ width: '600px', margin: '0 auto' }}>
+                            {addQuestionSucces}
+                        </Alert>
+
+                    )}
+
+                    
+
+                    {deleteQuestionSucces && (
+                        <Alert  variant="outlined" severity="success" style={{ width: '600px', margin: '0 auto' }}>
+                            {deleteQuestionSucces}
+                        </Alert>
+
+                    )}
+
+                    {modifyQuestionSucces && (
+                        <Alert variant="outlined" severity="success" style={{ width: '600px', margin: '0 auto' }}>
+                            {modifyQuestionSucces}
+                        </Alert>
+
+                    )}
+
+
+
+                </div>
              <div style={{ textAlign: "center", color: "red" }}>
             
                 {questionListError && (

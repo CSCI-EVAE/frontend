@@ -122,6 +122,9 @@ questionContextProviderProps
     const [addQuestionError, setAddQuestionError] = useState("");
     const [deleteQuestionError, setDeleteQuestionError] = useState("");
     const [modifyQuestionError, setModifyQuestionError] = useState("");
+    const [addQuestionSucces, setAddQuestionSucces] = useState("");
+    const [deleteQuestionSucces, setDeleteQuestionSucces] = useState("");
+    const [modifyQuestionSucces, setModifyQuestionSucces] = useState("");
     const [coupleQualificatif , setCoupleQualificatif] = useState<Qualificatif>();
 
 
@@ -163,6 +166,7 @@ questionContextProviderProps
                
                 setQuestionintitule("");
                 setAddQuestionError("");
+                setAddQuestionSucces("Question ajouté avec succès");
                 getList();
                 return;
             } else {
@@ -182,6 +186,7 @@ questionContextProviderProps
             if (response) {
                 setQuestionintitule("");
                 setModifyQuestionError("");
+                setAddQuestionSucces("Question modifiée avec succès");
                 getList();
                 return;
             } else {
@@ -195,6 +200,7 @@ questionContextProviderProps
         const response = await deleteQuestion(question_id);
         if (response) {
             setDeleteQuestionError("");
+            setAddQuestionSucces("Question supprimée avec succès");
             getList();
             return;
         } else {
@@ -219,7 +225,10 @@ questionContextProviderProps
                 modifyQuestionError,
                 modifyQuestion,
                 updateCoupleQualificatif,
-                coupleQualificatif
+                coupleQualificatif,
+                addQuestionSucces,
+                deleteQuestionSucces,
+                modifyQuestionSucces
             }}
         >
             {children}

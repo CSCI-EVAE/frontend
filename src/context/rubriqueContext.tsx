@@ -90,6 +90,9 @@ export const RubriqueContextProvider: React.FC<
     const [addRubriqueError, setAddRubriqueError] = useState("");
     const [deleteRubriqueError, setDeleteRubriqueError] = useState("");
     const [modifyRubriqueError, setModifyRubriqueError] = useState("");
+    const [addRubriqueSucces, setAddRubriqueSucces] = useState("");
+    const [deleteRubriqueSucces, setDeleteRubriqueSucces] = useState("");
+    const [modifyRubriqueSucces, setModifyRubriqueSucces] = useState("");
 
     const updateRubriqueList = useCallback((value: Rubrique[]) => {
         setRubriqueList(value);
@@ -118,6 +121,7 @@ export const RubriqueContextProvider: React.FC<
             if (response) {
                 setRubrique({});
                 setAddRubriqueError("");
+                setAddRubriqueSucces("Rubrique ajoutée avec succès")
                 getList();
                 return;
             } else {
@@ -137,6 +141,7 @@ export const RubriqueContextProvider: React.FC<
                 setRubrique({});
                 
                 setModifyRubriqueError("");
+                setAddRubriqueSucces("Rubrique modifiée avec succès")
                 getList();
                 return;
             } else {
@@ -150,6 +155,7 @@ export const RubriqueContextProvider: React.FC<
         const response = await deleteRubrique(rubrique_id);
         if (response) {
             setDeleteRubriqueError("");
+            setAddRubriqueSucces("Rubrique supprimée avec succès")
             getList();
             return;
         } else {
@@ -174,6 +180,9 @@ export const RubriqueContextProvider: React.FC<
                 modifyRubriqueError,
                 modifyRubrique,
                 getList,
+                addRubriqueSucces,
+                deleteRubriqueSucces,
+                modifyRubriqueSucces
             }}
         >
             {children}

@@ -21,6 +21,9 @@ const RubriquePage: React.FC = () => {
         deleteRubriqueError,
         modifyRubriqueError,
         updateCurrentRubrique,
+        addRubriqueSucces,
+        deleteRubriqueSucces,
+        modifyRubriqueSucces
         
        
     } = useContext(RubriqueContext);
@@ -66,6 +69,34 @@ const RubriquePage: React.FC = () => {
         <Header />
         
         <div>
+
+        <div style={{ textAlign: "center", color: "green" }}>
+                    {addRubriqueSucces && (
+                        <Alert severity="success" variant="outlined" style={{ width: '600px', margin: '0 auto' }}>
+                            {addRubriqueSucces}
+                        </Alert>
+
+                    )}
+
+                    
+
+                    {deleteRubriqueSucces && (
+                        <Alert  variant="outlined" severity="success" style={{ width: '600px', margin: '0 auto' }}>
+                            {deleteRubriqueSucces}
+                        </Alert>
+
+                    )}
+
+                    {modifyRubriqueSucces && (
+                        <Alert variant="outlined" severity="success" style={{ width: '600px', margin: '0 auto' }}>
+                            {modifyRubriqueSucces}
+                        </Alert>
+
+                    )}
+
+
+
+                </div>
             <div style={{ textAlign: "center", color: "red" }}>
                 
                 {rubriqueListError && (

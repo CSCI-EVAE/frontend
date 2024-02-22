@@ -41,6 +41,9 @@ export const RubriqueComposeContextProvider: React.FC<
     const [addRubriqueComposeError, setAddRubriqueComposeError] = useState("");
     const [deleteRubriqueComposeError, setDeleteRubriqueComposeError] = useState("");
     const [modifyRubriqueComposeError, setModifyRubriqueComposeError] = useState("");
+    const [addRubriqueComposeSucces, setAddRubriqueComposeSucces] = useState("");
+    const [deleteRubriqueComposeSucces, setDeleteRubriqueComposeSucces] = useState("");
+    const [modifyRubriqueComposeSucces, setModifyRubriqueComposeSucces] = useState("");
     const [modifyRubrique,setModifyRubrique]=useState("");
     const [currentRubriqueCompose, setcurrentRubriqueCompose] = useState<RubriqueCompose>();
 
@@ -80,6 +83,7 @@ export const RubriqueComposeContextProvider: React.FC<
                 console.log("rsp", response);
                 setRubriqueCompose({});
                 setAddRubriqueComposeError("");
+                setAddRubriqueComposeSucces("Rubrique Composée ajoutée avec succès")
                 getList();
                 return;
             } else {
@@ -99,6 +103,7 @@ export const RubriqueComposeContextProvider: React.FC<
                 setRubriqueCompose({});
                 
                 setModifyRubriqueComposeError("");
+                setAddRubriqueComposeSucces("Rubrique Composée modifiée avec succès")
                 getList();
                 return;
             } else {
@@ -112,6 +117,7 @@ export const RubriqueComposeContextProvider: React.FC<
         const response = await deleteRubriqueCompose(rubriqueCompose_id);
         if (response) {
             setDeleteRubriqueComposeError("");
+            setAddRubriqueComposeSucces("Rubrique Composée supprimée avec succès")
             getList();
             return;
         } else {
@@ -137,7 +143,10 @@ export const RubriqueComposeContextProvider: React.FC<
                 modifyRubriqueCompose,
                 getList,
                 updateModifyRubrique,
-                modifyRubrique,currentRubriqueCompose
+                modifyRubrique,currentRubriqueCompose,
+                addRubriqueComposeSucces,
+                deleteRubriqueComposeSucces,
+                modifyRubriqueComposeSucces
                
             }}
         >
