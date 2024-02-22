@@ -4,6 +4,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import { RubriqueCompose, questionsInRubrique } from '../../types/rubriquesComposeTypes ';
 import { RubriqueEnseignantContext } from '../../context/rubriqueEnseignantContext';
+import Header from '../../components/Layout/Header';
 
 interface TableQuestionProps {
 
@@ -56,6 +57,7 @@ const [dataset, setDataset] = useState<questionsInRubrique[]>(questions );
   
     >
           <>
+          <Header />
           {dataset.map((row , index:number)=> (
              <Draggable key={row.idQuestion} draggableId={String(row.idQuestion)} index={index}>
              {(provided : any) => (

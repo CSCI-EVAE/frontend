@@ -90,6 +90,9 @@ export const RubriqueContextProvider: React.FC<
     const [addRubriqueError, setAddRubriqueError] = useState("");
     const [deleteRubriqueError, setDeleteRubriqueError] = useState("");
     const [modifyRubriqueError, setModifyRubriqueError] = useState("");
+    const [addRubriqueSucces, setAddRubriqueSucces] = useState("");
+    const [deleteRubriqueSucces, setDeleteRubriqueSucces] = useState("");
+    const [modifyRubriqueSucces, setModifyRubriqueSucces] = useState("");
 
     const updateRubriqueList = useCallback((value: Rubrique[]) => {
         setRubriqueList(value);
@@ -118,6 +121,7 @@ export const RubriqueContextProvider: React.FC<
             if (response) {
                 setRubrique({});
                 setAddRubriqueError("");
+                setAddRubriqueSucces("Rubrique ajoutée avec succès")
                 getList();
                 return;
             } else {
@@ -137,10 +141,11 @@ export const RubriqueContextProvider: React.FC<
                 setRubrique({});
                 
                 setModifyRubriqueError("");
+                setModifyRubriqueSucces("Rubrique modifiée avec succès")
                 getList();
                 return;
             } else {
-                setModifyRubriqueError("Erreur à la modification");
+                setAddRubriqueError("Erreur à la modification");
             }
         },
         [getList]
@@ -150,6 +155,7 @@ export const RubriqueContextProvider: React.FC<
         const response = await deleteRubrique(rubrique_id);
         if (response) {
             setDeleteRubriqueError("");
+            setDeleteRubriqueSucces("Rubrique supprimée avec succès")
             getList();
             return;
         } else {
@@ -174,6 +180,9 @@ export const RubriqueContextProvider: React.FC<
                 modifyRubriqueError,
                 modifyRubrique,
                 getList,
+                addRubriqueSucces,
+                deleteRubriqueSucces,
+                modifyRubriqueSucces
             }}
         >
             {children}

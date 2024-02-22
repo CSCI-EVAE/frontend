@@ -70,6 +70,9 @@ export const QualificatifContextProvider: React.FC<
     const [addQualificatifError, setAddQualificatifError] = useState("");
     const [deleteQualificatifError, setDeleteQualificatifError] = useState("");
     const [modifyQualificatifError, setModifyQualificatifError] = useState("");
+    const [addQualificatifSucces, setAddQualificatifSucces] = useState("");
+    const [deleteQualificatifSucces, setDeleteQualificatifSucces] = useState("");
+    const [modifyQualificatifSucces, setModifyQualificatifSucces] = useState("");
 
     const updateQualificatifList = useCallback((value: Qualificatif[]) => {
         setQualificatifList(value);
@@ -101,6 +104,7 @@ export const QualificatifContextProvider: React.FC<
                 setQualificatifMinimal("");
                 setQualificatifMaximal("");
                 setAddQualificatifError("");
+                setAddQualificatifSucces("Qualificatif bien ajouté");
                 getList();
                 return;
             } else {
@@ -121,6 +125,7 @@ export const QualificatifContextProvider: React.FC<
                 setQualificatifMinimal("");
                 setQualificatifMaximal("");
                 setModifyQualificatifError("");
+                setModifyQualificatifSucces("Qualificatif modifié avec succès");
                 getList();
                 return;
             } else {
@@ -136,9 +141,11 @@ export const QualificatifContextProvider: React.FC<
             
             setDeleteQualificatifError("");
             getList();
+            setDeleteQualificatifSucces("Qualificatif supprimé avec succès");
+
             return;
         } else {
-            setDeleteQualificatifError("Erreur lors de  la suppression");
+            setDeleteQualificatifError("Erreur à la suppression");
         }
     }, [getList]);
 
@@ -160,6 +167,9 @@ export const QualificatifContextProvider: React.FC<
                 deleteQualificatifError,
                 modifyQualificatifError,
                 modifyQualificatif,
+                addQualificatifSucces,
+                deleteQualificatifSucces,
+                modifyQualificatifSucces
             }}
         >
             {children}

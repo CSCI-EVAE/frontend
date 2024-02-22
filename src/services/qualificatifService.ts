@@ -49,10 +49,12 @@ export const deleteQualificatif = async (id_qualificatif: number) => {
         const response = await axiosInstance.delete<Qualificatif>(
             `${API_URL}/qualificatif/${id_qualificatif}`
         );
+        
 
         if (response.status === 400) {
             return true;
         }
+
         
         return response.data;
     } catch (error) {

@@ -22,6 +22,9 @@ const QualificatifPage: React.FC = () => {
         modifyQualificatifError,
         updateQualificatifMaximal,
         updateQualificatifMinimal,
+        deleteQualificatifSucces,
+        addQualificatifSucces,
+        modifyQualificatifSucces
     } = useContext(QualificatifContext);
 
 
@@ -40,6 +43,7 @@ const QualificatifPage: React.FC = () => {
         console.log("Supprimer:", rowData);
         const id_supp = trouverIdQualificatif(rowData, qualificatifList);
         removeQualificatif(id_supp);
+
     };
 
     return (
@@ -48,6 +52,36 @@ const QualificatifPage: React.FC = () => {
             <Header />
             
             <div>
+
+
+            <div style={{ textAlign: "center", color: "green" }}>
+                    {addQualificatifSucces && (
+                        <Alert severity="success" variant="outlined" style={{ width: '600px', margin: '0 auto' }}>
+                            {addQualificatifSucces}
+                        </Alert>
+
+                    )}
+
+                    
+
+                    {deleteQualificatifSucces && (
+                        <Alert  variant="outlined" severity="success" style={{ width: '600px', margin: '0 auto' }}>
+                            {deleteQualificatifSucces}
+                        </Alert>
+
+                    )}
+
+                    {modifyQualificatifSucces && (
+                        <Alert variant="outlined" severity="success" style={{ width: '600px', margin: '0 auto' }}>
+                            {modifyQualificatifSucces}
+                        </Alert>
+
+                    )}
+
+
+
+                </div>
+                
                 <div style={{ textAlign: "center", color: "red" }}>
                     {qualificatifListError && (
                         <Alert variant="outlined" severity="error" style={{ width: '600px', margin: '0 auto' }}>
@@ -55,6 +89,8 @@ const QualificatifPage: React.FC = () => {
                         </Alert>
 
                     )}
+
+                    
 
                     {deleteQualificatifError && (
                         <Alert variant="outlined" severity="error" style={{ width: '600px', margin: '0 auto' }}>

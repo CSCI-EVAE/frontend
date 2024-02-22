@@ -21,7 +21,10 @@ const RubriquePage: React.FC = () => {
         removeRubriqueCompose,
         deleteRubriqueComposeError,
         modifyRubriqueComposeError,
-        updateModifyRubrique
+        updateModifyRubrique,
+        addRubriqueComposeSucces,
+        modifyRubriqueComposeSucces,
+        deleteRubriqueComposeSucces
        
        
 
@@ -71,6 +74,34 @@ const RubriquePage: React.FC = () => {
         <Header />
         
         <div>
+
+        <div style={{ textAlign: "center", color: "green" }}>
+                    {addRubriqueComposeSucces && (
+                        <Alert severity="success" variant="outlined" style={{ width: '600px', margin: '0 auto' }}>
+                            {addRubriqueComposeSucces}
+                        </Alert>
+
+                    )}
+
+                    
+
+                    {deleteRubriqueComposeSucces && (
+                        <Alert  variant="outlined" severity="success" style={{ width: '600px', margin: '0 auto' }}>
+                            {deleteRubriqueComposeSucces}
+                        </Alert>
+
+                    )}
+
+                    {modifyRubriqueComposeSucces && (
+                        <Alert variant="outlined" severity="success" style={{ width: '600px', margin: '0 auto' }}>
+                            {modifyRubriqueComposeSucces}
+                        </Alert>
+
+                    )}
+
+
+
+                </div>
             <div style={{ textAlign: "center", color: "red" }}>
               
                 {rubriqueComposeListError && (
