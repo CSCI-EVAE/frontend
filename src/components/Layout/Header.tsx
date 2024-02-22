@@ -12,10 +12,11 @@ import {
     DialogContent,
     DialogActions,
 } from "@mui/material";
-import ButtonComponent from "../common/Button";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
-import {  useTheme,} from '@mui/material/styles';
+import BtnComponent from "../common/Button/btn";
+import logo from "../../images/echoSim.png";
+import PersonIcon from "@mui/icons-material/Person";
 const Header: React.FC = () => {
     let navigate = useNavigate();
 
@@ -23,12 +24,12 @@ const Header: React.FC = () => {
     const [open, setOpen] = useState(false); // État pour contrôler l'ouverture de la boîte de dialogue
 
     const isAuth = isAuthenticated();
-    const [prenom, setPrenom] = useState("");
+   
     const [role, setRole] = useState("");
 
     useEffect(() => {
         if (isAuth) {
-            setPrenom(userInfos().prenom);
+            
             setRole(userInfos().role);
         }
     }, [isAuth]);
@@ -51,33 +52,38 @@ const Header: React.FC = () => {
     const handleLogin = () => {
         navigate("/login");
     };
-    const myTheme  = useTheme();
+ 
 
     return (
         <>
-            <AppBar
-                position="static"
-                sx={{backgroundColor : myTheme.palette.secondary.main}}
+             <AppBar
+                position="fixed" 
+                sx={{backgroundColor : "#bec3d4", zIndex: 9999}} 
                 >
                 <Toolbar>
                     <Box mb={2}>
                         <img
-                            src="https://upload.wikimedia.org/wikipedia/fr/thumb/5/51/Universit%C3%A9_de_Bretagne_occidentale_%28logo%29.svg/1280px-Universit%C3%A9_de_Bretagne_occidentale_%28logo%29.svg.png"
+                            src={logo}
                             alt="Logo"
-                            width="100"
+                            width="80"
+                            style={{marginBottom:"-30px",marginTop:"-10px"}}
                         />
                     </Box>
                     {isAuth ? (
                         <Typography
                             variant="h6"
                             component="div"
-                            sx={{ flexGrow: 1, textAlign: "center" }}
+                            sx={{ flexGrow: 1,textAlign:"right"}}
                         >
-                            Bienvenue {prenom}
-                            <br />
-                            <span style={{ fontSize: "small", color: "blue" }}>
-                                {role}
-                            </span>
+                           <BtnComponent
+                            variant="text"
+                            icon={<PersonIcon />}
+                            text={role}
+                           
+                        />
+                           
+                            
+                         
                         </Typography>
                     ) : (
                         <Typography
@@ -85,26 +91,27 @@ const Header: React.FC = () => {
                             component="div"
                             sx={{ flexGrow: 1 }}
                         >
-                            Bienvenue
+                            
                         </Typography>
                     )}
                     {isAuth ? (
-                        <ButtonComponent
-                            variant="contained"
+                        <BtnComponent
+                            variant="text"
                             icon={<LogoutIcon />}
-                            text="Déconnexion"
+                            text=""
                             onClick={handleLogout}
                         />
                     ) : (
-                        <ButtonComponent
-                            variant="contained"
+                        <BtnComponent
+                            variant="text"
                             icon={<LoginIcon />}
-                            text="Connexion"
+                            text=""
                             onClick={handleLogin}
+                            
                         />
                     )}
                 </Toolbar>
-                {/* <Sidebar /> */}
+               
             </AppBar>
             <Dialog open={open} onClose={handleCancelLogout}>
                 <DialogTitle>Confirmation de déconnexion</DialogTitle>

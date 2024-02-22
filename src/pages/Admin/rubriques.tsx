@@ -8,6 +8,9 @@ import {
     supprimerColonnesId,
     trouverRubrique
 } from "../../context/rubriqueContext";
+import Header from "../../components/Layout/Header";
+import Sidebar from "../../components/Layout/sideBar/SidebarPage";
+import Alert from "@mui/material/Alert";
 
 
 const RubriquePage: React.FC = () => {
@@ -58,11 +61,33 @@ const RubriquePage: React.FC = () => {
     };
 
     return (
+        <>
+        <Sidebar />
+        <Header />
+        
         <div>
             <div style={{ textAlign: "center", color: "red" }}>
-                {rubriqueListError && rubriqueListError}
-                {deleteRubriqueError && deleteRubriqueError}
-                {modifyRubriqueError&& modifyRubriqueError}
+                
+                {rubriqueListError && (
+                        <Alert variant="outlined" severity="error" style={{ width: '600px', margin: '0 auto' }}>
+                            {rubriqueListError}
+                        </Alert>
+
+                    )}
+
+                    {deleteRubriqueError && (
+                        <Alert variant="outlined" severity="error" style={{ width: '600px', margin: '0 auto' }}>
+                            {deleteRubriqueError}
+                        </Alert>
+
+                    )}
+
+                    {modifyRubriqueError && (
+                        <Alert variant="outlined" severity="error" style={{ width: '600px', margin: '0 auto' }}>
+                            {modifyRubriqueError}
+                        </Alert>
+
+                    )}
             </div>
             <ListComponent
              
@@ -88,6 +113,8 @@ const RubriquePage: React.FC = () => {
                 
             />
         </div>
+        </>
+   
     );
 };
 

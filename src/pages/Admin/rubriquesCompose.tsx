@@ -6,6 +6,9 @@ import {  RUBRIQUE_COLUMNS } from "../../constants";
 
 import RubriqueComposeView from "../../components/RubriqueComposeView";
 import RubriqueComposeAdd from "../../components/RubriqueComposeAdd";
+import Header from "../../components/Layout/Header";
+import Sidebar from "../../components/Layout/sideBar/SidebarPage";
+import Alert from "@mui/material/Alert";
 
 
 const RubriquePage: React.FC = () => {
@@ -58,21 +61,40 @@ const RubriquePage: React.FC = () => {
     const handleView = (rowData: any) => {
         console.log("vue:", rowData);
         updateCurrentRubriqueCompose(rowData);
-        
-        
-        
-       
-    
+  
     };
 
 
     return (
+        <>
+        <Sidebar />
+        <Header />
+        
         <div>
             <div style={{ textAlign: "center", color: "red" }}>
-                {rubriqueComposeListError && rubriqueComposeListError}
-                {deleteRubriqueComposeError && deleteRubriqueComposeError}
-                {modifyRubriqueComposeError&& modifyRubriqueComposeError}
+              
+                {rubriqueComposeListError && (
+                        <Alert variant="outlined" severity="error" style={{ width: '600px', margin: '0 auto' }}>
+                            {rubriqueComposeListError}
+                        </Alert>
+
+                    )}
+
+                    {deleteRubriqueComposeError && (
+                        <Alert variant="outlined" severity="error" style={{ width: '600px', margin: '0 auto' }}>
+                            {deleteRubriqueComposeError}
+                        </Alert>
+
+                    )}
+
+                    {modifyRubriqueComposeError && (
+                        <Alert variant="outlined" severity="error" style={{ width: '600px', margin: '0 auto' }}>
+                            {modifyRubriqueComposeError}
+                        </Alert>
+
+                    )}
             </div>
+
             <ListComponent
              
                 details={true}
@@ -103,6 +125,8 @@ const RubriquePage: React.FC = () => {
                 
             />
         </div>
+        </>
+     
     );
 };
 
