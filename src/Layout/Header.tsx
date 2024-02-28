@@ -17,7 +17,6 @@ import LogoutIcon from "@mui/icons-material/Logout"
 import BtnComponent from "../common/Button/btn"
 import logo from "../images/echoSim.png"
 import PersonIcon from "@mui/icons-material/Person"
-import Notification from "../common/Notification"
 const Header: React.FC = () => {
     let navigate = useNavigate()
 
