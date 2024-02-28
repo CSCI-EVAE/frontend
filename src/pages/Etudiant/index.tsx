@@ -3,26 +3,21 @@
 // };
 // export default Etudiant;
 
-import React from 'react';
-import { Container,  Typography } from '@mui/material';
-import Header from '../../components/Layout/Header';
-
+import React from "react"
+import { Container, Typography } from "@mui/material"
+import Header from "../../Layout/Header"
 
 function BigMenu() {
-
-
     return (
         <>
-        <Header />
-        <Container maxWidth="lg" >
-            <Typography variant="h4" align="center" gutterBottom>
-                List
-            </Typography>
-            
-
-        </Container>
+            <Header />
+            <Container maxWidth="lg">
+                <Typography variant="h4" align="center" gutterBottom>
+                    List
+                </Typography>
+            </Container>
         </>
-    );
+    )
 }
 
-export default BigMenu;
+export default BigMenu

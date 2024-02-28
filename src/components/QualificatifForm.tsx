@@ -1,13 +1,13 @@
-import React, { useContext } from "react";
-import { TextField, Box, Typography } from "@mui/material";
-import ButtonComponent from "./common/Button";
+import React, { useContext } from "react"
+import { TextField, Box, Typography } from "@mui/material"
+import ButtonComponent from "../common/Button"
 import {
     QualificatifContext,
     trouverIdQualificatif,
-} from "../context/qualificatifContext";
-import { ListContext } from "../context/listContext";
+} from "../context/qualificatifContext"
+import { ListContext } from "../context/listContext"
 interface qualificatifFormProps {
-    add: boolean; 
+    add: boolean
 }
 
 const QualificatifForm: React.FC<qualificatifFormProps> = ({ add }) => {
@@ -19,29 +19,29 @@ const QualificatifForm: React.FC<qualificatifFormProps> = ({ add }) => {
         addNewQualificatif,
         modifyQualificatif,
         qualificatifList,
-    } = useContext(QualificatifContext);
-    const { updateModalOpen, selectedRow } = useContext(ListContext);
+    } = useContext(QualificatifContext)
+    const { updateModalOpen, selectedRow } = useContext(ListContext)
     const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
+        e.preventDefault()
         if (add === true) {
             addNewQualificatif({
                 minimal: qualificatifMinimal,
                 maximal: qualificatifMaximal,
-            });
+            })
         } else {
-            const id = trouverIdQualificatif(selectedRow, qualificatifList);
-            console.log("mod2", id);
+            const id = trouverIdQualificatif(selectedRow, qualificatifList)
+            console.log("mod2", id)
             modifyQualificatif(id, {
                 minimal: qualificatifMinimal,
                 maximal: qualificatifMaximal,
-            });
+            })
         }
 
-        updateModalOpen(false);
-    };
+        updateModalOpen(false)
+    }
     const handleReset = () => {
-        updateModalOpen(false);
-    };
+        updateModalOpen(false)
+    }
 
     return (
         <form
@@ -95,7 +95,7 @@ const QualificatifForm: React.FC<qualificatifFormProps> = ({ add }) => {
                 />
             </Box>
         </form>
-    );
-};
+    )
+}
 
-export default QualificatifForm;
+export default QualificatifForm

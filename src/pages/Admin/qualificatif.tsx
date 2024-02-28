@@ -1,116 +1,49 @@
-import React from "react";
-import ListComponent from "../../components/common/List/list";
-import QualificatifForm from "../../components/QualificatifForm";
-import { useContext } from "react";
-import { QualificatifContext } from "../../context/qualificatifContext";
-import { QUALIFICATIF_COLUMNS } from "../../constants";
+import React from "react"
+import ListComponent from "../../common/List/list"
+import QualificatifForm from "../../components/QualificatifForm"
+import { useContext } from "react"
+import { QualificatifContext } from "../../context/qualificatifContext"
+import { QUALIFICATIF_COLUMNS } from "../../constants"
 import {
     supprimerColonnesId,
     trouverIdQualificatif,
-} from "../../context/qualificatifContext";
-import Header from "../../components/Layout/Header";
-import Sidebar from "../../components/Layout/sideBar/SidebarPage";
-import Alert from "@mui/material/Alert";
-
+} from "../../context/qualificatifContext"
+import Header from "../../Layout/Header"
+import Sidebar from "../../Layout/sideBar/SidebarPage"
 
 const QualificatifPage: React.FC = () => {
     const {
         qualificatifList,
-        qualificatifListError,
         removeQualificatif,
-        deleteQualificatifError,
-        modifyQualificatifError,
+
         updateQualificatifMaximal,
         updateQualificatifMinimal,
-        deleteQualificatifSucces,
-        addQualificatifSucces,
-        modifyQualificatifSucces
-    } = useContext(QualificatifContext);
-
+    } = useContext(QualificatifContext)
 
     // Données fictives
-    const dat = supprimerColonnesId(qualificatifList);
+    const dat = supprimerColonnesId(qualificatifList)
 
     // Handlers pour les actions
 
     const handleEdit = (rowData: any) => {
-        console.log("Modifier:", rowData);
-        updateQualificatifMinimal(rowData.minimal);
-        updateQualificatifMaximal(rowData.maximal);
-    };
+        console.log("Modifier:", rowData)
+        updateQualificatifMinimal(rowData.minimal)
+        updateQualificatifMaximal(rowData.maximal)
+    }
 
     const handleDelete = (rowData: any) => {
-        console.log("Supprimer:", rowData);
-        const id_supp = trouverIdQualificatif(rowData, qualificatifList);
-        removeQualificatif(id_supp);
-
-    };
+        console.log("Supprimer:", rowData)
+        const id_supp = trouverIdQualificatif(rowData, qualificatifList)
+        removeQualificatif(id_supp)
+    }
 
     return (
         <>
-        <Sidebar />
+            <Sidebar />
             <Header />
-            
+
             <div>
-
-
-            <div style={{ textAlign: "center", color: "green" }}>
-                    {addQualificatifSucces && (
-                        <Alert severity="success" variant="outlined" style={{ width: '600px', margin: '0 auto' }}>
-                            {addQualificatifSucces}
-                        </Alert>
-
-                    )}
-
-                    
-
-                    {deleteQualificatifSucces && (
-                        <Alert  variant="outlined" severity="success" style={{ width: '600px', margin: '0 auto' }}>
-                            {deleteQualificatifSucces}
-                        </Alert>
-
-                    )}
-
-                    {modifyQualificatifSucces && (
-                        <Alert variant="outlined" severity="success" style={{ width: '600px', margin: '0 auto' }}>
-                            {modifyQualificatifSucces}
-                        </Alert>
-
-                    )}
-
-
-
-                </div>
-                
-                <div style={{ textAlign: "center", color: "red" }}>
-                    {qualificatifListError && (
-                        <Alert variant="outlined" severity="error" style={{ width: '600px', margin: '0 auto' }}>
-                            {qualificatifListError}
-                        </Alert>
-
-                    )}
-
-                    
-
-                    {deleteQualificatifError && (
-                        <Alert variant="outlined" severity="error" style={{ width: '600px', margin: '0 auto' }}>
-                            {deleteQualificatifError}
-                        </Alert>
-
-                    )}
-
-                    {modifyQualificatifError && (
-                        <Alert variant="outlined" severity="error" style={{ width: '600px', margin: '0 auto' }}>
-                            {modifyQualificatifError}
-                        </Alert>
-
-                    )}
-
-
-
-                </div>
                 <ListComponent
-
                     title={"Liste des qualificatifs"}
                     columns={QUALIFICATIF_COLUMNS}
                     data={dat.reverse()}
@@ -132,7 +65,7 @@ const QualificatifPage: React.FC = () => {
                 />
             </div>
         </>
-    );
-};
+    )
+}
 
-export default QualificatifPage;
+export default QualificatifPage

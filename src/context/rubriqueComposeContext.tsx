@@ -2,130 +2,165 @@ import React, {
     createContext,
     ReactNode,
     useCallback,
+    useContext,
     useEffect,
     useState,
-} from "react";
-import { CreateRubriqueCompose, RubriqueCompose, transformRubriquesComposeDTOToMyRubriquesCompose } from "../types/rubriquesComposeTypes ";
+} from "react"
+
 import {
-    addRubriqueCompose,
-    deleteRubriqueCompose,
-    getRubriqueComposeList,
-    updateRubriqueCompose,
-} from "../services/rubriqueComposeService";
+    ApiResponse,
+    CreateRubriqueCompose,
+    RubriqueCompose,
+    RubriqueComposeDTO,
+} from "../types"
+import { deleteRequest, getRequest, postRequest } from "../api/axios"
+import { NotificationContext } from "./notificationContext"
 
 // Définition du type des props pour rubriqueComposeContextProvider
 interface rubriqueComposeContextProviderProps {
-    children: ReactNode; // children doit être de type ReactNode
+    children: ReactNode // children doit être de type ReactNode
 }
 
 // Création du contexte
-export const RubriqueComposeContext = createContext<any>(null); // Vous pouvez remplacer 'any' par le type spécifique que vous souhaitez utiliser
+export const RubriqueComposeContext = createContext<any>(null) // Vous pouvez remplacer 'any' par le type spécifique que vous souhaitez utiliser
 
+export function transformRubriquesComposeDTOToMyRubriquesCompose(
+    rubriques: RubriqueComposeDTO[]
+): RubriqueCompose[] {
+    return rubriques.map((rubrique) => {
+        const { idRubrique, questionsOrdre } = rubrique
 
+        // Transformation de l'objet idRubrique
+        const { id: idRubriqueId, designation, ordre } = idRubrique
 
+        // Transformation des questions
+        const questions = questionsOrdre.map((question) => ({
+            idQuestion: question.idQuestion.id,
+            intitule: question.idQuestion.intitule,
+            idQualificatif: question.idQuestion.idQualificatif.id,
+            minimal: question.idQuestion.idQualificatif.minimal,
+            maximal: question.idQuestion.idQualificatif.maximal,
+            ordre: question.ordre,
+        }))
 
-
-// export function trierParOrdre(liste: RubriqueCompose[]): RubriqueCompose[] {
-//     // Utilise Array.sort() pour trier la liste en fonction de la propriété 'ordre'
-//     return liste.sort((a, b) => a.ordre - b.ordre);
-// }
+        // Retourner un nouvel objet de type MyRubriqueCompose
+        return {
+            idRubrique: idRubriqueId || 0, // En utilisant 0 par défaut si idRubriqueId est null
+            designation,
+            ordre: ordre, // Conversion de l'ordre en string
+            questions,
+        }
+    })
+}
 
 // Composant rubriqueComposeContextProvider
 export const RubriqueComposeContextProvider: React.FC<
     rubriqueComposeContextProviderProps
 > = ({ children }) => {
-    const [rubriqueCompose, setRubriqueCompose] = useState({});
-    
-    const [rubriqueComposeList, setRubriqueComposeList] = useState<RubriqueCompose[]>();
-    const [rubriqueComposeListError, setRubriqueComposeListError] = useState("");
-    const [addRubriqueComposeError, setAddRubriqueComposeError] = useState("");
-    const [deleteRubriqueComposeError, setDeleteRubriqueComposeError] = useState("");
-    const [modifyRubriqueComposeError, setModifyRubriqueComposeError] = useState("");
-    const [addRubriqueComposeSucces, setAddRubriqueComposeSucces] = useState("");
-    const [deleteRubriqueComposeSucces, setDeleteRubriqueComposeSucces] = useState("");
-    const [modifyRubriqueComposeSucces, setModifyRubriqueComposeSucces] = useState("");
-    const [modifyRubrique,setModifyRubrique]=useState("");
-    const [currentRubriqueCompose, setcurrentRubriqueCompose] = useState<RubriqueCompose>();
+    const [rubriqueCompose, setRubriqueCompose] = useState({})
 
+    const [rubriqueComposeList, setRubriqueComposeList] =
+        useState<RubriqueCompose[]>()
+
+    const [modifyRubrique, setModifyRubrique] = useState("")
+    const [currentRubriqueCompose, setcurrentRubriqueCompose] =
+        useState<RubriqueCompose>()
+    const { showNotification } = useContext(NotificationContext)
 
     const updateModifyRubrique = useCallback((value: string) => {
-        setModifyRubrique(value);
-    }, []); 
-    const updateRubriqueComposeList = useCallback((value: RubriqueCompose[]) => {
-        setRubriqueComposeList(value);
-    }, []);
+        setModifyRubrique(value)
+    }, [])
+    const updateRubriqueComposeList = useCallback(
+        (value: RubriqueCompose[]) => {
+            setRubriqueComposeList(value)
+        },
+        []
+    )
 
-    const updateCurrentRubriqueCompose= useCallback((value: RubriqueCompose) => {
-        setcurrentRubriqueCompose(value);
-    }, []);
+    const updateCurrentRubriqueCompose = useCallback(
+        (value: RubriqueCompose) => {
+            setcurrentRubriqueCompose(value)
+        },
+        []
+    )
 
-    
     const getList = useCallback(async () => {
-        let list = await getRubriqueComposeList();
-        if (list) {
-            console.log("list", list.data[0].questionsOrdre[0].idQuestion);
-           const newList= transformRubriquesComposeDTOToMyRubriquesCompose(list.data);
-            setRubriqueComposeListError("");
-            updateRubriqueComposeList(newList);
-        } else {
-            setRubriqueComposeListError("Une erreur de chargement est survenue");
+        const response: ApiResponse = await getRequest(`/rubriqueQuestion/all`)
+        if (!response.success) {
+            showNotification("Erreur", response.message, "error")
+            return
         }
-    }, [updateRubriqueComposeList]);
+        let list = response.data
+        const newList = transformRubriquesComposeDTOToMyRubriquesCompose(
+            list.data
+        )
+        updateRubriqueComposeList(newList)
+    }, [updateRubriqueComposeList, showNotification])
 
     useEffect(() => {
-        getList();
-    }, [getList]);
+        getList()
+    }, [getList])
 
     const addNewRubriqueCompose = useCallback(
         async (rubriqueCompose: CreateRubriqueCompose) => {
-            const response = await addRubriqueCompose(rubriqueCompose);
-            if (response) {
-                console.log("rsp", response);
-                setRubriqueCompose({});
-                setAddRubriqueComposeError("");
-                setAddRubriqueComposeSucces("Rubrique Composée ajoutée avec succès")
-                getList();
-                return;
-            } else {
-                setAddRubriqueComposeError("Erreur à lAjout");
+            const response: ApiResponse = await postRequest(
+                `/rubriqueQuestion/AjouterRubriqueQuestion`,
+                rubriqueCompose
+            )
+            if (!response.success) {
+                showNotification("Erreur", response.message, "error")
+                return
             }
+
+            setRubriqueCompose({})
+            showNotification("Génial !", response.message, "success")
+
+            getList()
+            return
         },
-        [getList]
-    );
+        [getList, showNotification]
+    )
 
     const modifyRubriqueCompose = useCallback(
-        async (id_rubriqueCompose: number, rubriqueCompose: RubriqueCompose) => {
-            const response = await updateRubriqueCompose(
-                id_rubriqueCompose,
+        async (
+            id_rubriqueCompose: number,
+            rubriqueCompose: RubriqueCompose
+        ) => {
+            const response: ApiResponse = await postRequest(
+                `/rubriqueQuestion/UpdateRubriqueQuestions`,
                 rubriqueCompose
-            );
-            if (response) {
-                setRubriqueCompose({});
-                
-                setModifyRubriqueComposeError("");
-                setModifyRubriqueComposeSucces("Rubrique Composée modifiée avec succès")
-                getList();
-                return;
-            } else {
-                setModifyRubriqueComposeError("Erreur à la modification");
+            )
+            if (!response.success) {
+                showNotification("Erreur", response.message, "error")
+                return
             }
+
+            setRubriqueCompose({})
+            showNotification("Génial !", response.message, "success")
+
+            getList()
+            return
         },
-        [getList]
-    );
+        [getList, showNotification]
+    )
 
-    const removeRubriqueCompose = useCallback(async (rubriqueCompose_id: number) => {
-        const response = await deleteRubriqueCompose(rubriqueCompose_id);
-        if (response) {
-            setDeleteRubriqueComposeError("");
-            setDeleteRubriqueComposeSucces("Rubrique Composée supprimée avec succès")
-            getList();
-            return;
-        } else {
-            setDeleteRubriqueComposeError("Erreur lors de  la suppression");
-        }
-    }, [getList]);
+    const removeRubriqueCompose = useCallback(
+        async (rubriqueCompose_id: number) => {
+            const response: ApiResponse = await deleteRequest(
+                `/rubriqueQuestion/deleteAll/${rubriqueCompose_id}`
+            )
+            if (!response.success) {
+                showNotification("Erreur", response.message, "error")
+                return
+            }
 
-  
+            showNotification("Génial !", response.message, "success")
+
+            getList()
+            return
+        },
+        [getList, showNotification]
+    )
 
     return (
         <RubriqueComposeContext.Provider
@@ -135,22 +170,17 @@ export const RubriqueComposeContextProvider: React.FC<
                 addNewRubriqueCompose,
                 rubriqueCompose,
                 updateCurrentRubriqueCompose,
-                rubriqueComposeListError,
-                addRubriqueComposeError,
+
                 removeRubriqueCompose,
-                deleteRubriqueComposeError,
-                modifyRubriqueComposeError,
+
                 modifyRubriqueCompose,
                 getList,
                 updateModifyRubrique,
-                modifyRubrique,currentRubriqueCompose,
-                addRubriqueComposeSucces,
-                deleteRubriqueComposeSucces,
-                modifyRubriqueComposeSucces
-               
+                modifyRubrique,
+                currentRubriqueCompose,
             }}
         >
             {children}
         </RubriqueComposeContext.Provider>
-    );
-};
+    )
+}

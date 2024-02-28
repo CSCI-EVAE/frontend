@@ -1,45 +1,37 @@
-import React, { useContext } from "react";
-import { TextField, Box, Typography } from "@mui/material";
-import ButtonComponent from "./common/Button";
-import {
-    RubriqueComposeContext,
-   
-} from "../context/rubriqueComposeContext";
-import { ListContext } from "../context/listContext";
+import React, { useContext } from "react"
+import { TextField, Box, Typography } from "@mui/material"
+import ButtonComponent from "../common/Button"
+import { RubriqueComposeContext } from "../context/rubriqueComposeContext"
+import { ListContext } from "../context/listContext"
 interface rubriqueComposeFormProps {
-    add: boolean; 
+    add: boolean
 }
 
 const RubriqueComposeForm: React.FC<rubriqueComposeFormProps> = ({ add }) => {
     const {
-        
         rubriqueCompose,
         updateCurrentRubriqueCompose,
         addNewRubriqueCompose,
         modifyRubriqueCompose,
         rubriqueComposeList,
-    } = useContext(RubriqueComposeContext);
-    const { updateModalOpen, selectedRow } = useContext(ListContext);
-    
+    } = useContext(RubriqueComposeContext)
+    const { updateModalOpen, selectedRow } = useContext(ListContext)
 
     const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault(); 
-        
-        if (add === true) {
-            
-            addNewRubriqueCompose({...rubriqueCompose});
-        } else {
+        e.preventDefault()
 
-         //   const rubriqueComposeModify = trouverRubriqueCompose(selectedRow, rubriqueComposeList);
-            
-        //    modifyRubriqueCompose(rubriqueComposeModify?.id, {...rubriqueCompose, id : rubriqueComposeModify?.id,   noEnseignant :rubriqueComposeModify?.noEnseignant});
+        if (add === true) {
+            addNewRubriqueCompose({ ...rubriqueCompose })
+        } else {
+            //   const rubriqueComposeModify = trouverRubriqueCompose(selectedRow, rubriqueComposeList);
+            //    modifyRubriqueCompose(rubriqueComposeModify?.id, {...rubriqueCompose, id : rubriqueComposeModify?.id,   noEnseignant :rubriqueComposeModify?.noEnseignant});
         }
 
-        updateModalOpen(false);
-    };
+        updateModalOpen(false)
+    }
     const handleReset = () => {
-        updateModalOpen(false);
-    };
+        updateModalOpen(false)
+    }
 
     return (
         <form
@@ -66,17 +58,26 @@ const RubriqueComposeForm: React.FC<rubriqueComposeFormProps> = ({ add }) => {
                     label="Désignation"
                     variant="outlined"
                     value={rubriqueCompose.designation}
-                    onChange={(e) => updateCurrentRubriqueCompose({...rubriqueCompose, designation : e.target.value})}
+                    onChange={(e) =>
+                        updateCurrentRubriqueCompose({
+                            ...rubriqueCompose,
+                            designation: e.target.value,
+                        })
+                    }
                     required
                 />
-                  <TextField
+                <TextField
                     label="Ordre"
                     variant="outlined"
                     value={rubriqueCompose.ordre}
-                    onChange={(e) => updateCurrentRubriqueCompose({...rubriqueCompose, ordre : e.target.value})}
+                    onChange={(e) =>
+                        updateCurrentRubriqueCompose({
+                            ...rubriqueCompose,
+                            ordre: e.target.value,
+                        })
+                    }
                     required
                 />
-                
             </Box>
             <Box sx={{ display: "flex", justifyContent: "start", gap: "1rem" }}>
                 <ButtonComponent
@@ -93,7 +94,7 @@ const RubriqueComposeForm: React.FC<rubriqueComposeFormProps> = ({ add }) => {
                 />
             </Box>
         </form>
-    );
-};
+    )
+}
 
-export default RubriqueComposeForm;
+export default RubriqueComposeForm
