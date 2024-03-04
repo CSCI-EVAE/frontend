@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, {
     createContext,
     ReactNode,
@@ -52,10 +53,10 @@ export const UEContextProvider: React.FC<UEContextProps> = ({ children }) => {
             const response: ApiResponse = await getRequest("/enseignant/ue/all")
             if (!response.success) {
                 showNotification("Erreur", response.message, "error")
-                return
+                return;
             }
 
-            setUeList(response.data)
+            setUeList(response.data.data)
         } catch (error) {
             console.error(error)
             showNotification(
@@ -66,6 +67,7 @@ export const UEContextProvider: React.FC<UEContextProps> = ({ children }) => {
         }
     }, [showNotification])
 
+  
     const refreshList = useCallback(async () => {
         try {
             setUeList([])
@@ -76,8 +78,9 @@ export const UEContextProvider: React.FC<UEContextProps> = ({ children }) => {
     }, [fetchUEList])
 
     useEffect(() => {
-        fetchUEList()
-    }, [fetchUEList])
+        fetchUEList();
+       
+    }, [])
 
     const contextValue: UEContextData = {
         ueList,
