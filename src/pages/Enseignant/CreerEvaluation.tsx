@@ -1,19 +1,18 @@
-import InfoGenerales from "../../components/InformationGeneralesForm";
-import Header from "../../components/Layout/Header";
-import StepperComponent from "../../components/common/Stepper";
-import AjoutRubriqueEvaluation from "./AjoutRubriqueEvaluation";
+import InfoGenerales from "../../components/InformationGeneralesForm"
+import Header from "../../Layout/Header"
+import StepperComponent from "../../common/Stepper"
+import AjoutRubriqueEvaluation from "./AjoutRubriqueEvaluation"
 
-const CreerEvaluation = ()=> {
+const CreerEvaluation = () => {
     return (
         <>
-        <Header />
-        <StepperComponent stepsCount={2}> 
-        <InfoGenerales/>
-        <AjoutRubriqueEvaluation/>
-        </StepperComponent>
-        
+            <Header />
+            <StepperComponent stepsCount={2}>
+                <InfoGenerales />
+                <AjoutRubriqueEvaluation />
+            </StepperComponent>
         </>
     )
 }
 
-export default CreerEvaluation;
+export default CreerEvaluation

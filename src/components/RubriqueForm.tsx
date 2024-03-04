@@ -1,47 +1,53 @@
-import React, { useContext } from "react";
-import { TextField, Box, Typography } from "@mui/material";
-import ButtonComponent from "./common/Button";
+import React, { useContext } from "react"
+import { TextField, Box, Typography } from "@mui/material"
+import ButtonComponent from "../common/Button"
 import {
     RubriqueContext,
-   trouverRubrique, getMaxOrdre
-} from "../context/rubriqueContext";
-import { ListContext } from "../context/listContext";
-import { TYPE_STANDARD } from "../constants";
+    trouverRubrique,
+    getMaxOrdre,
+} from "../context/rubriqueContext"
+import { ListContext } from "../context/listContext"
+import { TYPE_STANDARD } from "../constants"
 interface rubriqueFormProps {
-    add: boolean; 
+    add: boolean
 }
 
 const RubriqueForm: React.FC<rubriqueFormProps> = ({ add }) => {
     const {
-        
         rubrique,
         updateCurrentRubrique,
         addNewRubrique,
         modifyRubrique,
         rubriqueList,
-    } = useContext(RubriqueContext);
-    const { updateModalOpen, selectedRow } = useContext(ListContext);
+    } = useContext(RubriqueContext)
+    const { updateModalOpen, selectedRow } = useContext(ListContext)
 
     const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault(); 
-       
-        if (add === true) {
-          
-            
-            addNewRubrique({...rubrique, type : TYPE_STANDARD.rubrique_standard, ordre : getMaxOrdre(rubriqueList)+1,
-            noEnseignant :null });
-        } else {
+        e.preventDefault()
 
-            const rubriqueModify = trouverRubrique(selectedRow, rubriqueList);
-            
-            modifyRubrique(rubriqueModify?.id, {...rubrique, id : rubriqueModify?.id, type :rubriqueModify?.type,  noEnseignant :rubriqueModify?.noEnseignant});
+        if (add === true) {
+            addNewRubrique({
+                ...rubrique,
+                type: TYPE_STANDARD.rubrique_standard,
+                ordre: getMaxOrdre(rubriqueList) + 1,
+                noEnseignant: null,
+            })
+        } else {
+            const rubriqueModify = trouverRubrique(selectedRow, rubriqueList)
+
+            modifyRubrique(rubriqueModify?.id, {
+                ...rubrique,
+                id: rubriqueModify?.id,
+                type: rubriqueModify?.type,
+                noEnseignant: rubriqueModify?.noEnseignant,
+            })
         }
 
-        updateModalOpen(false);
-    };
+        updateModalOpen(false)
+    }
     const handleReset = () => {
-        updateModalOpen(false);
-    };
+        updateModalOpen(false)
+    }
 
     return (
         <form
@@ -68,11 +74,14 @@ const RubriqueForm: React.FC<rubriqueFormProps> = ({ add }) => {
                     label="Désignation"
                     variant="outlined"
                     value={rubrique.designation}
-                    onChange={(e) => updateCurrentRubrique({...rubrique, designation : e.target.value})}
+                    onChange={(e) =>
+                        updateCurrentRubrique({
+                            ...rubrique,
+                            designation: e.target.value,
+                        })
+                    }
                     required
                 />
-                
-                
             </Box>
             <Box sx={{ display: "flex", justifyContent: "start", gap: "1rem" }}>
                 <ButtonComponent
@@ -89,7 +98,7 @@ const RubriqueForm: React.FC<rubriqueFormProps> = ({ add }) => {
                 />
             </Box>
         </form>
-    );
-};
+    )
+}
 
-export default RubriqueForm;
+export default RubriqueForm

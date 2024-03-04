@@ -1,13 +1,12 @@
-import InfoGenarales from "../../components/InformationGeneralesForm";
-import Header from "../../components/Layout/Header";
+import InfoGenarales from "../../components/InformationGeneralesForm"
+import Header from "../../Layout/Header"
 
 const InfoGeneralesPage = () => {
     return (
-    <>
-    <Header />
-    <InfoGenarales />
-    </>
+        <>
+            <Header />
+            <InfoGenarales />
+        </>
     )
-};
-export default InfoGeneralesPage;
-
+}
+export default InfoGeneralesPage

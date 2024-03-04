@@ -1,13 +1,16 @@
-import LiveHelpIcon from '@mui/icons-material/LiveHelp';
-import WidgetsIcon from '@mui/icons-material/Widgets';
-import AccountTreeIcon from '@mui/icons-material/AccountTree';
-import AllOutIcon from '@mui/icons-material/AllOut';
-import AltRouteIcon from '@mui/icons-material/AltRoute';
+import LiveHelpIcon from "@mui/icons-material/LiveHelp"
+import WidgetsIcon from "@mui/icons-material/Widgets"
+import AccountTreeIcon from "@mui/icons-material/AccountTree"
+import AllOutIcon from "@mui/icons-material/AllOut"
+import AltRouteIcon from "@mui/icons-material/AltRoute"
+
+export const API_URL = "http://localhost:8080/api/v1"
+
 export const ROLE = {
     admin: "ADM",
     enseigannt: "ENS",
     etudiant: "ETU",
-};
+}
 
 export const LIST_ACTIONS = {
     create: "CREATE",
@@ -15,25 +18,24 @@ export const LIST_ACTIONS = {
     read: "READ",
     update: "UPDATE",
     delete: "DELETE",
-    soumettre: "SOUMETTRE"
-};
+    soumettre: "SOUMETTRE",
+}
 
 export const QUALIFICATIF_COLUMNS = [
     { id: "minimal", label: "minimal" },
     { id: "maximal", label: "maximal" },
-];
+]
 
 export const Question_COLUMNS = [
     { id: "intitule", label: "intitule" },
     { id: "minimal", label: "minimal" },
-    { id: "maximal", label: "maximal" }
-];
+    { id: "maximal", label: "maximal" },
+]
 
 export const RUBRIQUE_COLUMNS = [
     { id: "designation", label: "designation" },
     //{ id: "ordre", label: "ordre" }
-    
-];
+]
 
 export const Evalution_Etudiant_COLUMNS = [
     { id: "anneeUniversitaire", label: "annee Universitaire" },
@@ -44,20 +46,19 @@ export const Evalution_Etudiant_COLUMNS = [
     { id: "periode", label: "periode" },
     { id: "nomEnseignant", label: "nom Enseignant" },
     { id: "debutReponse", label: "debut Reponse" },
-    { id: "finReponse", label: "fin Reponse" }
-];
+    { id: "finReponse", label: "fin Reponse" },
+]
 
-export const TYPE_STANDARD ={
-    question_standard : "QUS",
-    rubrique_standard : "RBS"
+export const TYPE_STANDARD = {
+    question_standard: "QUS",
+    rubrique_standard: "RBS",
 }
 
-
 interface Dashboard {
-    id: number;
-    icon: React.ReactElement;
-    title: string;
-    link: string;
+    id: number
+    icon: React.ReactElement
+    title: string
+    link: string
 }
 
 export const ADMIN_DASHBOARD: Dashboard[] = [
@@ -91,9 +92,7 @@ export const ADMIN_DASHBOARD: Dashboard[] = [
         title: "Rubriques Composées",
         link: "/dashboard/rubriquecompose",
     },
-   
-];
-
+]
 
 export const UE_COLUMNS = [
     { id: "anneePro", label: "Promotion" },
@@ -101,5 +100,5 @@ export const UE_COLUMNS = [
     { id: "codeUE", label: "UE" },
     { id: "codeEC", label: "EC" },
     { id: "designation", label: "Désignation" },
-    { id: "etat", label: "Etat" }
-];
+    { id: "etat", label: "Etat" },
+]

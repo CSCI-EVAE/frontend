@@ -1,55 +1,63 @@
-import React, { createContext, ReactNode, useCallback, useState } from "react";
-import { Evaluation } from "../types/EvaluationTypes";
-import { getEvaluationDetails } from "../services/evaluationService";
+import React, {
+    createContext,
+    ReactNode,
+    useCallback,
+    useContext,
+    useState,
+} from "react"
+import { Evaluation } from "../types/EvaluationTypes"
+import { NotificationContext } from "./notificationContext"
+import { ApiResponse } from "../types"
+import { getRequest } from "../api/axios"
 
 interface DetailsEvaluationContextProps {
-  children: ReactNode;
+    children: ReactNode
 }
 
 interface DetailsEvaluationContextData {
-  evaluationDetails: Evaluation| null;
-  evaluationError: string;
-  fetchEvaluationDetails: (evaluationId: number) => void;
+    evaluationDetails: Evaluation | null
+    fetchEvaluationDetails: (evaluationId: number) => void
 }
 
-export const DetailsEvaluationContext = createContext<DetailsEvaluationContextData | null>(null);
+export const DetailsEvaluationContext =
+    createContext<DetailsEvaluationContextData | null>(null)
 
-export const DetailsEvaluationContextProvider: React.FC<DetailsEvaluationContextProps> = 
-({ children }) => {
-  const [evaluationDetails, setEvaluationDetails] = useState<Evaluation | null>(null);
-  const [evaluationError, setEvaluationError] = useState("");
+export const DetailsEvaluationContextProvider: React.FC<
+    DetailsEvaluationContextProps
+> = ({ children }) => {
+    const [evaluationDetails, setEvaluationDetails] =
+        useState<Evaluation | null>(null)
 
+    const { showNotification } = useContext(NotificationContext)
 
+    const fetchEvaluationDetails = useCallback(
+        async (evaluationId: number) => {
+            try {
+                const response: ApiResponse = await getRequest(
+                    `/evaluation/details/${evaluationId}`
+                )
+                if (!response.success) {
+                    showNotification("Erreur", response.message, "error")
+                    return
+                }
+                const data = response.data
 
-  
+                setEvaluationDetails(data.data)
+            } catch (error) {
+                console.error(error)
+            }
+        },
+        [showNotification]
+    )
 
-  const fetchEvaluationDetails = useCallback(async (evaluationId: number) => {
-    try {
-      const data = await getEvaluationDetails(evaluationId);
-
-      if (data) {
-        setEvaluationDetails(data.data);
-        setEvaluationError("");
-      } else {
-        setEvaluationError("Une erreur est survenue");
-      }
-    } catch (error) {
-      console.error(error);
-      setEvaluationError("Une erreur de chargement est survenue");
+    const contextValue: DetailsEvaluationContextData = {
+        evaluationDetails,
+        fetchEvaluationDetails,
     }
-  }, []);
 
- 
-
-  const contextValue: DetailsEvaluationContextData = {
-    evaluationDetails,
-    evaluationError,
-    fetchEvaluationDetails,
-  };
-
-  return (
-    <DetailsEvaluationContext.Provider value={contextValue}>
-      {children}
-    </DetailsEvaluationContext.Provider>
-  );
-};
+    return (
+        <DetailsEvaluationContext.Provider value={contextValue}>
+            {children}
+        </DetailsEvaluationContext.Provider>
+    )
+}
