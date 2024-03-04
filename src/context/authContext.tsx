@@ -16,7 +16,7 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({
     children,
 }) => {
     const { showNotification } = useContext(NotificationContext)
-
+    
     const login = useCallback(
         async (credentials: LoginCredentials) => {
             const response: ApiResponse = await postRequest(

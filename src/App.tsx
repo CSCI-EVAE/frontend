@@ -8,14 +8,17 @@ import { Box } from "@mui/material"
 import Page404 from "./pages/Page404"
 import { ThemeProvider } from "@mui/material/styles"
 import theme from "./constants/theme"
-import { GlobalContextProvider } from "./context"
+import { NotificationContextProvider } from "./context/notificationContext"
+import { AuthContextProvider } from "./context/authContext"
 
 function App() {
     return (
         <ThemeProvider theme={theme}>
             <div className="App">
                 <Box sx={{ marginTop: "128px" }}></Box>
-                <GlobalContextProvider>
+                <NotificationContextProvider>
+                    <AuthContextProvider>
+        
                     <Routes>
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/logout" element={<Logout />} />
@@ -34,7 +37,10 @@ function App() {
                         <Route path="/404" element={<Page404 />} />
                         <Route path="*" element={<Page404 />} />
                     </Routes>
-                </GlobalContextProvider>
+               
+                    </AuthContextProvider>
+                </NotificationContextProvider>
+
             </div>
         </ThemeProvider>
     )

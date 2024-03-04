@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import { Box, Button, Container, Typography } from "@mui/material"
 import Grid from "@mui/material/Grid"
 import { Link, Navigate } from "react-router-dom"
+import { logout } from "../utils/authUtils"
 
 const Error = () => {
     const [redirect, setRedirect] = useState(false)
@@ -19,6 +20,7 @@ const Error = () => {
 
     // Si l'état de redirection est vrai, rediriger vers la page d'accueil
     if (redirect) {
+        logout();
         return <Navigate to="/" />
     }
 
@@ -58,7 +60,7 @@ const Error = () => {
                             Cette page n'éxiste pas.
                         </Typography>
                         <Link to="/">
-                            <Button variant="contained">
+                            <Button onClick={()=>logout()} variant="contained">
                                 Retour à l'accueil
                             </Button>
                         </Link>

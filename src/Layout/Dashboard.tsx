@@ -24,6 +24,7 @@ import ReponseEvaluation from "../pages/Etudiant/ReponseEvaluation"
 import CreerEvaluation from "../pages/Enseignant/CreerEvaluation"
 import TokenExpirationWrapper from "./TokenEpxpire"
 import Notification from "../common/Notification"
+import { GlobalContextProvider } from "../context"
 
 const Dashboard: React.FC = () => {
     // const role = Object.keys(ROLE_COMPONENTS).find(hasRole);
@@ -34,6 +35,7 @@ const Dashboard: React.FC = () => {
 
     return (
         <div>
+            <GlobalContextProvider>
             <TokenExpirationWrapper>
                 <Notification />
                 <Routes>
@@ -107,6 +109,7 @@ const Dashboard: React.FC = () => {
                     <Route path="*" element={<Page404 />} />
                 </Routes>
             </TokenExpirationWrapper>
+            </GlobalContextProvider>
         </div>
     )
 }
