@@ -23,6 +23,7 @@ const EvaluationPage: React.FC = () => {
                 remove={false}
                 modify={false}
                 details={true}
+                
             />
         </div>
     )

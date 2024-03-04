@@ -24,6 +24,7 @@ import { RubriqueEnseignantContext } from "../../context/rubriqueEnseignantConte
 import AjoutQuestionEvaluation from "./AjoutQuestionEvaluation"
 import Header from "../../Layout/Header"
 import { RubriqueCompose, questionsInRubrique } from "../../types"
+import SideBarEnseignant from "../../Layout/sideBar/SideBarEnseignant"
 
 const AjoutRubriqueEvaluation = () => {
     const {
@@ -91,7 +92,8 @@ const AjoutRubriqueEvaluation = () => {
 
     return (
         <>
-            <Header />
+             <SideBarEnseignant />
+        <Header />
             <div
                 style={{
                     maxWidth: "70%",

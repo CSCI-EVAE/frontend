@@ -25,6 +25,7 @@ import CreerEvaluation from "../pages/Enseignant/CreerEvaluation"
 import TokenExpirationWrapper from "./TokenEpxpire"
 import Notification from "../common/Notification"
 import { GlobalContextProvider } from "../context"
+import BigMenu from "../pages/Enseignant"
 
 const Dashboard: React.FC = () => {
     // const role = Object.keys(ROLE_COMPONENTS).find(hasRole);
@@ -85,6 +86,10 @@ const Dashboard: React.FC = () => {
                     {role === ROLE.enseigannt && (
                         <>
                             <Route path="/enseignant" element={<UePage />} />
+                            <Route
+                                path="/enseignant/Menu"
+                                element={<BigMenu />} 
+                            />
                             <Route
                                 path="enseignant/rubrique-evaluation"
                                 element={<AjoutRubriqueEvaluation />}

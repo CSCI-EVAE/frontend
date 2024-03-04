@@ -30,12 +30,16 @@ import {
     DialogContent,
     DialogActions,
     Typography,
+    InputLabel,
+    MenuItem,
+    FormControl,
 } from "@mui/material"
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { Edit, Delete, Visibility, Backup } from "@mui/icons-material"
 import { ListContext } from "../../context/listContext"
 import ButtonComponent from "../Button"
 import AddCircleIcon from "@mui/icons-material/AddCircle"
-import { LIST_ACTIONS } from "../../constants"
+import { LIST_ACTIONS , LIST_Etat } from "../../constants"
 
 interface Column {
     id: string
@@ -44,6 +48,7 @@ interface Column {
 interface Props {
     title: string
     columns: Column[]
+    columnsFilter?: Column[]
     data: any[]
     actions: boolean
     details?: boolean
@@ -79,6 +84,7 @@ const ListComponent: React.FC<Props> = ({
     modifyHandler,
     soumettre,
     soumettreHandler,
+    columnsFilter
 }) => {
     const [filters, setFilters] = useState<{ [key: string]: string }>({})
     const { openModal, updateModalOpen, selectedRow, updateSelectedRow } =
@@ -89,8 +95,22 @@ const ListComponent: React.FC<Props> = ({
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
         columnId: string
     ) => {
+        console.log("id", columnId)
         setFilters({ ...filters, [columnId]: e.target.value })
     }
+  
+    const [etats, setEtats] = React.useState('');
+
+    const handleChangeSelect = (event: SelectChangeEvent) => {
+        const newValue = event.target.value;
+        setEtats(newValue);
+        console.log("This is etat " + newValue);
+        setFilters({...filters, ["etat"] : newValue});
+      };
+      
+
+     // setFilters({...filters, ["etat"] : etats});
+
 
     const filteredData = data.filter((row: any) => {
         return Object.entries(filters).every(([columnId, filter]) => {
@@ -99,7 +119,7 @@ const ListComponent: React.FC<Props> = ({
                 .includes(filter.toLowerCase())
         })
     })
-
+ 
     const textStyle: React.CSSProperties = {
         fontFamily: "cursive",
         color: "#e3a12f",
@@ -140,7 +160,35 @@ const ListComponent: React.FC<Props> = ({
                 >
                     <Typography variant="h5">Filtre</Typography>
                 </div>
-                {columns.map((column) => (
+                {columnsFilter && columnsFilter.map((column) => (
+                    <TextField
+                        key={column.id}
+                        label={` ${column.label}`}
+                        variant="outlined"
+                        value={filters[column.id] || ""}
+                        onChange={(e) => handleFilterChange(e, column.id)}
+                        style={{ width: "220px", marginRight: "10px" }} 
+                    />
+                ))}
+                 <FormControl style={{ width: '250px' }}>
+                <InputLabel id="etat">Etat</InputLabel>
+  <Select
+    labelId="etat"
+    id="etat"
+   
+    label="Etat"
+    onChange={handleChangeSelect}
+    value={etats}
+  >
+     
+    <MenuItem value={LIST_Etat.ELA.value}>{LIST_Etat.ELA.label}</MenuItem>
+    <MenuItem value={LIST_Etat.CLO.value}>{LIST_Etat.CLO.label}</MenuItem>
+    <MenuItem value={LIST_Etat.DIS.value}>{LIST_Etat.DIS.label}</MenuItem>
+  </Select>
+  
+  </FormControl>
+                
+                {/* {columns.map((column) => (
                     <TextField
                         key={column.id}
                         label={` ${column.label}`}
@@ -149,7 +197,8 @@ const ListComponent: React.FC<Props> = ({
                         onChange={(e) => handleFilterChange(e, column.id)}
                         style={{ marginRight: "10px" }}
                     />
-                ))}
+                ))} */}
+                
             </div>
             <TableContainer component={Paper}>
                 <Table>
