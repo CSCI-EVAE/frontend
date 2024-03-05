@@ -108,7 +108,7 @@ export const RubriqueContextProvider: React.FC<
 
     useEffect(() => {
         getList()
-    }, [getList])
+    }, [])
 
     const addNewRubrique = useCallback(
         async (rubrique: Rubrique) => {
