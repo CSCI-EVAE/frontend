@@ -12,11 +12,10 @@ import { StepContextProvider } from "./stepperContext"
 
 import { UEContextProvider } from "./UeContext"
 import { ROLE } from "../constants"
+import { userInfos } from "../utils/authUtils"
 
 
-const user = JSON.parse(localStorage.getItem('user') || "");
-console.log("user" ,user) 
-const role = user ? user.role : null
+const role = userInfos().role
 // Création du contexte global
 export const GlobalContext = createContext<any>(null);
 
