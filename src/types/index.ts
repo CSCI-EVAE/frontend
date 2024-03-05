@@ -103,13 +103,11 @@ export interface RubriqueListResponse {
 }
 
 export interface RubriqueComposeDTO {
-    idRubrique: {
-        id?: number
-        designation: string
-        ordre: number
-        type: string
-    }
-    questionsOrdre: {
+    id?: number
+    designation: string
+    type: string
+    ordre: number
+    rubriqueQuestions: {
         id: number
         ordre: number
         idQuestion: {

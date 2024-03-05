@@ -40,6 +40,7 @@ export const postRequest = async (
     } catch (error: any) {
         if (error.response) {
             // Le serveur a répondu avec un statut d'erreur
+            
             const errorMessage = error.response.data.message // Récupère le message d'erreur renvoyé par le backend
             return { success: false, message: errorMessage, data: null }
         } else {
@@ -86,6 +87,7 @@ export const putRequest = async (url: string, body: any): Promise<any> => {
         const successMessage = response.data.message
         return { success: true, message: successMessage, data: response.data }
     } catch (error: any) {
+        console.log(error)
         if (error.response) {
             // Le serveur a répondu avec un statut d'erreur
             const errorMessage = error.response.data.message // Récupère le message d'erreur renvoyé par le backend
@@ -110,10 +112,19 @@ export const deleteRequest = async (url: string): Promise<any> => {
         const successMessage = response.data.message
         return { success: true, message: successMessage, data: response.data }
     } catch (error: any) {
+        console.log(error)
         if (error.response) {
+            if(error.response.data.body){
             // Le serveur a répondu avec un statut d'erreur
+            const errorMessage = error.response.data.body.message // Récupère le message d'erreur renvoyé par le backend
+            return { success: false, message: errorMessage, data: null }
+            }
+            else{
+                 // Le serveur a répondu avec un statut d'erreur
             const errorMessage = error.response.data.message // Récupère le message d'erreur renvoyé par le backend
             return { success: false, message: errorMessage, data: null }
+            
+            }
         } else {
             // Une erreur s'est produite lors de l'envoi de la requête
             return {

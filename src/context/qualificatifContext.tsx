@@ -93,8 +93,19 @@ export const QualificatifContextProvider: React.FC<
         updateQualificatifList(list.data)
     }, [updateQualificatifList, showNotification])
     useEffect(() => {
+
+        const getList = async () => {
+            const response: ApiResponse = await getRequest("/qualificatif")
+            if (!response.success) {
+                showNotification("Erreur", response.message, "error")
+                return
+            }
+            let list = response.data
+    
+            updateQualificatifList(list.data)
+        }
         getList()
-    }, [getList])
+    }, [updateQualificatifList, showNotification])
 
     const addNewQualificatif = useCallback(
         async (qualificatif: Qualificatif) => {
