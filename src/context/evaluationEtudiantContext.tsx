@@ -11,7 +11,6 @@ import { Evaluation } from "../types/EvaluationType";
 import { NotificationContext } from "./notificationContext";
 // import { ApiResponse } from "../types";
 // import { getRequest } from "../api/axios";
-import EvaluationList from "../common/SousList";
 
 interface EvaluationContextProviderProps {
     children: ReactNode;
