@@ -1,12 +1,14 @@
 import React, { useContext } from "react"
 import ListComponent from "../../common/List"
 import { UEContext, trouverIdEvaluation } from "../../context/UeContext"
-import { UE_COLUMNS } from "../../constants"
+import { UE_COLUMNS, UE_COLUMNS_FILTER } from "../../constants"
 import { UE } from "../../types"
 import { DetailsEvaluationContext } from "../../context/detailsEvaluationContext"
 import { useNavigate } from "react-router-dom"
 import { SoumettreEvaluationContext } from "../../context/soumettreEvaluationContext"
 import Header from "../../Layout/Header"
+import SideBarEnseignant from "../../Layout/sideBar/SideBarEnseignant"
+import { FormControl, InputLabel, Select, SelectChangeEvent } from "@mui/material"
 
 const UePage: React.FC = () => {
     const navigate = useNavigate()
@@ -60,6 +62,14 @@ const UePage: React.FC = () => {
 
         return extractedInfo
     }
+
+
+    /*const handleChangeSelect = (event: SelectChangeEvent) => {
+        const newValue = event.target.value;
+        setEtats(newValue);
+        console.log("This is etat " + newValue);
+        setFilters({...filters, etat: newValue});
+      };*/
 
     const handleDetails = (rowData: UE) => {
         const id_eva = trouverIdEvaluation(rowData, ueList)
@@ -118,7 +128,25 @@ const UePage: React.FC = () => {
 
     return (
         <div>
-            <Header />
+             <SideBarEnseignant />
+        <Header />
+
+        {/* <FormControl style={{ width: '250px' }}>
+                <InputLabel id="etat">Etat</InputLabel>
+  <Select
+    labelId="etat"
+    id="etat"
+   
+    label="Etat"
+    onChange={handleChangeSelect}
+    value={etats}
+  >
+     
+    <MenuItem value={LIST_Etat.ELA.value}>{LIST_Etat.ELA.label}</MenuItem>
+    <MenuItem value={LIST_Etat.CLO.value}>{LIST_Etat.CLO.label}</MenuItem>
+    <MenuItem value={LIST_Etat.DIS.value}>{LIST_Etat.DIS.label}</MenuItem>
+  </Select> */}
+  
 
             <h1>{myData.some((item) => item.detailsValue)}</h1>
         
@@ -136,6 +164,7 @@ const UePage: React.FC = () => {
                 soumettreHandler={handleSoumettre}
                 details={true}
                 data={myData}
+                columnsFilter={UE_COLUMNS_FILTER}
             />
         </div>
     )

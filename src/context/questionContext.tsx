@@ -116,6 +116,7 @@ export const QuestionContextProvider: React.FC<
     }
         
         getList()
+
     }, [updateQuestionList, showNotification])
 
     const addNewQuestion = useCallback(

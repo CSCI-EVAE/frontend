@@ -7,6 +7,7 @@ import { useParams, useLocation } from "react-router-dom"
 import { DetailsEvaluationContext } from "../../context/detailsEvaluationContext"
 import { Evaluation } from "../../types/EvaluationTypes"
 import Header from "../../Layout/Header"
+import SideBarEnseignant from "../../Layout/sideBar/SideBarEnseignant"
 
 const DetailsEvaluationPage: React.FC = () => {
     const { id_eva } = useParams()
@@ -51,7 +52,8 @@ const DetailsEvaluationPage: React.FC = () => {
 
     return (
         <>
-            <Header />
+            <SideBarEnseignant />
+        <Header />
             <div style={{ margin: "50px" }}>
                 <div
                     style={{

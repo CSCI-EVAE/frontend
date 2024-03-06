@@ -1,7 +1,7 @@
 import React from "react"
 import { userInfos } from "../utils/authUtils"
 import { Route, Routes } from "react-router-dom"
-import Etudiant from "../pages/Etudiant"
+// import Etudiant from "../pages/Etudiant"
 import Admin from "../pages/Admin"
 import Page404 from "../pages/Page404"
 import Qualificatif from "../pages/Admin/qualificatif"
@@ -16,7 +16,7 @@ import UePage from "../pages/Enseignant/ue"
 
 import DetailsEvaluationPage from "../pages/Enseignant/consulterDetails"
 
-import Evaluation from "../pages/Etudiant/evaluation"
+// import Evaluation from "../pages/Etudiant/evaluation"
 import InfoGeneralesPage from "../pages/Enseignant/saisirInfoGenarales"
 import AjoutRubriqueEvaluation from "../pages/Enseignant/AjoutRubriqueEvaluation"
 import ReponseEvaluation from "../pages/Etudiant/ReponseEvaluation"
@@ -24,6 +24,7 @@ import CreerEvaluation from "../pages/Enseignant/CreerEvaluation"
 import TokenExpirationWrapper from "./TokenEpxpire"
 import Notification from "../common/Notification"
 import { GlobalContextProvider } from "../context"
+import EvaluationPage from "../pages/Etudiant/evaluation"
 import Enseignant from "../pages/Enseignant"
 
 const Dashboard: React.FC = () => {
@@ -43,14 +44,15 @@ const Dashboard: React.FC = () => {
 
                     {role === ROLE.etudiant && (
                         <>
-                            <Route path="/etudiant" element={<Etudiant />} />
-                            <Route
-                                path="/evaluations"
-                                element={<Evaluation />}
-                            />
+                            <Route path="/etudiant" element={<EvaluationPage />} />
+                            
                             <Route
                                 path="/reponse"
                                 element={<ReponseEvaluation />}
+                            />
+                             <Route
+                                path="/evaluations"
+                                element={<EvaluationPage />}
                             />
                         </>
                     )}
@@ -63,6 +65,7 @@ const Dashboard: React.FC = () => {
                                 path="/qualificatif"
                                 element={<Qualificatif />}
                             />
+                           
 
                             <Route path="/questions" element={<Question />} />
 
