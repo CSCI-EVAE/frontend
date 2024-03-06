@@ -107,8 +107,22 @@ export const RubriqueContextProvider: React.FC<
     }, [updateRubriqueList, showNotification])
 
     useEffect(() => {
+        const getList = async () => {
+            const response: ApiResponse = await getRequest("/rubrique/all")
+            if (!response.success) {
+                showNotification("Erreur", response.message, "error")
+                return
+            }
+    
+            let list = response.data
+            updateRubriqueList(list.data)
+        }
         getList()
+<<<<<<< HEAD
     }, [])
+=======
+    }, [updateRubriqueList, showNotification])
+>>>>>>> 5cdcfee275345f408177040fd10144de041f54cb
 
     const addNewRubrique = useCallback(
         async (rubrique: Rubrique) => {

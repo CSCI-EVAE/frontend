@@ -26,15 +26,24 @@ export const RubriqueComposeContext = createContext<any>(null) // Vous pouvez re
 
 export function transformRubriquesComposeDTOToMyRubriquesCompose(
     rubriques: RubriqueComposeDTO[]
+
+    
 ): RubriqueCompose[] {
-    return rubriques.map((rubrique) => {
-        const { idRubrique, questionsOrdre } = rubrique
+
+    console.log(rubriques)
+    
+    return rubriques.map((rub) => {
+
+        const {rubriqueQuestions } = rub
+        
+        console.log("queq", rubriqueQuestions)
 
         // Transformation de l'objet idRubrique
-        const { id: idRubriqueId, designation, ordre } = idRubrique
+        const { id: idRubriqueId, designation, ordre } = rub
+        
 
         // Transformation des questions
-        const questions = questionsOrdre.map((question) => ({
+        const questions = rubriqueQuestions.map((question) => ({
             idQuestion: question.idQuestion.id,
             intitule: question.idQuestion.intitule,
             idQualificatif: question.idQuestion.idQualificatif.id,
@@ -98,8 +107,24 @@ export const RubriqueComposeContextProvider: React.FC<
     }, [updateRubriqueComposeList, showNotification])
 
     useEffect(() => {
+        const getList = async() => {
+            const response: ApiResponse = await getRequest(`/rubriqueQuestion/all`)
+            if (!response.success) {
+                showNotification("Erreur", response.message, "error")
+                return
+            }
+            let list = response.data
+            const newList = transformRubriquesComposeDTOToMyRubriquesCompose(
+                list.data
+            )
+            updateRubriqueComposeList(newList)
+        }
         getList()
+<<<<<<< HEAD
     }, [])
+=======
+    }, [showNotification, updateRubriqueComposeList])
+>>>>>>> 5cdcfee275345f408177040fd10144de041f54cb
 
     const addNewRubriqueCompose = useCallback(
         async (rubriqueCompose: CreateRubriqueCompose) => {

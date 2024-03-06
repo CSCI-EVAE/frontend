@@ -14,6 +14,7 @@ import {
     DialogContent,
     DialogActions,
     Typography,
+    Tooltip,
 } from "@mui/material"
 import {
     AddCircleOutline,
@@ -294,6 +295,7 @@ const ListComponent: React.FC<Props> = ({
                                                                             </IconButton>
                                                                         )}
                                                                         {details && (
+                                                                            <Tooltip title="Consulter le détails">
                                                                             <IconButton
                                                                                 onClick={() => {
                                                                                     setSelectedActions(
@@ -313,9 +315,11 @@ const ListComponent: React.FC<Props> = ({
                                                                             >
                                                                                 <Visibility />
                                                                             </IconButton>
+                                                                            </Tooltip>
                                                                         )}
                                                                         {modify && (
                                                                             <>
+                                                                              <Tooltip title="Modifier">
                                                                                 <IconButton
                                                                                     onClick={() => {
                                                                                         modifyHandler &&
@@ -335,9 +339,11 @@ const ListComponent: React.FC<Props> = ({
                                                                                 >
                                                                                     <Edit />
                                                                                 </IconButton>
+                                                                                </Tooltip>
                                                                             </>
                                                                         )}
                                                                         {remove && (
+                                                                             <Tooltip title="Supprimer">
                                                                             <IconButton
                                                                                 onClick={() => {
                                                                                     setSelectedActions(
@@ -353,6 +359,7 @@ const ListComponent: React.FC<Props> = ({
                                                                             >
                                                                                 <Delete />
                                                                             </IconButton>
+                                                                           </Tooltip>
                                                                         )}
                                                                     </TableCell>
                                                                 )}

@@ -103,8 +103,24 @@ export const QuestionContextProvider: React.FC<
         updateQuestionList(list.data)
     }, [updateQuestionList, showNotification])
     useEffect(() => {
+
+    const getList = async () => {
+        const response: ApiResponse = await getRequest("/questions")
+        if (!response.success) {
+            showNotification("Erreur", response.message, "error")
+            return
+        }
+
+        let list = response.data
+        updateQuestionList(list.data)
+    }
+        
         getList()
+<<<<<<< HEAD
     }, [])
+=======
+    }, [updateQuestionList, showNotification])
+>>>>>>> 5cdcfee275345f408177040fd10144de041f54cb
 
     const addNewQuestion = useCallback(
         async (questionbody: QuestionBody) => {
@@ -150,6 +166,7 @@ export const QuestionContextProvider: React.FC<
             )
             if (!response.success) {
                 showNotification("Erreur", response.message, "error")
+                console.log(response)
                 return
             }
             showNotification("Génial !", response.message, "success")
