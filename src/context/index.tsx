@@ -15,7 +15,7 @@ import { ROLE } from "../constants"
 import { userInfos } from "../utils/authUtils"
 
 
-const role = userInfos().role
+
 // Création du contexte global
 export const GlobalContext = createContext<any>(null);
 
@@ -23,6 +23,7 @@ export const GlobalContext = createContext<any>(null);
 export const GlobalContextProvider: React.FC<{ children: ReactNode }> = ({
     children,
 }) => {
+    const role = userInfos().role
     if (role && role === ROLE.enseigannt) {
         return (
             <QualificatifContextProvider>

@@ -30,8 +30,9 @@ import {
     DialogContent,
     DialogActions,
     Typography,
+    Tooltip,
 } from "@mui/material"
-import { Edit, Delete, Visibility, Backup } from "@mui/icons-material"
+import { Edit, Delete, Visibility, Send } from "@mui/icons-material"
 import { ListContext } from "../../context/listContext"
 import ButtonComponent from "../Button"
 import AddCircleIcon from "@mui/icons-material/AddCircle"
@@ -212,6 +213,7 @@ const ListComponent: React.FC<Props> = ({
                                             </IconButton>
                                         )}
                                         {row.detailsValue && (
+                                            <Tooltip title="Consulter le détails d'une évaluation">
                                             <IconButton
                                                 onClick={() => {
                                                     setSelectedActions(
@@ -224,9 +226,11 @@ const ListComponent: React.FC<Props> = ({
                                             >
                                                 <Visibility />
                                             </IconButton>
+                                            </Tooltip>
                                         )}
                                         {modify && (
                                             <>
+                                            <Tooltip title="Modifier une évaluation">
                                                 <IconButton
                                                     onClick={() => {
                                                         modifyHandler &&
@@ -240,9 +244,11 @@ const ListComponent: React.FC<Props> = ({
                                                 >
                                                     <Edit />
                                                 </IconButton>
+                                                </Tooltip>
                                             </>
                                         )}
                                         {remove && (
+                                             <Tooltip title="Supprimer une évaluation">
                                             <IconButton
                                                 onClick={() => {
                                                     setSelectedActions(
@@ -254,9 +260,11 @@ const ListComponent: React.FC<Props> = ({
                                             >
                                                 <Delete />
                                             </IconButton>
+                                            </Tooltip>
                                         )}
 
                                         {row.soumettreValue && (
+                                            <Tooltip title="Soumettre une évaluation">
                                             <IconButton
                                                 onClick={() => {
                                                     setSelectedActions(
@@ -266,8 +274,9 @@ const ListComponent: React.FC<Props> = ({
                                                     updateSelectedRow(row)
                                                 }}
                                             >
-                                                <Backup />
+                                                <Send />
                                             </IconButton>
+                                            </Tooltip>
                                         )}
                                     </TableCell>
                                 )}
