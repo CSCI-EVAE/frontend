@@ -3,6 +3,7 @@ import WidgetsIcon from "@mui/icons-material/Widgets"
 import AccountTreeIcon from "@mui/icons-material/AccountTree"
 import AllOutIcon from "@mui/icons-material/AllOut"
 import AltRouteIcon from "@mui/icons-material/AltRoute"
+import { FormatListBulleted } from "@mui/icons-material"
 
 export const API_URL = "http://localhost:8080/api/v1"
 
@@ -92,6 +93,29 @@ export const ADMIN_DASHBOARD: Dashboard[] = [
         title: "Rubriques Composées",
         link: "/dashboard/rubriquecompose",
     },
+]
+
+export const ENSEIGNANT_DASHBOARD: Dashboard[] = [
+    {
+        id: 1,
+        icon: <WidgetsIcon />,
+        title: "Menu",
+        link: "/dashboard/enseignant",
+    },
+    {
+        id: 2,
+        icon: <FormatListBulleted />,
+        title: "Unités d'enseignement",
+        link: "/dashboard/enseignant/unitésEnseignement",
+    },
+    {
+        id: 3,
+        icon: <AltRouteIcon />,
+        title: "Promotions",
+        link: "/dashboard/enseignant",
+    },
+    
+  
 ]
 
 export const UE_COLUMNS = [

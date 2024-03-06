@@ -121,6 +121,7 @@ const UePage: React.FC = () => {
             <Header />
 
             <h1>{myData.some((item) => item.detailsValue)}</h1>
+        
             <ListComponent
                 title={"Liste des Unités d'enseignements"}
                 columns={UE_COLUMNS}

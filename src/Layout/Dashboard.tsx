@@ -12,7 +12,6 @@ import RubriquePage from "../pages/Admin/rubriques"
 import RubriqueComposePage from "../pages/Admin/rubriquesCompose"
 import { ROLE } from "../constants"
 import RubriqueCompose from "../components/RubriqueComposeView"
-
 import UePage from "../pages/Enseignant/ue"
 
 import DetailsEvaluationPage from "../pages/Enseignant/consulterDetails"
@@ -25,6 +24,7 @@ import CreerEvaluation from "../pages/Enseignant/CreerEvaluation"
 import TokenExpirationWrapper from "./TokenEpxpire"
 import Notification from "../common/Notification"
 import { GlobalContextProvider } from "../context"
+import Enseignant from "../pages/Enseignant"
 
 const Dashboard: React.FC = () => {
     // const role = Object.keys(ROLE_COMPONENTS).find(hasRole);
@@ -84,7 +84,9 @@ const Dashboard: React.FC = () => {
 
                     {role === ROLE.enseigannt && (
                         <>
-                            <Route path="/enseignant" element={<UePage />} />
+                            <Route path="/enseignant" element={<Enseignant />} />
+
+                            <Route path="/enseignant/unitésEnseignement" element={<UePage />} />
                             <Route
                                 path="enseignant/rubrique-evaluation"
                                 element={<AjoutRubriqueEvaluation />}
