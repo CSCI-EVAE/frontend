@@ -120,6 +120,7 @@ export const RubriqueComposeContextProvider: React.FC<
             updateRubriqueComposeList(newList)
         }
         getList()
+
     }, [showNotification, updateRubriqueComposeList])
 
     const addNewRubriqueCompose = useCallback(

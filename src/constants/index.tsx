@@ -21,6 +21,36 @@ export const LIST_ACTIONS = {
     soumettre: "SOUMETTRE",
 }
 
+export const LIST_Etat = {
+    ELA: {
+        value:"ELA", 
+        label : "En cours d'elaboration"
+    },
+    DIS: {
+        value:"DIS", 
+        label : "Mise a disposition"
+    },
+    CLO: {
+        value:"CLO", 
+        label : "Cloturé"
+    },
+    
+    
+}
+export const LIST_Etat_Etudiant = {
+    DIS: {
+        value:"DIS", 
+        label : "Mise a disposition"
+    },
+    CLO: {
+        value:"CLO", 
+        label : "Cloturé"
+    },
+    
+    
+}
+
+
 export const QUALIFICATIF_COLUMNS = [
     { id: "minimal", label: "minimal" },
     { id: "maximal", label: "maximal" },
@@ -48,6 +78,15 @@ export const Evalution_Etudiant_COLUMNS = [
     { id: "debutReponse", label: "debut Reponse" },
     { id: "finReponse", label: "fin Reponse" },
 ]
+
+export const UE_COLUMNS_FILTER_Etudiant= [
+    { id: "codeFormation", label: "Nom Formation" },
+    { id: "noEvaluation", label: "Evaluation" },
+    { id: "designation", label: "designation" },
+    { id: "periode", label: "periode" },
+    { id: "nomEnseignant", label: "nom Enseignant" },
+]
+
 
 export const TYPE_STANDARD = {
     question_standard: "QUS",
@@ -102,3 +141,39 @@ export const UE_COLUMNS = [
     { id: "designation", label: "Désignation" },
     { id: "etat", label: "Etat" },
 ]
+export const UE_COLUMNS_FILTER = [
+    { id: "anneePro", label: "Promotion" },
+    { id: "nomFormation", label: "Formation" },
+    { id: "codeUE", label: "UE" },
+    { id: "codeEC", label: "EC" },
+    { id: "designation", label: "Désignation" },
+    
+]
+
+
+
+
+
+export const Enseignant_DASHBOARD: Dashboard[] = [
+    {
+        id: 1,
+        icon: <WidgetsIcon />,
+        title: "Menu",
+        link: "/dashboard/enseignant/Menu",
+    },
+    {
+        id: 2,
+        icon: <AccountTreeIcon />,
+        title: "Liste UE",
+        link: "/dashboard/enseignant",
+    },
+
+    {
+        id: 3,
+        icon: <AllOutIcon />,
+        title: "Rubrique Evaluation",
+        link: "/dashboard/enseignant/rubrique-evaluation",
+    },
+   
+   
+];

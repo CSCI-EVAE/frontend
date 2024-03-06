@@ -14,7 +14,10 @@ const InfoGenerales: React.FC = () => {
     const navigate = useNavigate()
     const { state } = useLocation()
     const infoGenerale = state?.rowDataInfo
+    const [dateDebutError , setDateDebutError] = useState(false);
+    const [dateFinError, setDateFinError] = useState(false);
 
+const [designationError, setDesignationError] = useState(false);
     const [designation, setDesignation] = useState("")
     const [dateDebut, setDateDebut] = useState("")
     const [dateFin, setDateFin] = useState("")
@@ -26,6 +29,7 @@ const InfoGenerales: React.FC = () => {
         alignItems: "center",
         marginTop: "2rem",
     }
+   
 
     const paperStyle: React.CSSProperties = {
         padding: "1.5rem",
@@ -45,7 +49,10 @@ const InfoGenerales: React.FC = () => {
         event.preventDefault()
 
         if (!designation || !dateDebut || !dateFin) {
-            setError("Veuillez remplir tous les champs obligatoires.")
+            setError("Veuillez remplir les champs obligatoires de date debut et fin et designation.")
+             setDesignationError(!designation); 
+             setDateDebutError(!dateDebut);
+            setDateFinError(!dateFin);
             return
         }
 
@@ -53,6 +60,7 @@ const InfoGenerales: React.FC = () => {
             setError(
                 "Choisir une date valid : Date de fin inferieur a date de début"
             )
+            
             return
         }
 
@@ -98,7 +106,14 @@ const InfoGenerales: React.FC = () => {
                                 variant="outlined"
                                 fullWidth
                                 value={infoGenerale.nomFormation}
-                                style={textFieldStyle}
+                              
+                                error={infoGenerale.nomFormation.trim() === ''}
+                                helperText={infoGenerale.nomFormation.trim() === '' ? 'Le champ nom formation ne peut pas être vide.' : ''}
+                                style={{
+                              ...textFieldStyle,
+                                 borderColor: infoGenerale.nomFormation.trim() === '' ? 'red' : '',
+                                }}
+
                             />
                         </Grid>
                         <Grid item xs={10} sm={3}>
@@ -107,7 +122,12 @@ const InfoGenerales: React.FC = () => {
                                 variant="outlined"
                                 fullWidth
                                 value={infoGenerale.anneePro}
-                                style={textFieldStyle}
+                                error={infoGenerale.anneePro.trim() === ''}
+                                helperText={infoGenerale.anneePro.trim() === '' ? 'Le champ année promotion ne peut pas être vide.' : ''}
+                                style={{
+                                    ...textFieldStyle,
+                                    borderColor: infoGenerale.anneePro.trim() === '' ? 'red' : '',
+                                }}
                             />
                         </Grid>
                         <Grid item xs={10} sm={6}>
@@ -116,7 +136,12 @@ const InfoGenerales: React.FC = () => {
                                 variant="outlined"
                                 fullWidth
                                 value={infoGenerale.codeUE}
-                                style={textFieldStyle}
+                                error={infoGenerale.codeUE.trim() === ''}
+                                helperText={infoGenerale.codeUE.trim() === '' ? 'Le champ code UE ne peut pas être vide.' : ''}
+                                style={{
+                                    ...textFieldStyle,
+                                    borderColor: infoGenerale.codeUE.trim() === '' ? 'red' : '',
+                                }}
                             />
                         </Grid>
                         <Grid item xs={10} sm={6}>
@@ -128,20 +153,23 @@ const InfoGenerales: React.FC = () => {
                                     infoGenerale.codeEC ||
                                     "------- Cette évaluation concerne UE --------"
                                 }
-                                style={textFieldStyle}
+                               
                             />
                         </Grid>
-                        <Grid item xs={10} sm={6}>
-                            <TextField
-                                label="Désignation"
-                                variant="outlined"
-                                fullWidth
-                                value={designation}
-                                onChange={(e) => setDesignation(e.target.value)}
-                                placeholder="Entrez la désignation de l'évaluation"
-                                style={textFieldStyle}
-                            />
-                        </Grid>
+                        <TextField
+                            label="Désignation"
+                            variant="outlined"
+                            fullWidth
+                            value={designation}
+                            onChange={(e) => setDesignation(e.target.value)}
+                            error={designationError}
+                            helperText={designationError ? 'La désignation ne peut pas être vide.' : ''}
+                            style={{
+                                ...textFieldStyle,
+                                borderColor: designationError ? 'red' : '',
+                            }}
+                        />
+
 
                         <Grid item xs={10} sm={3}>
                             <TextField
@@ -154,7 +182,12 @@ const InfoGenerales: React.FC = () => {
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
-                                style={textFieldStyle}
+                                error={dateDebutError}
+                                helperText={dateDebutError ? 'La date de début ne peut pas être vide.' : ''}
+                                style={{
+                                    ...textFieldStyle,
+                                    borderColor: dateDebutError ? 'red' : '',
+                                }}
                             />
                         </Grid>
                         <Grid item xs={10} sm={3}>
@@ -168,7 +201,12 @@ const InfoGenerales: React.FC = () => {
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
-                                style={textFieldStyle}
+                                error={dateFinError}
+                                helperText={dateFinError ? 'La date de fin ne peut pas être vide.' : ''}
+                                style={{
+                                    ...textFieldStyle,
+                                    borderColor: dateFinError ? 'red' : '',
+                                }}
                             />
                         </Grid>
                     </Grid>

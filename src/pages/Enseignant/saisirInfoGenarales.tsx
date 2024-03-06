@@ -1,10 +1,12 @@
 import InfoGenarales from "../../components/InformationGeneralesForm"
 import Header from "../../Layout/Header"
+import SideBarEnseignant from "../../Layout/sideBar/SideBarEnseignant"
 
 const InfoGeneralesPage = () => {
     return (
         <>
-            <Header />
+                     <SideBarEnseignant />
+        <Header />
             <InfoGenarales />
         </>
     )
