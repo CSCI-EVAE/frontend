@@ -1,7 +1,7 @@
 import React from "react"
 import { userInfos } from "../utils/authUtils"
 import { Route, Routes } from "react-router-dom"
-import Etudiant from "../pages/Etudiant"
+// import Etudiant from "../pages/Etudiant"
 import Admin from "../pages/Admin"
 import Page404 from "../pages/Page404"
 import Qualificatif from "../pages/Admin/qualificatif"
@@ -45,7 +45,7 @@ const Dashboard: React.FC = () => {
 
                     {role === ROLE.etudiant && (
                         <>
-                            <Route path="/etudiant" element={<Etudiant />} />
+                            <Route path="/etudiant" element={<EvaluationPage />} />
                             
                             <Route
                                 path="/reponse"

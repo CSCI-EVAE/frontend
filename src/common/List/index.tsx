@@ -36,7 +36,7 @@ import {
     Tooltip,
 } from "@mui/material"
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { Edit, Delete, Visibility, Backup, Send } from "@mui/icons-material"
+import { Edit, Delete, Visibility, Send } from "@mui/icons-material"
 
 import { ListContext } from "../../context/listContext"
 import ButtonComponent from "../Button"
@@ -107,7 +107,7 @@ const ListComponent: React.FC<Props> = ({
         const newValue = event.target.value;
         setEtats(newValue);
         console.log("This is etat " + newValue);
-        setFilters({...filters, ["etat"] : newValue});
+        setFilters({...filters, etat: newValue});
       };
       
 

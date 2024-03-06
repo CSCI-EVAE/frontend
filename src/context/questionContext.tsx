@@ -116,11 +116,8 @@ export const QuestionContextProvider: React.FC<
     }
         
         getList()
-<<<<<<< HEAD
-    }, [])
-=======
+
     }, [updateQuestionList, showNotification])
->>>>>>> 5cdcfee275345f408177040fd10144de041f54cb
 
     const addNewQuestion = useCallback(
         async (questionbody: QuestionBody) => {

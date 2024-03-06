@@ -1,7 +1,7 @@
 import React from "react"
 import ListComponent from "../../common/List/listEtudiant"
 import { useContext } from "react"
-import { Evalution_Etudiant_COLUMNS, UE_COLUMNS_FILTER, UE_COLUMNS_FILTER_Etudiant } from "../../constants/index"
+import { Evalution_Etudiant_COLUMNS, UE_COLUMNS_FILTER_Etudiant } from "../../constants/index"
 import { EvaluationContext } from "../../context/evaluationEtudiantContext"
 import { AdjustColumns } from "../../context/evaluationEtudiantContext"
 import Header from "../../Layout/Header"
@@ -10,7 +10,6 @@ const EvaluationPage: React.FC = () => {
     const {
      //    updateEvaluationList,
      evaluationList,
-     updateEvaluationList
     } = useContext(EvaluationContext);
    
      const dat = AdjustColumns(evaluationList);

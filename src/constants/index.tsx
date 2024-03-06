@@ -37,6 +37,18 @@ export const LIST_Etat = {
     
     
 }
+export const LIST_Etat_Etudiant = {
+    DIS: {
+        value:"DIS", 
+        label : "Mise a disposition"
+    },
+    CLO: {
+        value:"CLO", 
+        label : "Cloturé"
+    },
+    
+    
+}
 
 
 export const QUALIFICATIF_COLUMNS = [
@@ -67,7 +79,7 @@ export const Evalution_Etudiant_COLUMNS = [
     { id: "finReponse", label: "fin Reponse" },
 ]
 
-export const UE_COLUMNS_FILTER_Etudiant = [
+export const UE_COLUMNS_FILTER_Etudiant= [
     { id: "codeFormation", label: "Nom Formation" },
     { id: "noEvaluation", label: "Evaluation" },
     { id: "designation", label: "designation" },

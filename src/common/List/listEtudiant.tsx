@@ -39,7 +39,7 @@ import { Edit, Delete, Visibility, Backup } from "@mui/icons-material"
 import { ListContext } from "../../context/listContext"
 import ButtonComponent from "../Button"
 import AddCircleIcon from "@mui/icons-material/AddCircle"
-import { LIST_ACTIONS , LIST_Etat } from "../../constants"
+import { LIST_ACTIONS , LIST_Etat_Etudiant } from "../../constants"
 
 interface Column {
     id: string
@@ -105,7 +105,7 @@ const ListComponent: React.FC<Props> = ({
         const newValue = event.target.value;
         setEtats(newValue);
         console.log("This is etat " + newValue);
-        setFilters({...filters, ["etat"] : newValue});
+        setFilters({...filters, etat: newValue});
       };
       
 
@@ -181,9 +181,8 @@ const ListComponent: React.FC<Props> = ({
     value={etats}
   >
      
-    <MenuItem value={LIST_Etat.ELA.value}>{LIST_Etat.ELA.label}</MenuItem>
-    <MenuItem value={LIST_Etat.CLO.value}>{LIST_Etat.CLO.label}</MenuItem>
-    <MenuItem value={LIST_Etat.DIS.value}>{LIST_Etat.DIS.label}</MenuItem>
+    <MenuItem value={LIST_Etat_Etudiant.CLO.value}>{LIST_Etat_Etudiant.CLO.label}</MenuItem>
+    <MenuItem value={LIST_Etat_Etudiant.DIS.value}>{LIST_Etat_Etudiant.DIS.label}</MenuItem>
   </Select>
   
   </FormControl>

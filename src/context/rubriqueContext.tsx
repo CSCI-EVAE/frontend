@@ -118,11 +118,7 @@ export const RubriqueContextProvider: React.FC<
             updateRubriqueList(list.data)
         }
         getList()
-<<<<<<< HEAD
-    }, [])
-=======
     }, [updateRubriqueList, showNotification])
->>>>>>> 5cdcfee275345f408177040fd10144de041f54cb
 
     const addNewRubrique = useCallback(
         async (rubrique: Rubrique) => {

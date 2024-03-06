@@ -120,11 +120,8 @@ export const RubriqueComposeContextProvider: React.FC<
             updateRubriqueComposeList(newList)
         }
         getList()
-<<<<<<< HEAD
-    }, [])
-=======
+
     }, [showNotification, updateRubriqueComposeList])
->>>>>>> 5cdcfee275345f408177040fd10144de041f54cb
 
     const addNewRubriqueCompose = useCallback(
         async (rubriqueCompose: CreateRubriqueCompose) => {

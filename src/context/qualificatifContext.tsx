@@ -105,11 +105,8 @@ export const QualificatifContextProvider: React.FC<
             updateQualificatifList(list.data)
         }
         getList()
-<<<<<<< HEAD
-    }, [])
-=======
+
     }, [updateQualificatifList, showNotification])
->>>>>>> 5cdcfee275345f408177040fd10144de041f54cb
 
     const addNewQualificatif = useCallback(
         async (qualificatif: Qualificatif) => {

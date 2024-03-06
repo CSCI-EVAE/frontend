@@ -11,12 +11,9 @@ import { SoumettreEvaluationContextProvider } from "./soumettreEvaluationContext
 import { StepContextProvider } from "./stepperContext"
 
 import { UEContextProvider } from "./UeContext"
-<<<<<<< HEAD
-import { EvaluationContext, EvaluationContextProvider } from "./evaluationEtudiantContext"
-=======
+import {  EvaluationContextProvider } from "./evaluationEtudiantContext"
 import { ROLE } from "../constants"
 import { userInfos } from "../utils/authUtils"
->>>>>>> 5cdcfee275345f408177040fd10144de041f54cb
 
 
 
@@ -27,35 +24,8 @@ export const GlobalContext = createContext<any>(null);
 export const GlobalContextProvider: React.FC<{ children: ReactNode }> = ({
     children,
 }) => {
-<<<<<<< HEAD
 
-    return (
-        
-        <QualificatifContextProvider>
-            <QuestionContextProvider>
-            <RubriqueContextProvider>
-            <RubriqueComposeContextProvider>
-            <ListContextProvider>
-            <RubriqueEnseignantContextProvider>
-            <SoumettreEvaluationContextProvider>
-            <UEContextProvider>
-            <StepContextProvider>
-            <EvaluationContextProvider>
-                
-                                                <GlobalContext.Provider
-                                                    value={{}}
-                                                >
-                                                    {children}
-                                                </GlobalContext.Provider>
-                 </EvaluationContextProvider>    
-                </StepContextProvider>
-                </UEContextProvider>
-                </SoumettreEvaluationContextProvider>
-                </RubriqueEnseignantContextProvider>
-                </ListContextProvider>
-                </RubriqueComposeContextProvider>
-                </RubriqueContextProvider>
-=======
+  
     const role = userInfos().role
     if (role && role === ROLE.enseigannt) {
         return (
@@ -78,7 +48,6 @@ export const GlobalContextProvider: React.FC<{ children: ReactNode }> = ({
                             </ListContextProvider>
                         </RubriqueComposeContextProvider>
                     </RubriqueContextProvider>
->>>>>>> 5cdcfee275345f408177040fd10144de041f54cb
                 </QuestionContextProvider>
             </QualificatifContextProvider>
         );
@@ -106,25 +75,19 @@ export const GlobalContextProvider: React.FC<{ children: ReactNode }> = ({
         );
     } else if (role && role === ROLE.etudiant) {
         return (
-            <QualificatifContextProvider>
-                <QuestionContextProvider>
-                    <RubriqueContextProvider>
-                        <RubriqueComposeContextProvider>
+         
                             <ListContextProvider>
-                                <RubriqueEnseignantContextProvider>
-                                    <SoumettreEvaluationContextProvider>
+                        
                                         <StepContextProvider>
+                                        <EvaluationContextProvider>
                                             <GlobalContext.Provider value={{}}>
                                                 {children}
                                             </GlobalContext.Provider>
+                                            </EvaluationContextProvider>
                                         </StepContextProvider>
-                                    </SoumettreEvaluationContextProvider>
-                                </RubriqueEnseignantContextProvider>
+                                   
                             </ListContextProvider>
-                        </RubriqueComposeContextProvider>
-                    </RubriqueContextProvider>
-                </QuestionContextProvider>
-            </QualificatifContextProvider>
+                       
         );
     } else {
         // Cas où aucun rôle n'est défini ou le rôle est inconnu
