@@ -94,7 +94,7 @@ export const QualificatifContextProvider: React.FC<
     }, [updateQualificatifList, showNotification])
     useEffect(() => {
         getList()
-    }, [getList])
+    }, [])
 
     const addNewQualificatif = useCallback(
         async (qualificatif: Qualificatif) => {

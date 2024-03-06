@@ -11,6 +11,7 @@ import { SoumettreEvaluationContextProvider } from "./soumettreEvaluationContext
 import { StepContextProvider } from "./stepperContext"
 
 import { UEContextProvider } from "./UeContext"
+import { EvaluationContext, EvaluationContextProvider } from "./evaluationEtudiantContext"
 
 
 
@@ -33,13 +34,14 @@ export const GlobalContextProvider: React.FC<{ children: ReactNode }> = ({
             <SoumettreEvaluationContextProvider>
             <UEContextProvider>
             <StepContextProvider>
+            <EvaluationContextProvider>
                 
                                                 <GlobalContext.Provider
                                                     value={{}}
                                                 >
                                                     {children}
                                                 </GlobalContext.Provider>
-                                            
+                 </EvaluationContextProvider>    
                 </StepContextProvider>
                 </UEContextProvider>
                 </SoumettreEvaluationContextProvider>

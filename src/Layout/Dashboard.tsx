@@ -17,7 +17,7 @@ import UePage from "../pages/Enseignant/ue"
 
 import DetailsEvaluationPage from "../pages/Enseignant/consulterDetails"
 
-import Evaluation from "../pages/Etudiant/evaluation"
+// import Evaluation from "../pages/Etudiant/evaluation"
 import InfoGeneralesPage from "../pages/Enseignant/saisirInfoGenarales"
 import AjoutRubriqueEvaluation from "../pages/Enseignant/AjoutRubriqueEvaluation"
 import ReponseEvaluation from "../pages/Etudiant/ReponseEvaluation"
@@ -26,6 +26,7 @@ import TokenExpirationWrapper from "./TokenEpxpire"
 import Notification from "../common/Notification"
 import { GlobalContextProvider } from "../context"
 import BigMenu from "../pages/Enseignant"
+import EvaluationPage from "../pages/Etudiant/evaluation"
 
 const Dashboard: React.FC = () => {
     // const role = Object.keys(ROLE_COMPONENTS).find(hasRole);
@@ -45,13 +46,14 @@ const Dashboard: React.FC = () => {
                     {role === ROLE.etudiant && (
                         <>
                             <Route path="/etudiant" element={<Etudiant />} />
-                            <Route
-                                path="/evaluations"
-                                element={<Evaluation />}
-                            />
+                            
                             <Route
                                 path="/reponse"
                                 element={<ReponseEvaluation />}
+                            />
+                             <Route
+                                path="/evaluations"
+                                element={<EvaluationPage />}
                             />
                         </>
                     )}
@@ -64,6 +66,7 @@ const Dashboard: React.FC = () => {
                                 path="/qualificatif"
                                 element={<Qualificatif />}
                             />
+                           
 
                             <Route path="/questions" element={<Question />} />
 

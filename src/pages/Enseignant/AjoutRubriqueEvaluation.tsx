@@ -92,8 +92,9 @@ const AjoutRubriqueEvaluation = () => {
 
     return (
         <>
-             <SideBarEnseignant />
+             <SideBarEnseignant /> 
         <Header />
+       
             <div
                 style={{
                     maxWidth: "70%",

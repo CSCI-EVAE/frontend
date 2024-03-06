@@ -99,7 +99,7 @@ export const RubriqueComposeContextProvider: React.FC<
 
     useEffect(() => {
         getList()
-    }, [getList])
+    }, [])
 
     const addNewRubriqueCompose = useCallback(
         async (rubriqueCompose: CreateRubriqueCompose) => {

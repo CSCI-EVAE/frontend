@@ -104,7 +104,7 @@ export const QuestionContextProvider: React.FC<
     }, [updateQuestionList, showNotification])
     useEffect(() => {
         getList()
-    }, [getList])
+    }, [])
 
     const addNewQuestion = useCallback(
         async (questionbody: QuestionBody) => {

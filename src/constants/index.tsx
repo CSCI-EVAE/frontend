@@ -67,6 +67,15 @@ export const Evalution_Etudiant_COLUMNS = [
     { id: "finReponse", label: "fin Reponse" },
 ]
 
+export const UE_COLUMNS_FILTER_Etudiant = [
+    { id: "codeFormation", label: "Nom Formation" },
+    { id: "noEvaluation", label: "Evaluation" },
+    { id: "designation", label: "designation" },
+    { id: "periode", label: "periode" },
+    { id: "nomEnseignant", label: "nom Enseignant" },
+]
+
+
 export const TYPE_STANDARD = {
     question_standard: "QUS",
     rubrique_standard: "RBS",
@@ -128,6 +137,9 @@ export const UE_COLUMNS_FILTER = [
     { id: "designation", label: "Désignation" },
     
 ]
+
+
+
 
 
 export const Enseignant_DASHBOARD: Dashboard[] = [
