@@ -79,6 +79,7 @@ export interface Question {
     type: string
     idQualificatif: Qualificatif
     noEnseignant: Enseignant | null
+    ordre?: number
 }
 
 export interface QuestionListResponse {
@@ -142,10 +143,15 @@ export interface RubriqueComposeListResponse {
     data: RubriqueComposeDTO[]
     success: boolean
 }
+export interface IncomingRubriqueQuestionDTO {
+    idRubrique: number
+    questionIds: { [questionId: number]: number }
+    ordre: number
+}
 
 export interface CreateRubriqueCompose {
     idRubrique: number
-    questionIds: number[]
+    questionIds: { [questionId: number]: number }
     ordre: number
 }
 

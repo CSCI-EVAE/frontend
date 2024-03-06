@@ -55,22 +55,31 @@ const RubriqueComposeAdd: React.FC<rubriqueComposeFormProps> = ({ add }) => {
             )
             const rubriqueToAdd: CreateRubriqueCompose = {
                 idRubrique: rubriqueSelected.id || 0,
-                questionIds: questionsSelected.map(
-                    (question) => question.id || 0
+                questionIds: questionsSelected.reduce(
+                    (acc: { [questionId: number]: number }, question) => {
+                        acc[question.id || 0] = question.ordre || 0
+                        return acc
+                    },
+                    {}
                 ),
                 ordre: 1,
             }
+
             console.log(rubriqueToAdd)
             addNewRubriqueCompose(rubriqueToAdd)
         } else {
             const rubriqueToAdd: CreateRubriqueCompose = {
                 idRubrique: currentRubriqueCompose.idRubrique || 0,
-                questionIds: currentRubriqueCompose.questions.map(
-                    (question: questionsInRubrique) => question.idQuestion || 0
+                questionIds: currentRubriqueCompose.questions.reduce(
+                    (acc: { [questionId: number]: number }, question: any) => {
+                        acc[question.idQuestion || 0] = question.ordre || 0
+                        return acc
+                    },
+                    {}
                 ),
+
                 ordre: currentRubriqueCompose.ordre,
             }
-            console.log("rr", rubriqueToAdd)
 
             modifyRubriqueCompose(rubriqueToAdd.idRubrique, rubriqueToAdd)
         }
