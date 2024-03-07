@@ -21,6 +21,12 @@ export const LIST_ACTIONS = {
     soumettre: "SOUMETTRE",
 }
 
+export const LIST_ACTIONS_ETUDIANT = {
+    read: "READ",
+    answer: "ANSWER",
+    
+}
+
 export const LIST_Etat = {
     ELA: {
         value:"ELA", 

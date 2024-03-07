@@ -13,22 +13,38 @@ const EvaluationPage: React.FC = () => {
     } = useContext(EvaluationContext);
    
      const dat = AdjustColumns(evaluationList);
+   const adjustedData = dat.map(elments => 
+      { 
+       const readvalue = elments.etat === 'CLO' ? true : false
+       const answervalue = ! readvalue
+       console.log("this is the reaaad "+readvalue)
+       console.log("this is the answeeer "+answervalue)
+       
+       return{
+        ...elments,
+        read : readvalue,
+        answer : answervalue
+       };
+
+       
+} 
+     );
     return (
        
      <div>
             <Header/>
+            {adjustedData.map((element, index) => (
           <ListComponent
                  title={"Liste des evaluations"}
                  columns={Evalution_Etudiant_COLUMNS}
                  data={dat.reverse()}
                  actions={true}
-                 remove={false}
-                 modify={false}
-                 details={true}
+                 read = {element.read}
+                 answer = {element.answer}
                  columnsFilter={UE_COLUMNS_FILTER_Etudiant}
-                 
                 
              /> 
+             ))}
 
      </div>
      
