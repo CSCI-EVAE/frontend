@@ -18,29 +18,26 @@ function App() {
                 <Box sx={{ marginTop: "128px" }}></Box>
                 <NotificationContextProvider>
                     <AuthContextProvider>
-        
-                    <Routes>
-                        <Route path="/login" element={<LoginPage />} />
-                        <Route path="/logout" element={<Logout />} />
-                        <Route path="/" element={<LoginPage />} />
+                        <Routes>
+                            <Route path="/login" element={<LoginPage />} />
+                            <Route path="/logout" element={<Logout />} />
+                            <Route path="/" element={<LoginPage />} />
 
-                        <Route
-                            path="/dashboard/*"
-                            element={
-                                <ProtectedRoute>
-                                    <Dashboard />
-                                </ProtectedRoute>
-                            }
-                        />
+                            <Route
+                                path="/dashboard/*"
+                                element={
+                                    <ProtectedRoute>
+                                        <Dashboard />
+                                    </ProtectedRoute>
+                                }
+                            />
 
-                        {/* other routes */}
-                        <Route path="/404" element={<Page404 />} />
-                        <Route path="*" element={<Page404 />} />
-                    </Routes>
-               
+                            {/* other routes */}
+                            <Route path="/404" element={<Page404 />} />
+                            <Route path="*" element={<Page404 />} />
+                        </Routes>
                     </AuthContextProvider>
                 </NotificationContextProvider>
-
             </div>
         </ThemeProvider>
     )

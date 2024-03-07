@@ -38,85 +38,93 @@ const Dashboard: React.FC = () => {
     return (
         <div>
             <GlobalContextProvider>
-            <TokenExpirationWrapper>
-                <Notification />
-                <Routes>
-                    {/* //METTRE TOUTES LES PAGES ETUDIANTS ICI */}
+                <TokenExpirationWrapper>
+                    <Notification />
+                    <Routes>
+                        {/* //METTRE TOUTES LES PAGES ETUDIANTS ICI */}
 
-                    {role === ROLE.etudiant && (
-                        <>
-                            <Route path="/etudiant" element={<EvaluationPage />} />
-                            
-                            <Route
-                                path="/reponse"
-                                element={<ReponseEvaluation />}
-                            />
-                             <Route
-                                path="/evaluations"
-                                element={<EvaluationPage />}
-                            />
-                        </>
-                    )}
-                    {/* //METTRE TOUTES LES PAGES ADMIN ICI */}
+                        {role === ROLE.etudiant && (
+                            <>
+                                <Route
+                                    path="/etudiant"
+                                    element={<EvaluationPage />}
+                                />
 
-                    {role === ROLE.admin && (
-                        <>
-                            <Route path="/admin" element={<Admin />} />
-                            <Route
-                                path="/qualificatif"
-                                element={<Qualificatif />}
-                            />
-                           
+                                <Route
+                                    path="/reponse"
+                                    element={<ReponseEvaluation />}
+                                />
+                                <Route
+                                    path="/evaluations"
+                                    element={<EvaluationPage />}
+                                />
+                            </>
+                        )}
+                        {/* //METTRE TOUTES LES PAGES ADMIN ICI */}
 
-                            <Route path="/questions" element={<Question />} />
+                        {role === ROLE.admin && (
+                            <>
+                                <Route path="/admin" element={<Admin />} />
+                                <Route
+                                    path="/qualificatif"
+                                    element={<Qualificatif />}
+                                />
 
-                            <Route
-                                path="/rubrique"
-                                element={<RubriquePage />}
-                            />
-                            <Route
-                                path="/essai"
-                                element={<RubriqueCompose />}
-                            />
-                            <Route
-                                path="/rubriquecompose"
-                                element={<RubriqueComposePage />}
-                            />
-                        </>
-                    )}
-                    {/* //METTRE TOUTES LES PAGES ENSEIGNANT ICI */}
+                                <Route
+                                    path="/questions"
+                                    element={<Question />}
+                                />
 
-                    {role === ROLE.enseigannt && (
-                        <>
-                            <Route path="/enseignant" element={<UePage />} />
-                            <Route
-                                path="/enseignant/Menu"
-                                element={<BigMenu />} 
-                            />
-                            <Route
-                                path="enseignant/rubrique-evaluation"
-                                element={<AjoutRubriqueEvaluation />}
-                            />
+                                <Route
+                                    path="/rubrique"
+                                    element={<RubriquePage />}
+                                />
+                                <Route
+                                    path="/essai"
+                                    element={<RubriqueCompose />}
+                                />
+                                <Route
+                                    path="/rubriquecompose"
+                                    element={<RubriqueComposePage />}
+                                />
+                            </>
+                        )}
+                        {/* //METTRE TOUTES LES PAGES ENSEIGNANT ICI */}
 
-                            <Route
-                                path="enseignant/evaluation-details/:id_eva"
-                                element={<DetailsEvaluationPage />}
-                            />
-                            <Route
-                                path="enseignant/creation-evaluation"
-                                element={<InfoGeneralesPage />}
-                            />
-                            <Route
-                                path="enseignant/test"
-                                element={<CreerEvaluation />}
-                            />
-                        </>
-                    )}
+                        {role === ROLE.enseigannt && (
+                            <>
+                                <Route
+                                    path="/enseignant"
+                                    element={<UePage />}
+                                />
+                                <Route
+                                    path="/enseignant/Menu"
+                                    element={<BigMenu />}
+                                />
+                                <Route
+                                    path="enseignant/rubrique-evaluation"
+                                    element={<AjoutRubriqueEvaluation />}
+                                />
 
-                    <Route path="/404" element={<Page404 />} />
-                    <Route path="*" element={<Page404 />} />
-                </Routes>
-            </TokenExpirationWrapper>
+                                <Route
+                                    path="enseignant/evaluation-details/:id_eva"
+                                    element={<DetailsEvaluationPage />}
+                                />
+                                <Route
+                                    path="enseignant/creation-evaluation"
+                                    element={<InfoGeneralesPage />}
+                                />
+                                <Route
+                                    path="enseignant/test"
+                                    element={<CreerEvaluation />}
+                                />
+                            </>
+                        )}
+
+                        <Route path="/404" element={<Page404 />} />
+                        <Route path="*" element={<Page404 />} />
+                    </Routes>
+                </TokenExpirationWrapper>
             </GlobalContextProvider>
         </div>
     )

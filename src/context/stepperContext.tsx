@@ -31,6 +31,19 @@ export const StepContextProvider: React.FC<StepContextProviderProps> = ({
     }
     const handleStep = (step: number) => () => {
         updateActiveStep(step)
+        const updatedCompleted = { ...completed }
+
+        // Marquer comme complet les étapes précédentes
+        for (let i = 0; i <= step; i++) {
+            updatedCompleted[i] = true
+        }
+
+        // Marquer comme incomplètes les étapes suivantes
+        for (let i = step + 1; i < totalSteps; i++) {
+            updatedCompleted[i] = false
+        }
+
+        updateCompletedStep(updatedCompleted)
     }
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1)

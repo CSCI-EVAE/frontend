@@ -3,6 +3,8 @@ import QuestionRating from "../../components/QuestionRating"
 import StepperComponent from "../../common/Stepper"
 import { StepContext } from "../../context/stepperContext"
 import { RubriqueCompose } from "../../types"
+import RecapitulatifReponses from "../../components/RecapitulatifReponses"
+import Header from "../../Layout/Header"
 
 const rubriques: RubriqueCompose[] = [
     {
@@ -26,12 +28,43 @@ const rubriques: RubriqueCompose[] = [
                 minimal: "Très mauvais",
                 maximal: "Excellent",
             },
+            {
+                idQuestion: 3,
+                intitule: "Question 3",
+                ordre: 3,
+                idQualificatif: 3,
+                minimal: "Très mauvais",
+                maximal: "Excellent",
+            },
         ],
     },
     {
         idRubrique: 2,
         designation: "Rubrique 2",
         ordre: 2,
+        questions: [
+            {
+                idQuestion: 3,
+                intitule: "Question 3",
+                ordre: 1,
+                idQualificatif: 3,
+                minimal: "Pas du tout",
+                maximal: "Extrêmement",
+            },
+            {
+                idQuestion: 4,
+                intitule: "Question 4",
+                ordre: 2,
+                idQualificatif: 4,
+                minimal: "Très mauvais",
+                maximal: "Excellent",
+            },
+        ],
+    },
+    {
+        idRubrique: 3,
+        designation: "Rubrique 3",
+        ordre: 3,
         questions: [
             {
                 idQuestion: 3,
@@ -61,23 +94,26 @@ const ReponseEvaluation = () => {
     ) => {
         //traitement ajout
         //
-        if (activeStep !== rubriques.length - 1) {
+        if (activeStep !== rubriques.length) {
             handleComplete()
         } else {
             //fin du remplissage
             alert("formulaire fini")
         }
     }
+    const stepItems = rubriques.map((r, index) => (
+        <QuestionRating
+            key={index}
+            rubrique={r}
+            handleSubmit={handleValidateElement}
+        />
+    ))
+    stepItems.push(<RecapitulatifReponses rubriques={rubriques} />)
     return (
         <>
-            <StepperComponent stepsCount={rubriques.length}>
-                {rubriques.map((r, index) => (
-                    <QuestionRating
-                        key={index}
-                        rubrique={r}
-                        handleSubmit={handleValidateElement}
-                    />
-                ))}
+            <Header />
+            <StepperComponent stepsCount={rubriques.length + 1}>
+                {stepItems}
             </StepperComponent>
         </>
     )
