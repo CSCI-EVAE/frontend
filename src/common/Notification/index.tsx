@@ -85,7 +85,7 @@ const Notification: React.FC = () => {
                 <Snackbar
                     sx={{ zIndex: 10000 }}
                     open={open}
-                    autoHideDuration={5000}
+                   
                     onClose={handleClose}
                     anchorOrigin={{ vertical: "top", horizontal: "right" }}
                 >
