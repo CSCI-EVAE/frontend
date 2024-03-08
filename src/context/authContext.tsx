@@ -23,16 +23,20 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({
                 "/login",
                 credentials
             )
+
             if (!response.success) {
+                console.log("heeeeeey")
                 showNotification("Erreur", response.message, "error")
                 return
             }
+
             const token = response.data.data.accessToken
             localStorage.setItem("jwtToken", token)
             localStorage.setItem(
                 "user",
                 JSON.stringify(response.data.data.user)
             )
+            
             showNotification("Bienvenue", "Connexion Réussie", "info")
 
             return response.data

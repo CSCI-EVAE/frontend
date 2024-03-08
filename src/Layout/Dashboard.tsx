@@ -100,7 +100,7 @@ const Dashboard: React.FC = () => {
                                 element={<DetailsEvaluationPage />}
                             />
                             <Route
-                                path="enseignant/creation-evaluation"
+                                path="enseignant/unitésEnseignement/creation-evaluation"
                                 element={<InfoGeneralesPage />}
                             />
                             <Route

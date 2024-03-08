@@ -35,6 +35,10 @@ export const LIST_Etat = {
         value:"CLO", 
         label : "Cloturé"
     },
+    AN: {
+        value:"Tous",
+        label: "Tous"
+    }
     
     
 }
@@ -158,12 +162,17 @@ export const ENSEIGNANT_DASHBOARD: Dashboard[] = [
 ]
 
 export const UE_COLUMNS = [
-    { id: "anneePro", label: "Promotion" },
-    { id: "nomFormation", label: "Formation" },
+   
+    { id: "codeFormation", label: "Formation" },
     { id: "codeUE", label: "UE" },
     { id: "codeEC", label: "EC" },
+    { id: "nbhCM", label: "nbh CM"},
+    { id: "nbhTD", label: "nbh TD"},
+    { id: "nbhTP", label: "nbh TP"},
+    { id: "totaleHeures", label: "TOTAL"},
     { id: "designation", label: "Désignation" },
     { id: "etat", label: "Etat" },
+
 ]
 export const UE_COLUMNS_FILTER = [
     { id: "anneePro", label: "Promotion" },

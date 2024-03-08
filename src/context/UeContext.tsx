@@ -51,14 +51,16 @@ export const UEContextProvider: React.FC<UEContextProps> = ({ children }) => {
 
     const fetchUEList = useCallback(async () => {
         try {
-            const response: ApiResponse = await getRequest("/enseignant/ue/all")
+            const response: ApiResponse = await getRequest("/enseignant/ue")
 
-            setUeList(response.data.data)
+            setUeList(response.data)
         } catch (error) {
             console.error(error)
          
         }
     }, [])
+
+  
 
   
     const refreshList = useCallback(async () => {
@@ -73,7 +75,7 @@ export const UEContextProvider: React.FC<UEContextProps> = ({ children }) => {
     useEffect(() => {
         const fetchUEListA = async () => {
             try {
-                const response: ApiResponse = await getRequest("/enseignant/ue/all")
+                const response: ApiResponse = await getRequest("/enseignant/ue")
     
                 setUeList(response.data.data)
             } catch (error) {

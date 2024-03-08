@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom"
 import { SoumettreEvaluationContext } from "../../context/soumettreEvaluationContext"
 import Header from "../../Layout/Header"
 import SideBarEnseignant from "../../Layout/sideBar/SideBarEnseignant"
-import { FormControl, InputLabel, Select, SelectChangeEvent } from "@mui/material"
 
 const UePage: React.FC = () => {
     const navigate = useNavigate()
@@ -23,12 +22,18 @@ const UePage: React.FC = () => {
 
     const { ueList } = ueContext
 
+    console.log("je suis ueList", ueList)
+
     function extractNeededInfo(ue: UE) {
         let extractedInfo: any = {
             nomFormation: ue.nomFormation,
-            anneePro: ue.anneeUniversitaire,
+            codeFormation: ue.codeFormation,
             codeEC: ue.codeEc,
             codeUE: ue.codeUe,
+            nbhCM: ue.nbhCm,
+            nbhTP: ue.nbhTp,
+            nbhTD: ue.nbhTd,
+            totaleHeures: ue.totaleHeures,
             etat: "",
             designation: "",
             idEvaluation: "",
@@ -38,6 +43,8 @@ const UePage: React.FC = () => {
             createValue: true,
             soumettreValue: false,
         }
+
+       
 
         if (ue.evaluationId) {
             extractedInfo = {
@@ -64,12 +71,6 @@ const UePage: React.FC = () => {
     }
 
 
-    /*const handleChangeSelect = (event: SelectChangeEvent) => {
-        const newValue = event.target.value;
-        setEtats(newValue);
-        console.log("This is etat " + newValue);
-        setFilters({...filters, etat: newValue});
-      };*/
 
     const handleDetails = (rowData: UE) => {
         const id_eva = trouverIdEvaluation(rowData, ueList)
@@ -124,32 +125,25 @@ const UePage: React.FC = () => {
     }
 
     const myData = ueList.map(extractNeededInfo)
-    console.log(myData)
 
+    
+
+function extractNomFormation(item: { nomFormation: any }) {
+    return item.nomFormation;
+}
+
+const formation = ueList.map(extractNomFormation)
+console.log("formation", formation)
+
+
+  
     return (
         <div>
              <SideBarEnseignant />
         <Header />
 
-        {/* <FormControl style={{ width: '250px' }}>
-                <InputLabel id="etat">Etat</InputLabel>
-  <Select
-    labelId="etat"
-    id="etat"
-   
-    label="Etat"
-    onChange={handleChangeSelect}
-    value={etats}
-  >
-     
-    <MenuItem value={LIST_Etat.ELA.value}>{LIST_Etat.ELA.label}</MenuItem>
-    <MenuItem value={LIST_Etat.CLO.value}>{LIST_Etat.CLO.label}</MenuItem>
-    <MenuItem value={LIST_Etat.DIS.value}>{LIST_Etat.DIS.label}</MenuItem>
-  </Select> */}
-  
-
             <h1>{myData.some((item) => item.detailsValue)}</h1>
-        
+            
             <ListComponent
                 title={"Liste des Unités d'enseignements"}
                 columns={UE_COLUMNS}
@@ -157,6 +151,7 @@ const UePage: React.FC = () => {
                 remove={false}
                 modify={false}
                 create={true}
+                indice={formation}
                 addElement={false}
                 soumettre={true}
                 detailsHandler={handleDetails}

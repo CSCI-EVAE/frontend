@@ -117,18 +117,18 @@ const [designationError, setDesignationError] = useState(false);
                             />
                         </Grid>
                         <Grid item xs={10} sm={3}>
-                            <TextField
+                            {/* <TextField
                                 label="Promotion"
                                 variant="outlined"
                                 fullWidth
-                                value={infoGenerale.anneePro}
+                                value={infoGenerale}
                                 error={infoGenerale.anneePro.trim() === ''}
                                 helperText={infoGenerale.anneePro.trim() === '' ? 'Le champ année promotion ne peut pas être vide.' : ''}
                                 style={{
                                     ...textFieldStyle,
                                     borderColor: infoGenerale.anneePro.trim() === '' ? 'red' : '',
                                 }}
-                            />
+                            /> */}
                         </Grid>
                         <Grid item xs={10} sm={6}>
                             <TextField
