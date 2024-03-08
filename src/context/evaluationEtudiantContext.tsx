@@ -9,8 +9,9 @@ import React, {
 
 import { Evaluation } from "../types/EvaluationType";
 import { NotificationContext } from "./notificationContext";
-// import { ApiResponse } from "../types";
-// import { getRequest } from "../api/axios";
+import { ApiResponse } from "../types";
+import { getRequest } from "../api/axios";
+
 
 interface EvaluationContextProviderProps {
     children: ReactNode;
@@ -24,23 +25,23 @@ export function AdjustColumns(evaluationList: Evaluation[]): any[] {
             const {
                 id,
                 etat,
-                nomEnseignant,
+              //  nomEnseignant,
                 noEvaluation,
                 periode,
                 designation,
-                codeFormation,
-                anneeUniversitaire,
+                //codeFormation,
+                //anneeUniversitaire,
                 ...rest
             } = evaluation;
 
             return {
                 ...rest,
-                anneeUniversitaire,
-                codeFormation,
+                // anneeUniversitaire,
+               // codeFormation,
                 noEvaluation,
                 etat,
                 designation,
-                nomEnseignant,
+               // nomEnseignant,
                 periode,
             };
         });
@@ -57,46 +58,32 @@ export const EvaluationContextProvider: React.FC<EvaluationContextProviderProps>
         setEvaluationList(value);
     }, []);
 
-    const getList = useCallback(async () => {
-        try {
-            const testData = [
-                {
-                    "id": 1,
-                    "codeFormation": "INFO",
-                    "anneeUniversitaire": "2023-2024",
-                    "nomEnseignant": "ENS porf",
-                    "noEvaluation": 1,
-                    "designation": "Evaluation 1",
-                    "etat": "En cours",
-                    "periode": "Période 1",
-                    "noEtudiant": "ETU456",
-                    "debutReponse": "2024-02-15",
-                    "finReponse": "2024-02-28"
-                },
-                {
-                    "id": 2,
-                    "codeFormation": "INFO",
-                    "anneeUniversitaire": "2023-2024",
-                    "nomEnseignant": "ENS porf",
-                    "noEvaluation": 2,
-                    "designation": "Evaluation 2",
-                    "etat": "Terminé",
-                    "periode": "Période 2",
-                    "noEtudiant": "ETU789",
-                    "debutReponse": "2024-03-01",
-                    "finReponse": "2024-03-15"
+    useEffect(() => {
+        const getList = async () => {
+            try {
+               
+                const response: ApiResponse = await getRequest("evaluation/getEvaluationsByUser");
+                if (!response.success) {
+                    showNotification("Erreur", response.message, "error");
+                    return;
                 }
-            ];
-            updateEvaluationList(testData);
-        } catch (error) {
-            console.error("Une erreur s'est produite lors de la récupération de la liste des évaluations :", error);
-            showNotification("Erreur", "Une erreur s'est produite lors de la récupération de la liste des évaluations.", "error");
-        }
+                let list = response.data.body.data;
+                updateEvaluationList(list);
+                
+            } catch (error) {
+                console.error("Une erreur s'est produite lors de la récupération de la liste des évaluations :", error);
+                showNotification("Erreur", "Une erreur s'est produite lors de la récupération de la liste des évaluations.", "error");
+            }
+        };
+    
+        getList();
     }, [updateEvaluationList, showNotification]);
     
-    useEffect(() => {
-        getList();
-    }, [getList]);
+
+    
+    // useEffect(() => {
+    //     getList();
+    // }, [getList]);
 
     return (
         <EvaluationContext.Provider

@@ -25,6 +25,7 @@ import AjoutQuestionEvaluation from "./AjoutQuestionEvaluation"
 import Header from "../../Layout/Header"
 import { RubriqueCompose, questionsInRubrique } from "../../types"
 import SideBarEnseignant from "../../Layout/sideBar/SideBarEnseignant"
+import RubriqueComposeAdd from "../../components/RubriqueComposeAdd"
 
 const AjoutRubriqueEvaluation = () => {
     const {
@@ -92,9 +93,9 @@ const AjoutRubriqueEvaluation = () => {
 
     return (
         <>
-             <SideBarEnseignant /> 
-        <Header />
-       
+            <SideBarEnseignant />
+            <Header />
+
             <div
                 style={{
                     maxWidth: "70%",
@@ -119,7 +120,25 @@ const AjoutRubriqueEvaluation = () => {
                             updateSelectedRow({})
                         }}
                     >
-                        <AddCircleIcon /> Ajouter une Rubrique
+                        <AddCircleIcon /> Ajouter une Rubrique Standard
+                    </ListItemIcon>
+                </ListItemButton>
+                <ListItemButton
+                    sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        marginBottom: "16px",
+                    }}
+                >
+                    <ListItemIcon
+                        onClick={() => {
+                            setSelectedActions(LIST_ACTIONS.addRubriqueStandard)
+                            updateModalOpen(true)
+                            updateSelectedRow({})
+                        }}
+                    >
+                        <AddCircleIcon /> Ajouter une Rubrique Composée
                     </ListItemIcon>
                 </ListItemButton>
                 <DragDropContext onDragEnd={onDragEnd}>
@@ -255,7 +274,7 @@ const AjoutRubriqueEvaluation = () => {
                         },
                     }}
                 >
-                    <DialogTitle>{"name"}</DialogTitle>
+                    <DialogTitle>{"Ajout"}</DialogTitle>
                     <DialogContent
                         style={{
                             margin: "auto",
@@ -265,6 +284,10 @@ const AjoutRubriqueEvaluation = () => {
                             //border:"1px solid black"
                         }}
                     >
+                        {selectedAction ===
+                            LIST_ACTIONS.addRubriqueStandard && (
+                            <RubriqueComposeAdd add={true} />
+                        )}
                         {selectedAction === LIST_ACTIONS.add && (
                             <EnseignantRubrique add={true} />
                         )}

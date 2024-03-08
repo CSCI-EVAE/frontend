@@ -12,10 +12,8 @@ const RubriqueComposeForm: React.FC<rubriqueComposeFormProps> = ({ add }) => {
         rubriqueCompose,
         updateCurrentRubriqueCompose,
         addNewRubriqueCompose,
-        modifyRubriqueCompose,
-        rubriqueComposeList,
     } = useContext(RubriqueComposeContext)
-    const { updateModalOpen, selectedRow } = useContext(ListContext)
+    const { updateModalOpen } = useContext(ListContext)
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()

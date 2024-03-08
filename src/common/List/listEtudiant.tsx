@@ -25,21 +25,16 @@ import {
     Paper,
     TextField,
     IconButton,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
     Typography,
     InputLabel,
     MenuItem,
     FormControl,
 } from "@mui/material"
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { Edit, Delete, Visibility, Backup } from "@mui/icons-material"
+import {  RemoveRedEye } from "@mui/icons-material"
 import { ListContext } from "../../context/listContext"
-import ButtonComponent from "../Button"
-import AddCircleIcon from "@mui/icons-material/AddCircle"
-import { LIST_ACTIONS , LIST_Etat_Etudiant } from "../../constants"
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import { LIST_ACTIONS_ETUDIANT , LIST_Etat_Etudiant } from "../../constants"
 
 interface Column {
     id: string
@@ -52,10 +47,8 @@ interface Props {
     data: any[]
     actions: boolean
     details?: boolean
-    soumettre?: boolean
-    remove?: boolean
-    modify?: boolean
-    create?: boolean
+    read?: boolean
+    answer?: boolean
     detailsHandler?: (rowData: any) => void
     modifyHandler?: (rowData: any) => void
     deleteHandler?: (rowData: any) => void
@@ -71,25 +64,18 @@ const ListComponent: React.FC<Props> = ({
     columns,
     data,
     actions,
-    create,
     createHandler,
-    remove,
-    deleteHandler,
-    details,
-    detailsHandler,
-    modify,
-    modifyElement,
-    addElement,
-    handleAdd,
-    modifyHandler,
-    soumettre,
-    soumettreHandler,
+    read,
+    answer,
+   
     columnsFilter
 }) => {
     const [filters, setFilters] = useState<{ [key: string]: string }>({})
-    const { openModal, updateModalOpen, selectedRow, updateSelectedRow } =
+    const {updateSelectedRow } =
         useContext(ListContext)
     const [selectedAction, setSelectedActions] = useState<any | null>(null)
+
+    console.log(selectedAction);
 
     const handleFilterChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -180,7 +166,6 @@ const ListComponent: React.FC<Props> = ({
     onChange={handleChangeSelect}
     value={etats}
   >
-     
     <MenuItem value={LIST_Etat_Etudiant.CLO.value}>{LIST_Etat_Etudiant.CLO.label}</MenuItem>
     <MenuItem value={LIST_Etat_Etudiant.DIS.value}>{LIST_Etat_Etudiant.DIS.label}</MenuItem>
   </Select>
@@ -245,78 +230,45 @@ const ListComponent: React.FC<Props> = ({
                                 ))}
                                 {actions && (
                                     <TableCell>
-                                        {row.createValue && (
-                                            <IconButton
-                                                onClick={() => {
-                                                    setSelectedActions(
-                                                        LIST_ACTIONS.create
-                                                    )
-                                                    updateSelectedRow(row)
-                                                    createHandler &&
-                                                        createHandler(row)
-                                                }}
-                                            >
-                                                <AddCircleIcon />
-                                            </IconButton>
-                                        )}
-                                        {row.detailsValue && (
-                                            <IconButton
-                                                onClick={() => {
-                                                    setSelectedActions(
-                                                        LIST_ACTIONS.read
-                                                    )
-                                                    updateSelectedRow(row)
-                                                    detailsHandler &&
-                                                        detailsHandler(row)
-                                                }}
-                                            >
-                                                <Visibility />
-                                            </IconButton>
-                                        )}
-                                        {modify && (
-                                            <>
-                                                <IconButton
-                                                    onClick={() => {
-                                                        modifyHandler &&
-                                                            modifyHandler(row)
-                                                        setSelectedActions(
-                                                            LIST_ACTIONS.update
-                                                        )
-                                                        updateModalOpen(true)
-                                                        updateSelectedRow(row)
-                                                    }}
-                                                >
-                                                    <Edit />
-                                                </IconButton>
-                                            </>
-                                        )}
-                                        {remove && (
-                                            <IconButton
-                                                onClick={() => {
-                                                    setSelectedActions(
-                                                        LIST_ACTIONS.delete
-                                                    )
-                                                    updateModalOpen(true)
-                                                    updateSelectedRow(row)
-                                                }}
-                                            >
-                                                <Delete />
-                                            </IconButton>
-                                        )}
+                                         {answer && (
+                                                                            <IconButton
+                                                                                onClick={() => {
+                                                                                    setSelectedActions(
+                                                                                        LIST_ACTIONS_ETUDIANT.answer
+                                                                                    )
+                                                                                    updateSelectedRow(
+                                                                                        row
+                                                                                    )
+                                                                                    createHandler &&
+                                                                                        createHandler(
+                                                                                            row
+                                                                                        )
+                                                                                }}
+                                                                            >
+                                                                                <EditNoteIcon />
+                                                                            </IconButton>
+                                                                        )}
+                                        {read && (
+                                       <IconButton
+                                                                                onClick={() => {
+                                                                                    setSelectedActions(
+                                                                                        LIST_ACTIONS_ETUDIANT.read
+                                                                                    )
+                                                                                    updateSelectedRow(
+                                                                                        row
+                                                                                    )
+                                                                                    createHandler &&
+                                                                                        createHandler(
+                                                                                            row
+                                                                                        )
+                                                                                }}
+                                                                            >
+                                                                                <RemoveRedEye />
+                                                                            </IconButton>
+                                                                        )}
+                                      
 
-                                        {row.soumettreValue && (
-                                            <IconButton
-                                                onClick={() => {
-                                                    setSelectedActions(
-                                                        LIST_ACTIONS.soumettre
-                                                    )
-                                                    updateModalOpen(true)
-                                                    updateSelectedRow(row)
-                                                }}
-                                            >
-                                                <Backup />
-                                            </IconButton>
-                                        )}
+                                      
                                     </TableCell>
                                 )}
                             </TableRow>
@@ -325,76 +277,7 @@ const ListComponent: React.FC<Props> = ({
                 </Table>
             </TableContainer>
 
-            {selectedRow && actions && selectedAction && (
-                <Dialog
-                    open={openModal}
-                    onClose={() => updateModalOpen(false)}
-                    PaperProps={{
-                        style: {
-                            width: 500, // Largeur fixe du modal
-                            border: "1px solid #ccc", // Bordure
-                            borderRadius: 8, // Bord arrondi
-                            backgroundColor: "rgba(255, 255, 255, 0.9)", // Transparence
-                            overflowY: "auto", // Scrollable en cas de contenu trop long
-                        },
-                    }}
-                >
-                    <DialogTitle>{selectedRow.name}</DialogTitle>
-                    <DialogContent>
-                        {selectedAction === LIST_ACTIONS.update &&
-                            modifyElement}
-                        {selectedAction === LIST_ACTIONS.delete && (
-                            <div>Êtes-vous sûr de vouloir supprimer ?</div>
-                        )}
-                        {selectedAction === LIST_ACTIONS.soumettre && (
-                            <div>
-                                Êtes-vous sûr de vouloir soumettre l'évaluation
-                                ?
-                            </div>
-                        )}
-
-                        {selectedAction === LIST_ACTIONS.add && addElement}
-                    </DialogContent>
-                    <DialogActions>
-                        {selectedAction === LIST_ACTIONS.delete && (
-                            <>
-                                <ButtonComponent
-                                    text="Oui"
-                                    onClick={() => {
-                                        deleteHandler &&
-                                            deleteHandler(selectedRow)
-                                        console.log(selectedRow)
-                                        updateModalOpen(false)
-                                    }}
-                                />
-
-                                <ButtonComponent
-                                    onClick={() => updateModalOpen(false)}
-                                    text="Non"
-                                />
-                            </>
-                        )}
-                        {selectedAction === LIST_ACTIONS.soumettre && (
-                            <>
-                                <ButtonComponent
-                                    text="Oui"
-                                    onClick={() => {
-                                        soumettreHandler &&
-                                            soumettreHandler(selectedRow)
-
-                                        updateModalOpen(false)
-                                    }}
-                                />
-
-                                <ButtonComponent
-                                    onClick={() => updateModalOpen(false)}
-                                    text="Non"
-                                />
-                            </>
-                        )}
-                    </DialogActions>
-                </Dialog>
-            )}
+          
         </div>
     )
 }
