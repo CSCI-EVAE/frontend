@@ -158,14 +158,18 @@ export interface CreateRubriqueCompose {
 export interface UE {
     evaluationId: number | null
     etat: string | null
-    anneeUniversitaire: string
     nomFormation: string
+    codeFormation: string
     codeUe: string
     codeEc: string | null
     designation: string | null
     evaExiste: boolean
-    debutReponse: Date | null
-    finReponse: Date | null
+    debutReponse: string | null
+    finReponse: string | null
+    totaleHeures: number
+    nbhCm: number
+    nbhTd: number
+    nbhTp: number
 }
 
 export interface UEListResponse {

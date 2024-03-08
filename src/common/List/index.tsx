@@ -41,7 +41,7 @@ import { Edit, Delete, Visibility, Send } from "@mui/icons-material"
 import { ListContext } from "../../context/listContext"
 import ButtonComponent from "../Button"
 import AddCircleIcon from "@mui/icons-material/AddCircle"
-import { LIST_ACTIONS , LIST_Etat } from "../../constants"
+import { LIST_ACTIONS, LIST_Etat } from "../../constants"
 
 interface Column {
     id: string
@@ -51,6 +51,7 @@ interface Props {
     title: string
     columns: Column[]
     columnsFilter?: Column[]
+    indice: any[]
     data: any[]
     actions: boolean
     details?: boolean
@@ -71,6 +72,7 @@ interface Props {
 const ListComponent: React.FC<Props> = ({
     title,
     columns,
+    indice,
     data,
     actions,
     create,
@@ -100,18 +102,15 @@ const ListComponent: React.FC<Props> = ({
         console.log("id", columnId)
         setFilters({ ...filters, [columnId]: e.target.value })
     }
-  
+
     const [etats, setEtats] = React.useState('');
 
     const handleChangeSelect = (event: SelectChangeEvent) => {
         const newValue = event.target.value;
         setEtats(newValue);
         console.log("This is etat " + newValue);
-        setFilters({...filters, etat: newValue});
-      };
-      
-
-     // setFilters({...filters, ["etat"] : etats});
+        setFilters({ ...filters, etat: newValue });
+    };
 
 
     const filteredData = data.filter((row: any) => {
@@ -121,7 +120,7 @@ const ListComponent: React.FC<Props> = ({
                 .includes(filter.toLowerCase())
         })
     })
- 
+
     const textStyle: React.CSSProperties = {
         fontFamily: "cursive",
         color: "#e3a12f",
@@ -169,27 +168,28 @@ const ListComponent: React.FC<Props> = ({
                         variant="outlined"
                         value={filters[column.id] || ""}
                         onChange={(e) => handleFilterChange(e, column.id)}
-                        style={{ width: "220px", marginRight: "10px" }} 
+                        style={{ width: "220px", marginRight: "10px" }}
                     />
                 ))}
-                 <FormControl style={{ width: '250px' }}>
-                <InputLabel id="etat">Etat</InputLabel>
-  <Select
-    labelId="etat"
-    id="etat"
-   
-    label="Etat"
-    onChange={handleChangeSelect}
-    value={etats}
-  >
-     
-    <MenuItem value={LIST_Etat.ELA.value}>{LIST_Etat.ELA.label}</MenuItem>
-    <MenuItem value={LIST_Etat.CLO.value}>{LIST_Etat.CLO.label}</MenuItem>
-    <MenuItem value={LIST_Etat.DIS.value}>{LIST_Etat.DIS.label}</MenuItem>
-  </Select>
-  
-  </FormControl>
-                
+                <FormControl style={{ width: '250px' }}>
+                    <InputLabel id="etat">Etat</InputLabel>
+                    <Select
+                        labelId="etat"
+                        id="etat"
+
+                        label="Etat"
+                        onChange={handleChangeSelect}
+                        value={etats}
+                    >
+
+                        <MenuItem value={LIST_Etat.ELA.value}>{LIST_Etat.ELA.label}</MenuItem>
+                        <MenuItem value={LIST_Etat.CLO.value}>{LIST_Etat.CLO.label}</MenuItem>
+                        <MenuItem value={LIST_Etat.DIS.value}>{LIST_Etat.DIS.label}</MenuItem>
+                        <MenuItem value="">{LIST_Etat.AN.label}</MenuItem>
+                    </Select>
+
+                </FormControl>
+
                 {/* {columns.map((column) => (
                     <TextField
                         key={column.id}
@@ -200,7 +200,7 @@ const ListComponent: React.FC<Props> = ({
                         style={{ marginRight: "10px" }}
                     />
                 ))} */}
-                
+
             </div>
             <TableContainer component={Paper}>
                 <Table>
@@ -241,9 +241,10 @@ const ListComponent: React.FC<Props> = ({
                                             : "#f9f9f9",
                                 }}
                             >
+                              
                                 {columns.map((column, colIndex) => (
                                     <TableCell key={`${rowIndex}-${colIndex}`}>
-                                        {row[column.id]}
+                                        {colIndex === 0 ?  <Tooltip title={indice[rowIndex]}><div>{row[column.id]}</div></Tooltip>: row[column.id]}
                                     </TableCell>
                                 ))}
                                 {actions && (
@@ -264,68 +265,68 @@ const ListComponent: React.FC<Props> = ({
                                         )}
                                         {row.detailsValue && (
                                             <Tooltip title="Consulter le détails d'une évaluation">
-                                            <IconButton
-                                                onClick={() => {
-                                                    setSelectedActions(
-                                                        LIST_ACTIONS.read
-                                                    )
-                                                    updateSelectedRow(row)
-                                                    detailsHandler &&
-                                                        detailsHandler(row)
-                                                }}
-                                            >
-                                                <Visibility />
-                                            </IconButton>
+                                                <IconButton
+                                                    onClick={() => {
+                                                        setSelectedActions(
+                                                            LIST_ACTIONS.read
+                                                        )
+                                                        updateSelectedRow(row)
+                                                        detailsHandler &&
+                                                            detailsHandler(row)
+                                                    }}
+                                                >
+                                                    <Visibility />
+                                                </IconButton>
                                             </Tooltip>
                                         )}
                                         {modify && (
                                             <>
-                                            <Tooltip title="Modifier une évaluation">
+                                                <Tooltip title="Modifier une évaluation">
+                                                    <IconButton
+                                                        onClick={() => {
+                                                            modifyHandler &&
+                                                                modifyHandler(row)
+                                                            setSelectedActions(
+                                                                LIST_ACTIONS.update
+                                                            )
+                                                            updateModalOpen(true)
+                                                            updateSelectedRow(row)
+                                                        }}
+                                                    >
+                                                        <Edit />
+                                                    </IconButton>
+                                                </Tooltip>
+                                            </>
+                                        )}
+                                        {remove && (
+                                            <Tooltip title="Supprimer une évaluation">
                                                 <IconButton
                                                     onClick={() => {
-                                                        modifyHandler &&
-                                                            modifyHandler(row)
                                                         setSelectedActions(
-                                                            LIST_ACTIONS.update
+                                                            LIST_ACTIONS.delete
                                                         )
                                                         updateModalOpen(true)
                                                         updateSelectedRow(row)
                                                     }}
                                                 >
-                                                    <Edit />
+                                                    <Delete />
                                                 </IconButton>
-                                                </Tooltip>
-                                            </>
-                                        )}
-                                        {remove && (
-                                             <Tooltip title="Supprimer une évaluation">
-                                            <IconButton
-                                                onClick={() => {
-                                                    setSelectedActions(
-                                                        LIST_ACTIONS.delete
-                                                    )
-                                                    updateModalOpen(true)
-                                                    updateSelectedRow(row)
-                                                }}
-                                            >
-                                                <Delete />
-                                            </IconButton>
                                             </Tooltip>
                                         )}
 
                                         {row.soumettreValue && (
                                             <Tooltip title="Soumettre une évaluation">
-                                            <IconButton
-                                                onClick={() => {
-                                                    setSelectedActions(
-                                                        LIST_ACTIONS.soumettre
-                                                    )
-                                                    updateModalOpen(true)
-                                                    updateSelectedRow(row)
-                                                }}
-                                            >
-                                                <Send />
-                                            </IconButton>
+                                                <IconButton
+                                                    onClick={() => {
+                                                        setSelectedActions(
+                                                            LIST_ACTIONS.soumettre
+                                                        )
+                                                        updateModalOpen(true)
+                                                        updateSelectedRow(row)
+                                                    }}
+                                                >
+                                                    <Send />
+                                                </IconButton>
                                             </Tooltip>
                                         )}
                                     </TableCell>

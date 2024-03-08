@@ -43,6 +43,7 @@ const QuestionForm: React.FC<questionFormProps> = ({ add }) => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
+        const trimmedIntitule = questionintitule.trim();
         if (add === true) {
             const selectedQualificatifObj = transformedQuestionListe.find(
                 (item: { value: string | number }) =>
@@ -52,12 +53,12 @@ const QuestionForm: React.FC<questionFormProps> = ({ add }) => {
                 idQualificatif: { id: selectedQualificatifObj.idValue },
                 noEnseignant: null,
                 type: TYPE_STANDARD.question_standard,
-                intitule: questionintitule,
+                intitule: trimmedIntitule,
             })
         } else {
             const id = trouverIdQuestion(selectedRow, questionListe)
             //  const intitul = trouverIntitule(selectedRow, questionListe);
-
+            const trimmedIntitule = questionintitule.trim();
             const selectedQualificatifObj = transformedQuestionListe.find(
                 (item: { value: string | number }) =>
                     item.value === selectedQualificatif
@@ -67,7 +68,7 @@ const QuestionForm: React.FC<questionFormProps> = ({ add }) => {
                 idQualificatif: { id: selectedQualificatifObj.idValue },
                 noEnseignant: null,
                 type: TYPE_STANDARD.question_standard,
-                intitule: questionintitule,
+                intitule: trimmedIntitule,
             })
         }
 
