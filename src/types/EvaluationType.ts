@@ -1,8 +1,8 @@
 export interface Evaluation {
     id: number
-    codeFormation: string
-    anneeUniversitaire: string
-    nomEnseignant: string
+    // codeFormation: string
+    // anneeUniversitaire: string
+    // nomEnseignant: string
     noEvaluation: number
     designation: string
     etat: string

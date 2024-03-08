@@ -20,20 +20,26 @@ export const LIST_ACTIONS = {
     update: "UPDATE",
     delete: "DELETE",
     soumettre: "SOUMETTRE",
+    addRubriqueStandard: "ADD_RUBRIQUE_STANDARD",
+}
+
+export const LIST_ACTIONS_ETUDIANT = {
+    read: "READ",
+    answer: "ANSWER",
 }
 
 export const LIST_Etat = {
     ELA: {
-        value:"ELA", 
-        label : "En cours d'elaboration"
+        value: "ELA",
+        label: "En cours d'elaboration",
     },
     DIS: {
-        value:"DIS", 
-        label : "Mise a disposition"
+        value: "DIS",
+        label: "Mise a disposition",
     },
     CLO: {
-        value:"CLO", 
-        label : "Cloturé"
+        value: "CLO",
+        label: "Cloturé",
     },
     AN: {
         value:"Tous",
@@ -41,20 +47,18 @@ export const LIST_Etat = {
     }
     
     
+
 }
 export const LIST_Etat_Etudiant = {
     DIS: {
-        value:"DIS", 
-        label : "Mise a disposition"
+        value: "DIS",
+        label: "Mise a disposition",
     },
     CLO: {
-        value:"CLO", 
-        label : "Cloturé"
+        value: "CLO",
+        label: "Cloturé",
     },
-    
-    
 }
-
 
 export const QUALIFICATIF_COLUMNS = [
     { id: "minimal", label: "minimal" },
@@ -84,14 +88,13 @@ export const Evalution_Etudiant_COLUMNS = [
     { id: "finReponse", label: "fin Reponse" },
 ]
 
-export const UE_COLUMNS_FILTER_Etudiant= [
+export const UE_COLUMNS_FILTER_Etudiant = [
     { id: "codeFormation", label: "Nom Formation" },
     { id: "noEvaluation", label: "Evaluation" },
     { id: "designation", label: "designation" },
     { id: "periode", label: "periode" },
     { id: "nomEnseignant", label: "nom Enseignant" },
 ]
-
 
 export const TYPE_STANDARD = {
     question_standard: "QUS",
@@ -180,12 +183,7 @@ export const UE_COLUMNS_FILTER = [
     { id: "codeUE", label: "UE" },
     { id: "codeEC", label: "EC" },
     { id: "designation", label: "Désignation" },
-    
 ]
-
-
-
-
 
 export const Enseignant_DASHBOARD: Dashboard[] = [
     {
@@ -207,6 +205,4 @@ export const Enseignant_DASHBOARD: Dashboard[] = [
         title: "Rubrique Evaluation",
         link: "/dashboard/enseignant/rubrique-evaluation",
     },
-   
-   
-];
+]
