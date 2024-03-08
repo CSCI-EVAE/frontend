@@ -26,6 +26,7 @@ import Notification from "../common/Notification"
 import { GlobalContextProvider } from "../context"
 import EvaluationPage from "../pages/Etudiant/evaluation"
 import Enseignant from "../pages/Enseignant"
+import BigMenu from "../pages/Enseignant"
 
 const Dashboard: React.FC = () => {
     // const role = Object.keys(ROLE_COMPONENTS).find(hasRole);
