@@ -177,3 +177,17 @@ export interface UEListResponse {
     message: string
     data: UE[]
 }
+
+
+export interface Promotion {
+    codeFormation: string
+    anneeUniversitaire: string
+    siglePromotion: string | null
+    nbMaxEtudiant: number
+    dateReponseLP: string | null
+    dateReponseLALP: string | null
+    dateRentree: string | null
+    lieuRentree: string | null
+    processusStage: string | null
+    commentaire: string | null
+}

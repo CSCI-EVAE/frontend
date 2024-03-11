@@ -10,7 +10,7 @@ import {
 } from "./SidebarStyles";
 import { isAuthenticated, userInfos } from "../../utils/authUtils";
 // import { useNavigate } from "react-router-dom";
-import { Enseignant_DASHBOARD, ROLE } from "../../constants";
+import { ENSEIGNANT_DASHBOARD, ROLE } from "../../constants";
 
 
 
@@ -230,7 +230,7 @@ const SideBarEnseignant: React.FC = () => {
 
 <ul className="sidebar-list" style={{ justifyContent: 'center', alignItems: 'center', marginTop: '6rem' }}>
             {isAuthenticated() && role === ROLE.enseigannt && (
-              Enseignant_DASHBOARD.map((element, index)=> (
+              ENSEIGNANT_DASHBOARD.map((element, index)=> (
                 <SidebarLink key={index} href={element.link} className="sidebar-link">
                   <SidebarListItem className="sidebar-item">
                   <span className="sidebar-icon" style={{ color: '#3c768c' }}>{element.icon}</span>

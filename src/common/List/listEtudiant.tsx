@@ -29,12 +29,13 @@ import {
     InputLabel,
     MenuItem,
     FormControl,
+    TablePagination,
 } from "@mui/material"
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import {  RemoveRedEye } from "@mui/icons-material"
+import { RemoveRedEye } from "@mui/icons-material"
 import { ListContext } from "../../context/listContext"
 import EditNoteIcon from '@mui/icons-material/EditNote';
-import { LIST_ACTIONS_ETUDIANT , LIST_Etat_Etudiant } from "../../constants"
+import { LIST_ACTIONS_ETUDIANT, LIST_Etat_Etudiant } from "../../constants"
 
 interface Column {
     id: string
@@ -67,11 +68,13 @@ const ListComponent: React.FC<Props> = ({
     createHandler,
     read,
     answer,
-   
+
     columnsFilter
 }) => {
     const [filters, setFilters] = useState<{ [key: string]: string }>({})
-    const {updateSelectedRow } =
+    const [page, setPage] = useState(0); // État pour la pagination
+    const [rowsPerPage, setRowsPerPage] = useState(10); // État pour les lignes par page
+    const { updateSelectedRow } =
         useContext(ListContext)
     const [selectedAction, setSelectedActions] = useState<any | null>(null)
 
@@ -84,18 +87,34 @@ const ListComponent: React.FC<Props> = ({
         console.log("id", columnId)
         setFilters({ ...filters, [columnId]: e.target.value })
     }
-  
+
     const [etats, setEtats] = React.useState('');
 
     const handleChangeSelect = (event: SelectChangeEvent) => {
         const newValue = event.target.value;
         setEtats(newValue);
         console.log("This is etat " + newValue);
-        setFilters({...filters, etat: newValue});
-      };
-      
+        setFilters({ ...filters, etat: newValue });
+    };
 
-     // setFilters({...filters, ["etat"] : etats});
+    // Fonction pour changer de page
+    const handleChangePage = (event: unknown, newPage: number) => {
+        setPage(newPage);
+    };
+
+    // Fonction pour changer le nombre de lignes par page
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
+
+       // Calcul de l'index de départ et de fin pour l'affichage des données selon la pagination
+       const startIndex = page * rowsPerPage;
+       const endIndex = startIndex + rowsPerPage;
+
+
+
+    // setFilters({...filters, ["etat"] : etats});
 
 
     const filteredData = data.filter((row: any) => {
@@ -105,7 +124,7 @@ const ListComponent: React.FC<Props> = ({
                 .includes(filter.toLowerCase())
         })
     })
- 
+
     const textStyle: React.CSSProperties = {
         fontFamily: "cursive",
         color: "#e3a12f",
@@ -114,65 +133,67 @@ const ListComponent: React.FC<Props> = ({
     }
 
     return (
-        <div
-            style={{
-                maxWidth: "80%",
-                margin: "auto",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                marginBottom: "100px",
-            }}
-        >
-            <h2 style={textStyle}>{title}</h2>
 
+        <div>
             <div
                 style={{
-                    border: "1px solid #ccc",
-                    padding: "10px",
-                    marginBottom: "10px",
-                    width: "100%",
-                    boxSizing: "border-box",
+                    maxWidth: "80%",
+                    margin: "auto",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    marginBottom: "100px",
                 }}
             >
+                <h2 style={textStyle}>{title}</h2>
+
                 <div
                     style={{
-                        maxWidth: "90%",
-                        margin: "auto",
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
+                        border: "1px solid #ccc",
+                        padding: "10px",
+                        marginBottom: "10px",
+                        width: "100%",
+                        boxSizing: "border-box",
                     }}
                 >
-                    <Typography variant="h5">Filtre</Typography>
-                </div>
-                {columnsFilter && columnsFilter.map((column) => (
-                    <TextField
-                        key={column.id}
-                        label={` ${column.label}`}
-                        variant="outlined"
-                        value={filters[column.id] || ""}
-                        onChange={(e) => handleFilterChange(e, column.id)}
-                        style={{ width: "220px", marginRight: "10px" }} 
-                    />
-                ))}
-                 <FormControl style={{ width: '250px' }}>
-                <InputLabel id="etat">Etat</InputLabel>
-  <Select
-    labelId="etat"
-    id="etat"
-   
-    label="Etat"
-    onChange={handleChangeSelect}
-    value={etats}
-  >
-    <MenuItem value={LIST_Etat_Etudiant.CLO.value}>{LIST_Etat_Etudiant.CLO.label}</MenuItem>
-    <MenuItem value={LIST_Etat_Etudiant.DIS.value}>{LIST_Etat_Etudiant.DIS.label}</MenuItem>
-  </Select>
-  
-  </FormControl>
-                
-                {/* {columns.map((column) => (
+                    <div
+                        style={{
+                            maxWidth: "90%",
+                            margin: "auto",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                        }}
+                    >
+                        <Typography variant="h5">Filtre</Typography>
+                    </div>
+                    {columnsFilter && columnsFilter.map((column) => (
+                        <TextField
+                            key={column.id}
+                            label={` ${column.label}`}
+                            variant="outlined"
+                            value={filters[column.id] || ""}
+                            onChange={(e) => handleFilterChange(e, column.id)}
+                            style={{ width: "220px", marginRight: "10px" }}
+                        />
+                    ))}
+                    <FormControl style={{ width: '250px' }}>
+                        <InputLabel id="etat">Etat</InputLabel>
+                        <Select
+                            labelId="etat"
+                            id="etat"
+
+                            label="Etat"
+                            onChange={handleChangeSelect}
+                            value={etats}
+                        >
+                            <MenuItem value={LIST_Etat_Etudiant.CLO.value}>{LIST_Etat_Etudiant.CLO.label}</MenuItem>
+                            <MenuItem value={LIST_Etat_Etudiant.DIS.value}>{LIST_Etat_Etudiant.DIS.label}</MenuItem>
+                        </Select>
+
+                    </FormControl>
+
+                    {/* {columns.map((column) => (
                     <TextField
                         key={column.id}
                         label={` ${column.label}`}
@@ -182,102 +203,119 @@ const ListComponent: React.FC<Props> = ({
                         style={{ marginRight: "10px" }}
                     />
                 ))} */}
-                
-            </div>
-            <TableContainer component={Paper}>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            {columns.map((column) => (
-                                <TableCell
-                                    style={{
-                                        fontWeight: "bold",
-                                        color: "white",
-                                    }}
-                                    key={column.id}
-                                >
-                                    {" "}
-                                    {column.label.toUpperCase()}
-                                </TableCell>
-                            ))}
-                            {actions && (
-                                <TableCell
-                                    style={{
-                                        fontWeight: "bold",
-                                        color: "white",
-                                    }}
-                                >
-                                    ACTIONS
-                                </TableCell>
-                            )}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {filteredData.map((row, rowIndex) => (
-                            <TableRow
-                                key={rowIndex}
-                                style={{
-                                    backgroundColor:
-                                        rowIndex % 2 === 0
-                                            ? "#fffff"
-                                            : "#f9f9f9",
-                                }}
-                            >
-                                {columns.map((column, colIndex) => (
-                                    <TableCell key={`${rowIndex}-${colIndex}`}>
-                                        {row[column.id]}
+
+                </div>
+                <TableContainer component={Paper}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                {columns.map((column) => (
+                                    <TableCell
+                                        style={{
+                                            fontWeight: "bold",
+                                            color: "white",
+                                        }}
+                                        key={column.id}
+                                    >
+                                        {" "}
+                                        {column.label.toUpperCase()}
                                     </TableCell>
                                 ))}
                                 {actions && (
-                                    <TableCell>
-                                         {answer && (
-                                                                            <IconButton
-                                                                                onClick={() => {
-                                                                                    setSelectedActions(
-                                                                                        LIST_ACTIONS_ETUDIANT.answer
-                                                                                    )
-                                                                                    updateSelectedRow(
-                                                                                        row
-                                                                                    )
-                                                                                    createHandler &&
-                                                                                        createHandler(
-                                                                                            row
-                                                                                        )
-                                                                                }}
-                                                                            >
-                                                                                <EditNoteIcon />
-                                                                            </IconButton>
-                                                                        )}
-                                        {read && (
-                                       <IconButton
-                                                                                onClick={() => {
-                                                                                    setSelectedActions(
-                                                                                        LIST_ACTIONS_ETUDIANT.read
-                                                                                    )
-                                                                                    updateSelectedRow(
-                                                                                        row
-                                                                                    )
-                                                                                    createHandler &&
-                                                                                        createHandler(
-                                                                                            row
-                                                                                        )
-                                                                                }}
-                                                                            >
-                                                                                <RemoveRedEye />
-                                                                            </IconButton>
-                                                                        )}
-                                      
-
-                                      
+                                    <TableCell
+                                        style={{
+                                            fontWeight: "bold",
+                                            color: "white",
+                                        }}
+                                    >
+                                        ACTIONS
                                     </TableCell>
                                 )}
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                        </TableHead>
+                        <TableBody>
+                            {filteredData.slice(startIndex, endIndex).map((row, rowIndex) => (
+                                <TableRow
+                                    key={rowIndex}
+                                    style={{
+                                        backgroundColor:
+                                            rowIndex % 2 === 0
+                                                ? "#fffff"
+                                                : "#f9f9f9",
+                                    }}
+                                >
+                                    {columns.map((column, colIndex) => (
+                                        <TableCell key={`${rowIndex}-${colIndex}`}>
+                                            {row[column.id]}
+                                        </TableCell>
+                                    ))}
+                                    {actions && (
+                                        <TableCell>
+                                            {answer && (
+                                                <IconButton
+                                                    onClick={() => {
+                                                        setSelectedActions(
+                                                            LIST_ACTIONS_ETUDIANT.answer
+                                                        )
+                                                        updateSelectedRow(
+                                                            row
+                                                        )
+                                                        createHandler &&
+                                                            createHandler(
+                                                                row
+                                                            )
+                                                    }}
+                                                >
+                                                    <EditNoteIcon />
+                                                </IconButton>
+                                            )}
+                                            {read && (
+                                                <IconButton
+                                                    onClick={() => {
+                                                        setSelectedActions(
+                                                            LIST_ACTIONS_ETUDIANT.read
+                                                        )
+                                                        updateSelectedRow(
+                                                            row
+                                                        )
+                                                        createHandler &&
+                                                            createHandler(
+                                                                row
+                                                            )
+                                                    }}
+                                                >
+                                                    <RemoveRedEye />
+                                                </IconButton>
+                                            )}
 
-          
+
+
+                                        </TableCell>
+                                    )}
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginRight: '180px', marginTop: '-60px' }}>
+                <TablePagination
+                    rowsPerPageOptions={[5, 10, 20]}
+                    component="div"
+                    count={filteredData.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                    labelRowsPerPage="Lignes par page :"
+                    labelDisplayedRows={({ from, to, count }) => `${from}-${to} sur ${count}`}
+                />
+
+            </div>
+
+
+
         </div>
     )
 }

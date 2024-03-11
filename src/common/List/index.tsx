@@ -34,6 +34,7 @@ import {
     MenuItem,
     FormControl,
     Tooltip,
+    TablePagination,
 } from "@mui/material"
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { Edit, Delete, Visibility, Send } from "@mui/icons-material"
@@ -51,7 +52,7 @@ interface Props {
     title: string
     columns: Column[]
     columnsFilter?: Column[]
-    indice: any[]
+    indice?: any[]
     data: any[]
     actions: boolean
     details?: boolean
@@ -67,6 +68,7 @@ interface Props {
     modifyElement?: ReactNode
     addElement?: ReactNode
     handleAdd?: (rowData: any) => void
+    afficherEtat?: boolean
 }
 
 const ListComponent: React.FC<Props> = ({
@@ -88,12 +90,32 @@ const ListComponent: React.FC<Props> = ({
     modifyHandler,
     soumettre,
     soumettreHandler,
-    columnsFilter
+    columnsFilter,
+    afficherEtat
 }) => {
     const [filters, setFilters] = useState<{ [key: string]: string }>({})
+
+    const [page, setPage] = useState(0); // État pour la pagination
+    const [rowsPerPage, setRowsPerPage] = useState(10); // État pour les lignes par page
     const { openModal, updateModalOpen, selectedRow, updateSelectedRow } =
         useContext(ListContext)
     const [selectedAction, setSelectedActions] = useState<any | null>(null)
+
+
+    // Fonction pour changer de page
+    const handleChangePage = (event: unknown, newPage: number) => {
+        setPage(newPage);
+    };
+
+    // Fonction pour changer le nombre de lignes par page
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
+
+    // Calcul de l'index de départ et de fin pour l'affichage des données selon la pagination
+    const startIndex = page * rowsPerPage;
+    const endIndex = startIndex + rowsPerPage;
 
     const handleFilterChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -129,213 +151,239 @@ const ListComponent: React.FC<Props> = ({
     }
 
     return (
-        <div
-            style={{
-                maxWidth: "80%",
-                margin: "auto",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                marginBottom: "100px",
-            }}
-        >
-            <h2 style={textStyle}>{title}</h2>
-
+        <div>
             <div
                 style={{
-                    border: "1px solid #ccc",
-                    padding: "10px",
-                    marginBottom: "10px",
-                    width: "100%",
-                    boxSizing: "border-box",
+                    maxWidth: "80%",
+                    margin: "auto",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    marginBottom: "100px",
                 }}
+
+
             >
+                <h2 style={textStyle}>{title}</h2>
+
                 <div
                     style={{
-                        maxWidth: "90%",
-                        margin: "auto",
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
+                        border: "1px solid #ccc",
+                        padding: "10px",
+                        marginBottom: "10px",
+                        width: "100%",
+                        boxSizing: "border-box",
                     }}
                 >
-                    <Typography variant="h5">Filtre</Typography>
-                </div>
-                {columnsFilter && columnsFilter.map((column) => (
-                    <TextField
-                        key={column.id}
-                        label={` ${column.label}`}
-                        variant="outlined"
-                        value={filters[column.id] || ""}
-                        onChange={(e) => handleFilterChange(e, column.id)}
-                        style={{ width: "220px", marginRight: "10px" }}
-                    />
-                ))}
-                <FormControl style={{ width: '250px' }}>
-                    <InputLabel id="etat">Etat</InputLabel>
-                    <Select
-                        labelId="etat"
-                        id="etat"
-
-                        label="Etat"
-                        onChange={handleChangeSelect}
-                        value={etats}
+                    <div
+                        style={{
+                            maxWidth: "90%",
+                            margin: "auto",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                        }}
                     >
+                        <Typography variant="h5">Filtre</Typography>
+                    </div>
+                    {afficherEtat && afficherEtat === true ? (
+                        <>
+                    {columnsFilter && columnsFilter.map((column) => (
+                        <TextField
+                            key={column.id}
+                            label={` ${column.label}`}
+                            variant="outlined"
+                            value={filters[column.id] || ""}
+                            onChange={(e) => handleFilterChange(e, column.id)}
+                            style={{ width: "220px", marginRight: "10px" }}
+                        />
+                    ))}
 
-                        <MenuItem value={LIST_Etat.ELA.value}>{LIST_Etat.ELA.label}</MenuItem>
-                        <MenuItem value={LIST_Etat.CLO.value}>{LIST_Etat.CLO.label}</MenuItem>
-                        <MenuItem value={LIST_Etat.DIS.value}>{LIST_Etat.DIS.label}</MenuItem>
-                        <MenuItem value="">{LIST_Etat.AN.label}</MenuItem>
-                    </Select>
-
-                </FormControl>
-
-                {/* {columns.map((column) => (
-                    <TextField
-                        key={column.id}
-                        label={` ${column.label}`}
-                        variant="outlined"
-                        value={filters[column.id] || ""}
-                        onChange={(e) => handleFilterChange(e, column.id)}
-                        style={{ marginRight: "10px" }}
-                    />
-                ))} */}
-
-            </div>
-            <TableContainer component={Paper}>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            {columns.map((column) => (
-                                <TableCell
-                                    style={{
-                                        fontWeight: "bold",
-                                        color: "white",
-                                    }}
-                                    key={column.id}
-                                >
-                                    {" "}
-                                    {column.label.toUpperCase()}
-                                </TableCell>
-                            ))}
-                            {actions && (
-                                <TableCell
-                                    style={{
-                                        fontWeight: "bold",
-                                        color: "white",
-                                    }}
-                                >
-                                    ACTIONS
-                                </TableCell>
-                            )}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {filteredData.map((row, rowIndex) => (
-                            <TableRow
-                                key={rowIndex}
-                                style={{
-                                    backgroundColor:
-                                        rowIndex % 2 === 0
-                                            ? "#fffff"
-                                            : "#f9f9f9",
-                                }}
+                   
+                        <FormControl style={{ width: '250px' }}>
+                            <InputLabel id="etat">Etat</InputLabel>
+                            <Select
+                                labelId="etat"
+                                id="etat"
+                                label="Etat"
+                                onChange={handleChangeSelect}
+                                value={etats}
                             >
-                              
-                                {columns.map((column, colIndex) => (
-                                    <TableCell key={`${rowIndex}-${colIndex}`}>
-                                        {colIndex === 0 ?  <Tooltip title={indice[rowIndex]}><div>{row[column.id]}</div></Tooltip>: row[column.id]}
+                                <MenuItem value={LIST_Etat.ELA.value}>{LIST_Etat.ELA.label}</MenuItem>
+                                <MenuItem value={LIST_Etat.CLO.value}>{LIST_Etat.CLO.label}</MenuItem>
+                                <MenuItem value={LIST_Etat.DIS.value}>{LIST_Etat.DIS.label}</MenuItem>
+                                <MenuItem value="">{LIST_Etat.AN.label}</MenuItem>
+                            </Select>
+                        </FormControl>
+                        </>
+                    ) : 
+<>
+                    {columns.map((column) => (
+                        <TextField
+                            key={column.id}
+                            label={` ${column.label}`}
+                            variant="outlined"
+                            value={filters[column.id] || ""}
+                            onChange={(e) => handleFilterChange(e, column.id)}
+                            style={{ marginRight: "10px" }}
+                        />
+                    ))}
+                    </>
+}
+
+                </div>
+
+                <TableContainer component={Paper}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                {columns.map((column) => (
+                                    <TableCell
+                                        style={{
+                                            fontWeight: "bold",
+                                            color: "white",
+                                        }}
+                                        key={column.id}
+                                    >
+                                        {" "}
+                                        {column.label.toUpperCase()}
                                     </TableCell>
                                 ))}
                                 {actions && (
-                                    <TableCell>
-                                        {row.createValue && (
-                                            <IconButton
-                                                onClick={() => {
-                                                    setSelectedActions(
-                                                        LIST_ACTIONS.create
-                                                    )
-                                                    updateSelectedRow(row)
-                                                    createHandler &&
-                                                        createHandler(row)
-                                                }}
-                                            >
-                                                <AddCircleIcon />
-                                            </IconButton>
-                                        )}
-                                        {row.detailsValue && (
-                                            <Tooltip title="Consulter le détails d'une évaluation">
+                                    <TableCell
+                                        style={{
+                                            fontWeight: "bold",
+                                            color: "white",
+                                        }}
+                                    >
+                                        ACTIONS
+                                    </TableCell>
+                                )}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {filteredData.slice(startIndex, endIndex).map((row, rowIndex) => (
+                                <TableRow
+                                    key={rowIndex}
+                                    style={{
+                                        backgroundColor:
+                                            rowIndex % 2 === 0
+                                                ? "#fffff"
+                                                : "#f9f9f9",
+                                    }}
+                                >
+
+                                    {columns.map((column, colIndex) => (
+                                        <TableCell key={`${rowIndex}-${colIndex}`}>
+                                            {colIndex === 0 ? <Tooltip title={indice && indice[rowIndex]}><div>{row[column.id]}</div></Tooltip> : row[column.id]}
+                                        </TableCell>
+                                    ))}
+                                    {actions && (
+                                        <TableCell>
+                                            {row.createValue && (
                                                 <IconButton
                                                     onClick={() => {
                                                         setSelectedActions(
-                                                            LIST_ACTIONS.read
+                                                            LIST_ACTIONS.create
                                                         )
                                                         updateSelectedRow(row)
-                                                        detailsHandler &&
-                                                            detailsHandler(row)
+                                                        createHandler &&
+                                                            createHandler(row)
                                                     }}
                                                 >
-                                                    <Visibility />
+                                                    <AddCircleIcon />
                                                 </IconButton>
-                                            </Tooltip>
-                                        )}
-                                        {modify && (
-                                            <>
-                                                <Tooltip title="Modifier une évaluation">
+                                            )}
+                                            {row.detailsValue && (
+                                                <Tooltip title="Consulter le détails d'une évaluation">
                                                     <IconButton
                                                         onClick={() => {
-                                                            modifyHandler &&
-                                                                modifyHandler(row)
                                                             setSelectedActions(
-                                                                LIST_ACTIONS.update
+                                                                LIST_ACTIONS.read
+                                                            )
+                                                            updateSelectedRow(row)
+                                                            detailsHandler &&
+                                                                detailsHandler(row)
+                                                        }}
+                                                    >
+                                                        <Visibility />
+                                                    </IconButton>
+                                                </Tooltip>
+                                            )}
+                                            {modify && (
+                                                <>
+                                                    <Tooltip title="Modifier une évaluation">
+                                                        <IconButton
+                                                            onClick={() => {
+                                                                modifyHandler &&
+                                                                    modifyHandler(row)
+                                                                setSelectedActions(
+                                                                    LIST_ACTIONS.update
+                                                                )
+                                                                updateModalOpen(true)
+                                                                updateSelectedRow(row)
+                                                            }}
+                                                        >
+                                                            <Edit />
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                </>
+                                            )}
+                                            {remove && (
+                                                <Tooltip title="Supprimer une évaluation">
+                                                    <IconButton
+                                                        onClick={() => {
+                                                            setSelectedActions(
+                                                                LIST_ACTIONS.delete
                                                             )
                                                             updateModalOpen(true)
                                                             updateSelectedRow(row)
                                                         }}
                                                     >
-                                                        <Edit />
+                                                        <Delete />
                                                     </IconButton>
                                                 </Tooltip>
-                                            </>
-                                        )}
-                                        {remove && (
-                                            <Tooltip title="Supprimer une évaluation">
-                                                <IconButton
-                                                    onClick={() => {
-                                                        setSelectedActions(
-                                                            LIST_ACTIONS.delete
-                                                        )
-                                                        updateModalOpen(true)
-                                                        updateSelectedRow(row)
-                                                    }}
-                                                >
-                                                    <Delete />
-                                                </IconButton>
-                                            </Tooltip>
-                                        )}
+                                            )}
 
-                                        {row.soumettreValue && (
-                                            <Tooltip title="Soumettre une évaluation">
-                                                <IconButton
-                                                    onClick={() => {
-                                                        setSelectedActions(
-                                                            LIST_ACTIONS.soumettre
-                                                        )
-                                                        updateModalOpen(true)
-                                                        updateSelectedRow(row)
-                                                    }}
-                                                >
-                                                    <Send />
-                                                </IconButton>
-                                            </Tooltip>
-                                        )}
-                                    </TableCell>
-                                )}
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                                            {row.soumettreValue && (
+                                                <Tooltip title="Soumettre une évaluation">
+                                                    <IconButton
+                                                        onClick={() => {
+                                                            setSelectedActions(
+                                                                LIST_ACTIONS.soumettre
+                                                            )
+                                                            updateModalOpen(true)
+                                                            updateSelectedRow(row)
+                                                        }}
+                                                    >
+                                                        <Send />
+                                                    </IconButton>
+                                                </Tooltip>
+                                            )}
+                                        </TableCell>
+                                    )}
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </div>
+
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginRight: '180px', marginTop: '-60px' }}>
+                <TablePagination
+                    rowsPerPageOptions={[5, 10, 20]}
+                    component="div"
+                    count={filteredData.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                    labelRowsPerPage="Lignes par page :"
+                    labelDisplayedRows={({ from, to, count }) => `${from}-${to} sur ${count}`}
+                />
+            </div>
+
 
             {selectedRow && actions && selectedAction && (
                 <Dialog
