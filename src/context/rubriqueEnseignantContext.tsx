@@ -4,9 +4,35 @@ import {
     Qualificatif,
     Question,
     questionsInRubrique,
+    Rubrique,
     RubriqueCompose,
 } from "../types"
 
+export const rubriqueStandardToRubriqueCompose = (
+    rubriques: Rubrique[]
+): RubriqueCompose[] => {
+    const rubriquesComposees: RubriqueCompose[] = rubriques.map((rubrique) => {
+        // Créer un objet RubriqueCompose à partir des données de Rubrique
+        const rubriqueComposee: RubriqueCompose = {
+            idRubrique: rubrique.id ? rubrique.id : 0, // Si l'ID n'est pas défini, mettre 0
+            designation: rubrique.designation,
+            ordre: rubrique.ordre,
+            questions: [], // Initialiser le tableau des questions à vide
+        }
+        return rubriqueComposee
+    })
+
+    return rubriquesComposees
+}
+
+export function extractDesignations(rubriques: RubriqueCompose[]): string[] {
+    return rubriques.map((rubrique) => rubrique.designation)
+}
+export function extractDesignationsFromStandard(
+    rubriques: Rubrique[]
+): string[] {
+    return rubriques.map((rubrique) => rubrique.designation)
+}
 export function convertirQuestionsInRubriqueEnQuestions(
     questionsInRubriqueArray: questionsInRubrique[]
 ): Question[] {
@@ -63,8 +89,7 @@ export function convertirQuestionsEnQuestionsInRubrique(
 export function elementsNonSelectionnees(liste1: any[], liste2: any[]) {
     // Utilisation de la méthode filter pour filtrer les éléments de liste2
     // qui ne sont pas présents dans liste1
-    console.log("liste1", liste1)
-    console.log("liste2", liste2)
+
     const elementsNonContenus = liste2.filter(
         (element) => !liste1.includes(element)
     )
@@ -81,21 +106,15 @@ export const RubriqueEnseignantContext = createContext<any>(null) // Vous pouvez
 
 export function findRubriqueByDesignation(
     rubriques: RubriqueCompose[],
-    designation: string
-): RubriqueCompose | undefined {
-    // Parcourir la liste de rubriques
-    for (const rubrique of rubriques) {
-        // Vérifier si la désignation correspond à celle fournie en entrée
-        if (rubrique.designation === designation) {
-            // Retourner l'objet de la liste de rubriques correspondant
-            return rubrique
-        }
-    }
+    designations: string[]
+): RubriqueCompose[] {
+    // Filtrer les rubriques dont la désignation correspond à l'une des désignations fournies
+    const rubriquesFiltrees: RubriqueCompose[] = rubriques.filter((rubrique) =>
+        designations.includes(rubrique.designation)
+    )
 
-    // Si aucune rubrique ne correspond à la désignation, retourner undefined
-    return undefined
+    return rubriquesFiltrees
 }
-
 // Composant rubriqueContextProvider
 export const RubriqueEnseignantContextProvider: React.FC<
     rubriqueContextProviderProps
@@ -103,9 +122,14 @@ export const RubriqueEnseignantContextProvider: React.FC<
     const [rubriqueAdded, setRubriqueAdded] = useState<RubriqueCompose[]>([])
     const [rubriqueSelectedEns, setRubriqueSelectedEns] =
         useState<RubriqueCompose>()
-
+    const [rubriqueSelected, setRubriqueSelected] = React.useState<Rubrique[]>(
+        []
+    )
     const updateRubriqueSelectedEns = useCallback((value: RubriqueCompose) => {
         setRubriqueSelectedEns(value)
+    }, [])
+    const updateRubriqueSelected = useCallback((value: Rubrique[]) => {
+        setRubriqueSelected(value)
     }, [])
     const updateRubriqueAdded = useCallback(
         (value: RubriqueCompose) => {
@@ -128,6 +152,8 @@ export const RubriqueEnseignantContextProvider: React.FC<
                 updateRubriqueAdded,
                 rubriqueAdded,
                 updateRubriqueAddedByList,
+                updateRubriqueSelected,
+                rubriqueSelected,
             }}
         >
             {children}
