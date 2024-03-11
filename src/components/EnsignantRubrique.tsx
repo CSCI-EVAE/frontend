@@ -6,6 +6,7 @@ import { QuestionContext } from "../context/questionContext"
 import { ListContext } from "../context/listContext"
 
 import { RubriqueComposeContext } from "../context/rubriqueComposeContext"
+
 import {
     RubriqueEnseignantContext,
     findRubriqueByDesignation,
@@ -13,6 +14,7 @@ import {
     convertirQuestionsEnQuestionsInRubrique,
     convertirQuestionsInRubriqueEnQuestions,
 } from "../context/rubriqueEnseignantContext"
+
 import { Question, RubriqueCompose, questionsInRubrique } from "../types"
 import CheckboxComponent from "../common/Checkbox"
 import { RubriqueContext } from "../context/rubriqueContext"
@@ -44,14 +46,21 @@ const EnseignantRubrique: React.FC<rubriqueComposeFormProps> = ({ add }) => {
 
     const getRubriqueListOptions = (
         liste1: RubriqueCompose[],
-        liste2: RubriqueCompose[]
+        liste2: RubriqueCompose[],
+        rubriqueAdded: RubriqueCompose[]
     ) => {
-        return elementsNonSelectionnees(liste1, liste2).map(
-            (rubriqueList: RubriqueCompose) => ({
+        return elementsNonSelectionnees(liste1, liste2)
+            .filter(
+                (rubrique: RubriqueCompose) =>
+                    !rubriqueAdded.some(
+                        (addedRubrique: RubriqueCompose) =>
+                            addedRubrique.designation === rubrique.designation
+                    )
+            )
+            .map((rubriqueList: RubriqueCompose) => ({
                 label: `${rubriqueList.designation}`,
                 value: `${rubriqueList.designation}`,
-            })
-        )
+            }))
     }
     const getQuestionsListOptions = (liste1: Question[]) => {
         return liste1.map((question: Question) => ({
@@ -61,7 +70,11 @@ const EnseignantRubrique: React.FC<rubriqueComposeFormProps> = ({ add }) => {
     }
     useEffect(() => {
         setRubriqueListOptions(
-            getRubriqueListOptions(rubriqueAdded, rubriqueComposeList)
+            getRubriqueListOptions(
+                rubriqueAdded,
+                rubriqueComposeList,
+                rubriqueAdded
+            )
         )
     }, [
         rubriqueAdded,
