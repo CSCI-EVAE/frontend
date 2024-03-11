@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from "react"
 import { Box, Typography } from "@mui/material"
-import Select from "../common/Select"
 import ButtonComponent from "../common/Button"
 import { QuestionContext } from "../context/questionContext"
 
 import { ListContext } from "../context/listContext"
 
 import { RubriqueComposeContext } from "../context/rubriqueComposeContext"
+
 import {
     RubriqueEnseignantContext,
     findRubriqueByDesignation,
@@ -14,7 +14,10 @@ import {
     convertirQuestionsEnQuestionsInRubrique,
     convertirQuestionsInRubriqueEnQuestions,
 } from "../context/rubriqueEnseignantContext"
+
 import { Question, RubriqueCompose, questionsInRubrique } from "../types"
+import CheckboxComponent from "../common/Checkbox"
+import { RubriqueContext } from "../context/rubriqueContext"
 interface rubriqueComposeFormProps {
     add: boolean
 }
@@ -22,15 +25,13 @@ interface rubriqueComposeFormProps {
 const EnseignantRubrique: React.FC<rubriqueComposeFormProps> = ({ add }) => {
     const { questionListe } = useContext(QuestionContext)
     const { rubriqueComposeList } = useContext(RubriqueComposeContext)
-    const {
-        updateRubriqueAdded,
-        rubriqueAdded,
-        updateRubriqueAddedByList,
-        rubriqueSelectedEns,
-    } = useContext(RubriqueEnseignantContext)
+    const { rubriqueList } = useContext(RubriqueContext)
+
+    const { rubriqueAdded, updateRubriqueAddedByList, rubriqueSelectedEns } =
+        useContext(RubriqueEnseignantContext)
 
     const [selectedRubriqueCompose, setSelectedRubriqueCompose] =
-        React.useState<string>("")
+        React.useState<string[]>([])
     const [
         selectedQuestionInRubriqueCompose,
         setSelectedQuestionInRubriqueCompose,
@@ -45,14 +46,21 @@ const EnseignantRubrique: React.FC<rubriqueComposeFormProps> = ({ add }) => {
 
     const getRubriqueListOptions = (
         liste1: RubriqueCompose[],
-        liste2: RubriqueCompose[]
+        liste2: RubriqueCompose[],
+        rubriqueAdded: RubriqueCompose[]
     ) => {
-        return elementsNonSelectionnees(liste1, liste2).map(
-            (rubriqueList: RubriqueCompose) => ({
+        return elementsNonSelectionnees(liste1, liste2)
+            .filter(
+                (rubrique: RubriqueCompose) =>
+                    !rubriqueAdded.some(
+                        (addedRubrique: RubriqueCompose) =>
+                            addedRubrique.designation === rubrique.designation
+                    )
+            )
+            .map((rubriqueList: RubriqueCompose) => ({
                 label: `${rubriqueList.designation}`,
                 value: `${rubriqueList.designation}`,
-            })
-        )
+            }))
     }
     const getQuestionsListOptions = (liste1: Question[]) => {
         return liste1.map((question: Question) => ({
@@ -62,9 +70,18 @@ const EnseignantRubrique: React.FC<rubriqueComposeFormProps> = ({ add }) => {
     }
     useEffect(() => {
         setRubriqueListOptions(
-            getRubriqueListOptions(rubriqueAdded, rubriqueComposeList)
+            getRubriqueListOptions(
+                rubriqueAdded,
+                rubriqueComposeList,
+                rubriqueAdded
+            )
         )
-    }, [rubriqueAdded, selectedRubriqueCompose, rubriqueComposeList])
+    }, [
+        rubriqueAdded,
+        selectedRubriqueCompose,
+        rubriqueComposeList,
+        rubriqueList,
+    ])
 
     useEffect(() => {
         if (rubriqueSelectedEns) {
@@ -96,12 +113,11 @@ const EnseignantRubrique: React.FC<rubriqueComposeFormProps> = ({ add }) => {
         e.preventDefault()
 
         if (add === true) {
-            updateRubriqueAdded(
-                findRubriqueByDesignation(
-                    rubriqueComposeList,
-                    selectedRubriqueCompose
-                )
+            const rubriquesCompose = findRubriqueByDesignation(
+                rubriqueComposeList,
+                selectedRubriqueCompose
             )
+            updateRubriqueAddedByList([...rubriqueAdded, ...rubriquesCompose])
         } else {
             let newQuestions: Question[] = questionListe.filter(
                 (element: Question) =>
@@ -125,7 +141,6 @@ const EnseignantRubrique: React.FC<rubriqueComposeFormProps> = ({ add }) => {
             )
 
             NewList.push(newRubrique)
-            console.log("newl", NewList)
             updateRubriqueAddedByList(NewList)
         }
 
@@ -157,21 +172,19 @@ const EnseignantRubrique: React.FC<rubriqueComposeFormProps> = ({ add }) => {
             </Typography>
             {add ? (
                 <Box sx={{ display: "flex", gap: "1rem" }}>
-                    <Select
+                    <CheckboxComponent
                         label="Choisissez la Rubrique"
                         options={rubriqueListOptions}
                         value={selectedRubriqueCompose}
                         onChange={(value) =>
-                            setSelectedRubriqueCompose(value as string)
+                            setSelectedRubriqueCompose(value as string[])
                         }
-                        required
-                        multiple={false}
                         sx={{ width: "50%" }} // Ajustez la largeur comme vous le souhaitez
                     />
                 </Box>
             ) : (
                 <Box sx={{ display: "flex", gap: "1rem" }}>
-                    <Select
+                    <CheckboxComponent
                         label="Choiissiez les questions"
                         options={questionsListOptions}
                         value={selectedQuestionInRubriqueCompose}
@@ -180,8 +193,8 @@ const EnseignantRubrique: React.FC<rubriqueComposeFormProps> = ({ add }) => {
                                 value as string[]
                             )
                         }
-                        required
-                        multiple={true}
+                        //required
+                        // multiple={true}
                         sx={{ width: "50%" }} // Ajustez la largeur comme vous le souhaitez
                     />
                 </Box>

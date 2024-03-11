@@ -25,7 +25,7 @@ import AjoutQuestionEvaluation from "./AjoutQuestionEvaluation"
 import Header from "../../Layout/Header"
 import { RubriqueCompose, questionsInRubrique } from "../../types"
 import SideBarEnseignant from "../../Layout/sideBar/SideBarEnseignant"
-import RubriqueComposeAdd from "../../components/RubriqueComposeAdd"
+import EnseignantAddRubriqueStandard from "../../components/EnseignantAddRubriqueStandard"
 
 const AjoutRubriqueEvaluation = () => {
     const {
@@ -33,6 +33,7 @@ const AjoutRubriqueEvaluation = () => {
         rubriqueSelectedEns,
         updateRubriqueSelectedEns,
         updateRubriqueAddedByList,
+        updateRubriqueSelected,
     } = useContext(RubriqueEnseignantContext)
 
     const [dataset, setDataset] = useState<RubriqueCompose[]>(rubriqueAdded)
@@ -89,6 +90,7 @@ const AjoutRubriqueEvaluation = () => {
 
     const handleSubmit = () => {
         localStorage.getItem("formData")
+        updateRubriqueSelected([])
     }
 
     return (
@@ -120,7 +122,7 @@ const AjoutRubriqueEvaluation = () => {
                             updateSelectedRow({})
                         }}
                     >
-                        <AddCircleIcon /> Ajouter une Rubrique Standard
+                        <AddCircleIcon /> Ajouter une Rubrique Composée
                     </ListItemIcon>
                 </ListItemButton>
                 <ListItemButton
@@ -138,7 +140,7 @@ const AjoutRubriqueEvaluation = () => {
                             updateSelectedRow({})
                         }}
                     >
-                        <AddCircleIcon /> Ajouter une Rubrique Composée
+                        <AddCircleIcon /> Ajouter une Rubrique Standard
                     </ListItemIcon>
                 </ListItemButton>
                 <DragDropContext onDragEnd={onDragEnd}>
@@ -286,7 +288,7 @@ const AjoutRubriqueEvaluation = () => {
                     >
                         {selectedAction ===
                             LIST_ACTIONS.addRubriqueStandard && (
-                            <RubriqueComposeAdd add={true} />
+                            <EnseignantAddRubriqueStandard />
                         )}
                         {selectedAction === LIST_ACTIONS.add && (
                             <EnseignantRubrique add={true} />
