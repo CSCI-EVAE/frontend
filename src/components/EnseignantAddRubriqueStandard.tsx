@@ -4,7 +4,7 @@ import ButtonComponent from "../common/Button"
 
 import { ListContext } from "../context/listContext"
 import { RubriqueContext } from "../context/rubriqueContext"
-import { Rubrique } from "../types"
+import { Rubrique, RubriqueCompose } from "../types"
 import CheckboxComponent from "../common/Checkbox"
 import {
     RubriqueEnseignantContext,
@@ -28,11 +28,14 @@ const EnseignantAddRubriqueStandard = () => {
     const [selectedRubriqueStandardList, setSelectedRubriqueStandardList] =
         React.useState<string[]>([])
 
-    // setSelectedRubriqueCompose(rubriqueCompose.designation);
     const { updateModalOpen } = useContext(ListContext)
 
     React.useEffect(() => {
-        const newDataset = getRubriqueListe(rubriqueSelected, rubriqueList)
+        const newDataset = getRubriqueListe(
+            rubriqueSelected,
+            rubriqueList,
+            rubriqueAdded
+        )
 
         setDataset(newDataset)
     }, [rubriqueAdded, rubriqueSelected, rubriqueList])
@@ -57,15 +60,23 @@ const EnseignantAddRubriqueStandard = () => {
         updateModalOpen(false)
     }
 
-    const getRubriqueListe = (liste1: Rubrique[], liste2: Rubrique[]) => {
-        return elementsNonSelectionnees(liste1, liste2).map(
-            (rubriqueList: Rubrique) => ({
+    const getRubriqueListe = (
+        liste1: Rubrique[],
+        liste2: Rubrique[],
+        rubriqueAdded: RubriqueCompose[]
+    ) => {
+        return elementsNonSelectionnees(liste1, liste2)
+            .filter(
+                (rubrique: Rubrique) =>
+                    !rubriqueAdded.some(
+                        (addedRubrique: RubriqueCompose) =>
+                            addedRubrique.designation === rubrique.designation
+                    )
+            )
+            .map((rubriqueList: Rubrique) => ({
                 label: `${rubriqueList.designation}`,
                 value: `${rubriqueList.designation}`,
-                //idLabel: "ID qualificatif",
-                //idValue: qualificatif.id
-            })
-        )
+            }))
     }
 
     return (
