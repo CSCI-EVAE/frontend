@@ -1,20 +1,4 @@
-// @title  : titre de la liste
-// @columns : Objet qui représente les titres des colonnes du tableau  sous la forme :  ({id : "", label:""})
-// @data : les données du Tableau, il doit contenir les id exacts de columns [{id : ""},{id : ""}]
-// @actions : boolean, à true, on affiche les actions du Tableau
-// @details : boolean : si à true, on affiche le bouton voir
-// @modify : boolean : si à true, on affiche le bouton modifier
-// @details : boolean : si à true, on affiche le bouton voir
-// @remove : boolean : si à true, on affiche le bouton supprimer
-// @create : boolean : si à true, on affiche le bouton ajout sur la ligne
-// @detailsHandler :
-// @modifyHandler :fonction à passer dans le composant parent  pour gérer la logique de modifier
-// deleteHandler à passer dans le composant parent  pour gérer la logique de détails
-// modifyHandler à passer dans le composant parent  pour gérer la logique de détails
-// addElement : composant à afficher pour l'ajout
-// modifyElement?: ReactNode : composant à afficher pour la modification
-
-import React, { ReactNode, useContext, useState } from "react"
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import {
     Table,
     TableBody,
@@ -29,34 +13,36 @@ import {
     InputLabel,
     MenuItem,
     FormControl,
-} from "@mui/material"
+} from "@mui/material";
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import {  RemoveRedEye } from "@mui/icons-material"
-import { ListContext } from "../../context/listContext"
+import { RemoveRedEye } from "@mui/icons-material";
+import { ListContext } from "../../context/listContext";
 import EditNoteIcon from '@mui/icons-material/EditNote';
-import { LIST_ACTIONS_ETUDIANT , LIST_Etat_Etudiant } from "../../constants"
+import { LIST_Etat_Etudiant } from "../../constants";
+import { AdjustColumns } from "../../context/evaluationEtudiantContext";
 
 interface Column {
-    id: string
-    label: string
+    id: string;
+    label: string;
 }
+
 interface Props {
-    title: string
-    columns: Column[]
-    columnsFilter?: Column[]
-    data: any[]
-    actions: boolean
-    details?: boolean
-    read?: boolean
-    answer?: boolean
-    detailsHandler?: (rowData: any) => void
-    modifyHandler?: (rowData: any) => void
-    deleteHandler?: (rowData: any) => void
-    createHandler?: (rowData: any) => void
-    soumettreHandler?: (rowData: any) => void
-    modifyElement?: ReactNode
-    addElement?: ReactNode
-    handleAdd?: (rowData: any) => void
+    title: string;
+    columns: Column[];
+    columnsFilter?: Column[];
+    data: any[];
+    actions: boolean;
+    details?: boolean;
+    filterreades?: { [key: string]: boolean }; 
+    filteransweres?: { [key: string]: boolean }; 
+    detailsHandler?: (rowData: any) => void;
+    modifyHandler?: (rowData: any) => void;
+    deleteHandler?: (rowData: any) => void;
+    createHandler?: (rowData: any) => void;
+    soumettreHandler?: (rowData: any) => void;
+    modifyElement?: React.ReactNode;
+    addElement?: React.ReactNode;
+    handleAdd?: (rowData: any) => void;
 }
 
 const ListComponent: React.FC<Props> = ({
@@ -64,54 +50,56 @@ const ListComponent: React.FC<Props> = ({
     columns,
     data,
     actions,
+    filterreades,
+    filteransweres,
     createHandler,
-    read,
-    answer,
-   
     columnsFilter
 }) => {
-    const [filters, setFilters] = useState<{ [key: string]: string }>({})
-    const {updateSelectedRow } =
-        useContext(ListContext)
-    const [selectedAction, setSelectedActions] = useState<any | null>(null)
-
-    console.log(selectedAction);
+    const [filters, setFilters] = useState<{ [key: string]: string }>({});
+    const { updateSelectedRow } = useContext(ListContext);
+   // const [selectedAction, setSelectedActions] = useState<any | null>(null);
+    const [etats, setEtats] = useState('');
+    const [filterread, setFilterreads] = useState<{ [key: string]: boolean }>(filterreades || {}); 
+    const [filteranswer, setFilteranswers] = useState<{ [key: string]: boolean}>(filteransweres || {}); 
+  //  console.log("The value from etudiant list "+JSON.stringify(filterread,null))
+    console.log("The value from etudiant list answ "+JSON.stringify(filteransweres,null))
 
     const handleFilterChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
         columnId: string
     ) => {
-        console.log("id", columnId)
-        setFilters({ ...filters, [columnId]: e.target.value })
-    }
-  
-    const [etats, setEtats] = React.useState('');
+        setFilters({ ...filters, [columnId]: e.target.value });
+    };
 
     const handleChangeSelect = (event: SelectChangeEvent) => {
         const newValue = event.target.value;
         setEtats(newValue);
-        console.log("This is etat " + newValue);
-        setFilters({...filters, etat: newValue});
-      };
-      
+        setFilters({ ...filters, etat: newValue });
+    };
+    const filteredData = useMemo(() => {
+        return AdjustColumns(data).filter((row: any) => {
+            return Object.entries(filters).every(([columnId, filter]) => {
+                return String(row[columnId])
+                    .toLowerCase()
+                    .includes(filter.toLowerCase());
+            });
+        });
+    }, [data, filters]);
 
-     // setFilters({...filters, ["etat"] : etats});
 
-
-    const filteredData = data.filter((row: any) => {
-        return Object.entries(filters).every(([columnId, filter]) => {
-            return String(row[columnId])
-                .toLowerCase()
-                .includes(filter.toLowerCase())
-        })
-    })
+    useEffect(() => {
+        const filteredReadStatus: { [key: string]: boolean } = {};
+        const filteredAnswersStatus: { [key: string]: boolean } = {};
+        filteredData.forEach((evaluation) => {
+            filteredReadStatus[evaluation.noEvaluation] = evaluation.readStatus;
+            filteredAnswersStatus[evaluation.noEvaluation] = evaluation.answerStatus;
+                     
+        });
+        setFilterreads(filteredReadStatus); 
+        setFilteranswers(filteredAnswersStatus); 
+    }, [filteredData]);
  
-    const textStyle: React.CSSProperties = {
-        fontFamily: "cursive",
-        color: "#e3a12f",
-        marginTop: "20px",
-        marginBottom: "50px",
-    }
+   // console.log("This is value of read "+JSON.stringify(setReads,null))
 
     return (
         <div
@@ -124,7 +112,7 @@ const ListComponent: React.FC<Props> = ({
                 marginBottom: "100px",
             }}
         >
-            <h2 style={textStyle}>{title}</h2>
+            <h2 style={{ fontFamily: "cursive", color: "#e3a12f", marginTop: "20px", marginBottom: "50px" }}>{title}</h2>
 
             <div
                 style={{
@@ -153,36 +141,24 @@ const ListComponent: React.FC<Props> = ({
                         variant="outlined"
                         value={filters[column.id] || ""}
                         onChange={(e) => handleFilterChange(e, column.id)}
-                        style={{ width: "220px", marginRight: "10px" }} 
+                        style={{ width: "220px", marginRight: "10px" }}
                     />
                 ))}
-                 <FormControl style={{ width: '250px' }}>
-                <InputLabel id="etat">Etat</InputLabel>
-  <Select
-    labelId="etat"
-    id="etat"
-   
-    label="Etat"
-    onChange={handleChangeSelect}
-    value={etats}
-  >
-    <MenuItem value={LIST_Etat_Etudiant.CLO.value}>{LIST_Etat_Etudiant.CLO.label}</MenuItem>
-    <MenuItem value={LIST_Etat_Etudiant.DIS.value}>{LIST_Etat_Etudiant.DIS.label}</MenuItem>
-  </Select>
-  
-  </FormControl>
-                
-                {/* {columns.map((column) => (
-                    <TextField
-                        key={column.id}
-                        label={` ${column.label}`}
-                        variant="outlined"
-                        value={filters[column.id] || ""}
-                        onChange={(e) => handleFilterChange(e, column.id)}
-                        style={{ marginRight: "10px" }}
-                    />
-                ))} */}
-                
+                <FormControl style={{ width: '250px' }}>
+                    <InputLabel id="etat">Etat</InputLabel>
+                    <Select
+                        labelId="etat"
+                        id="etat"
+                        label="Etat"
+                        onChange={handleChangeSelect}
+                        value={etats}
+                    >
+                        <MenuItem value={LIST_Etat_Etudiant.CLO.value}>{LIST_Etat_Etudiant.CLO.label}</MenuItem>
+                        <MenuItem value={LIST_Etat_Etudiant.DIS.value}>{LIST_Etat_Etudiant.DIS.label}</MenuItem>
+                    </Select>
+
+                </FormControl>
+
             </div>
             <TableContainer component={Paper}>
                 <Table>
@@ -196,7 +172,6 @@ const ListComponent: React.FC<Props> = ({
                                     }}
                                     key={column.id}
                                 >
-                                    {" "}
                                     {column.label.toUpperCase()}
                                 </TableCell>
                             ))}
@@ -218,9 +193,7 @@ const ListComponent: React.FC<Props> = ({
                                 key={rowIndex}
                                 style={{
                                     backgroundColor:
-                                        rowIndex % 2 === 0
-                                            ? "#fffff"
-                                            : "#f9f9f9",
+                                        rowIndex % 2 === 0 ? "#fffff" : "#f9f9f9",
                                 }}
                             >
                                 {columns.map((column, colIndex) => (
@@ -228,58 +201,47 @@ const ListComponent: React.FC<Props> = ({
                                         {row[column.id]}
                                     </TableCell>
                                 ))}
-                                {actions && (
-                                    <TableCell>
-                                         {answer && (
-                                                                            <IconButton
-                                                                                onClick={() => {
-                                                                                    setSelectedActions(
-                                                                                        LIST_ACTIONS_ETUDIANT.answer
-                                                                                    )
-                                                                                    updateSelectedRow(
-                                                                                        row
-                                                                                    )
-                                                                                    createHandler &&
-                                                                                        createHandler(
-                                                                                            row
-                                                                                        )
-                                                                                }}
-                                                                            >
-                                                                                <EditNoteIcon />
-                                                                            </IconButton>
-                                                                        )}
-                                        {read && (
-                                       <IconButton
-                                                                                onClick={() => {
-                                                                                    setSelectedActions(
-                                                                                        LIST_ACTIONS_ETUDIANT.read
-                                                                                    )
-                                                                                    updateSelectedRow(
-                                                                                        row
-                                                                                    )
-                                                                                    createHandler &&
-                                                                                        createHandler(
-                                                                                            row
-                                                                                        )
-                                                                                }}
-                                                                            >
-                                                                                <RemoveRedEye />
-                                                                            </IconButton>
-                                                                        )}
-                                      
+                            
+                            <TableCell>
+                            {filterread?.[row.noEvaluation] === true && (
+    <IconButton
+        onClick={() => {
+           // setSelectedActions(LIST_ACTIONS_ETUDIANT.read);
+            updateSelectedRow(row);
+            createHandler && createHandler(row);
+            console.log("The result "+filterread[row.noEvaluation] )
+        }}
+    >
+        <RemoveRedEye />
+    </IconButton>
+)}
+{filteranswer?.[row.noEvaluation] === true && (
+    <IconButton
+        onClick={() => {
+           // setSelectedActions(LIST_ACTIONS_ETUDIANT.answer);
+            updateSelectedRow(row);
+            createHandler && createHandler(row);
+            console.log("The result answer "+filteranswer[row.noEvaluation] )
+        }}
+    >
+        <EditNoteIcon />
+    </IconButton>
+)}
 
-                                      
-                                    </TableCell>
-                                )}
+</TableCell>
+
+
+
+
+
+
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
             </TableContainer>
-
-          
         </div>
-    )
-}
+    );
+};
 
-export default ListComponent
+export default ListComponent;

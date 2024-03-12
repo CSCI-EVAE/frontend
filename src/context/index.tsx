@@ -14,6 +14,8 @@ import { UEContextProvider } from "./UeContext"
 import {  EvaluationContextProvider } from "./evaluationEtudiantContext"
 import { ROLE } from "../constants"
 import { userInfos } from "../utils/authUtils"
+import { EtudiantListContextPorvider } from "./etudiantListContext"
+import { EtudiantEnseignantContextProvider } from "./ListEtudiantsEnseignantContext"
 
 
 
@@ -38,9 +40,11 @@ export const GlobalContextProvider: React.FC<{ children: ReactNode }> = ({
                                     <SoumettreEvaluationContextProvider>
                                         <UEContextProvider>
                                             <StepContextProvider>
+                                            <EtudiantEnseignantContextProvider>
                                                 <GlobalContext.Provider value={{}}>
                                                     {children}
                                                 </GlobalContext.Provider>
+                                                </EtudiantEnseignantContextProvider>
                                             </StepContextProvider>
                                         </UEContextProvider>
                                     </SoumettreEvaluationContextProvider>
@@ -61,9 +65,11 @@ export const GlobalContextProvider: React.FC<{ children: ReactNode }> = ({
                                 <RubriqueEnseignantContextProvider>
                                     <SoumettreEvaluationContextProvider>
                                         <StepContextProvider>
+                                          <EtudiantListContextPorvider>
                                             <GlobalContext.Provider value={{}}>
                                                 {children}
                                             </GlobalContext.Provider>
+                                            </EtudiantListContextPorvider>
                                         </StepContextProvider>
                                     </SoumettreEvaluationContextProvider>
                                 </RubriqueEnseignantContextProvider>

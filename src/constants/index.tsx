@@ -3,6 +3,8 @@ import WidgetsIcon from "@mui/icons-material/Widgets"
 import AccountTreeIcon from "@mui/icons-material/AccountTree"
 import AllOutIcon from "@mui/icons-material/AllOut"
 import AltRouteIcon from "@mui/icons-material/AltRoute"
+import { VerifiedUserSharp } from "@mui/icons-material"
+// import { UNSAFE_useRouteId } from "react-router-dom"
 
 export const API_URL = "http://localhost:8080/api/v1"
 
@@ -94,6 +96,19 @@ export const UE_COLUMNS_FILTER_Etudiant= [
 ]
 
 
+
+export const UE_COLUMNS_LISTEtudiant= [
+    { id: "noEtudiant", label: "numero Etudiant" },
+    { id: "promotion", label: "promotion" },
+    { id: "nom", label: "nom" },
+    { id: "prenom", label: "prenom" },
+    { id: "datenaissance", label: "date naissance" },
+    { id: "nationalite", label: "nationalite" },
+    { id: "telephone", label: "telephone" },
+    { id: "email", label: "email" },
+]
+
+
 export const TYPE_STANDARD = {
     question_standard: "QUS",
     rubrique_standard: "RBS",
@@ -136,6 +151,12 @@ export const ADMIN_DASHBOARD: Dashboard[] = [
         icon: <AccountTreeIcon />,
         title: "Rubriques Composées",
         link: "/dashboard/rubriquecompose",
+    },
+    {
+        id: 6,
+        icon: <VerifiedUserSharp />,
+        title: "Etudiants",
+        link: "/dashboard/etudiantList",
     },
 ]
 
@@ -180,6 +201,11 @@ export const Enseignant_DASHBOARD: Dashboard[] = [
         title: "Rubrique Evaluation",
         link: "/dashboard/enseignant/rubrique-evaluation",
     },
-   
-   
+
+    {
+        id: 3,
+        icon: <VerifiedUserSharp />,
+        title: "liste des etudiants",
+        link: "/dashboard/enseignant/listEtudiants",
+    },
 ];

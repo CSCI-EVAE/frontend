@@ -27,6 +27,8 @@ import Notification from "../common/Notification"
 import { GlobalContextProvider } from "../context"
 import BigMenu from "../pages/Enseignant"
 import EvaluationPage from "../pages/Etudiant/evaluation"
+import EtudiantListPage from "../pages/Admin/etudiantList"
+import ListEtudiantPage from "../pages/Enseignant/listEtudiants"
 
 const Dashboard: React.FC = () => {
     // const role = Object.keys(ROLE_COMPONENTS).find(hasRole);
@@ -51,13 +53,12 @@ const Dashboard: React.FC = () => {
                                 path="/reponse"
                                 element={<ReponseEvaluation />}
                             />
-                             <Route
+                             {/* <Route
                                 path="/evaluations"
                                 element={<EvaluationPage />}
-                            />
+                            /> */}
                         </>
                     )}
-                    {/* //METTRE TOUTES LES PAGES ADMIN ICI */}
 
                     {role === ROLE.admin && (
                         <>
@@ -66,6 +67,12 @@ const Dashboard: React.FC = () => {
                                 path="/qualificatif"
                                 element={<Qualificatif />}
                             />
+                            <Route
+                                path="/etudiantList"
+                                element={<EtudiantListPage />}
+                            />
+
+
                            
 
                             <Route path="/questions" element={<Question />} />
@@ -109,6 +116,10 @@ const Dashboard: React.FC = () => {
                             <Route
                                 path="enseignant/test"
                                 element={<CreerEvaluation />}
+                            />
+                             <Route
+                                path="enseignant/listEtudiants"
+                                element={<ListEtudiantPage />}
                             />
                         </>
                     )}

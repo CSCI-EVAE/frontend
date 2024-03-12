@@ -103,7 +103,6 @@ const ListComponent: React.FC<Props> = ({
         const [reorderedItem] = newItems.splice(result.source.index, 1)
         newItems.splice(result.destination.index, 0, reorderedItem)
 
-        // Mise à jour de l'ordre de chaque élément
         newItems.forEach((item, index) => {
             item.order = index + 1
             if (item.ordre) {
