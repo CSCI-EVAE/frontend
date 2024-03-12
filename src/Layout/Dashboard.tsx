@@ -28,6 +28,8 @@ import EvaluationPage from "../pages/Etudiant/evaluation"
 import Enseignant from "../pages/Enseignant"
 import Promotion from "../pages/Admin/promotion"
 import PromotionPageEnseignant from "../pages/Enseignant/promotion"
+import CreerEtudiant from "../components/CreerEtudiant"
+import ModifierEtudiant from "../components/ModifierEtudiant"
 
 const Dashboard: React.FC = () => {
     // const role = Object.keys(ROLE_COMPONENTS).find(hasRole);
@@ -65,6 +67,14 @@ const Dashboard: React.FC = () => {
 
                         {role === ROLE.admin && (
                             <>
+                                <Route
+                                    path="/creer-etudiant"
+                                    element={<CreerEtudiant />}
+                                />
+                                <Route
+                                    path="/modifier-etudiant"
+                                    element={<ModifierEtudiant />}
+                                />
                                 <Route path="/admin" element={<Admin />} />
                                 <Route
                                     path="/qualificatif"
@@ -81,8 +91,7 @@ const Dashboard: React.FC = () => {
                                     element={<Promotion />}
                                 />
 
-
-                        <Route
+                                <Route
                                     path="/rubrique"
                                     element={<RubriquePage />}
                                 />
@@ -99,32 +108,38 @@ const Dashboard: React.FC = () => {
                         {/* //METTRE TOUTES LES PAGES ENSEIGNANT ICI */}
 
                         {role === ROLE.enseigannt && (
-                           <>
-                           <Route path="/enseignant" element={<Enseignant />} />
+                            <>
+                                <Route
+                                    path="/enseignant"
+                                    element={<Enseignant />}
+                                />
 
-                           <Route path="/enseignant/unitésEnseignement" element={<UePage />} />
-                           <Route
-                               path="enseignant/rubrique-evaluation"
-                               element={<AjoutRubriqueEvaluation />}
-                           />
-                            <Route
-                               path="enseignant/promotion"
-                               element={<PromotionPageEnseignant />}
-                           />
+                                <Route
+                                    path="/enseignant/unitésEnseignement"
+                                    element={<UePage />}
+                                />
+                                <Route
+                                    path="enseignant/rubrique-evaluation"
+                                    element={<AjoutRubriqueEvaluation />}
+                                />
+                                <Route
+                                    path="enseignant/promotion"
+                                    element={<PromotionPageEnseignant />}
+                                />
 
-                           <Route
-                               path="enseignant/evaluation-details/:id_eva"
-                               element={<DetailsEvaluationPage />}
-                           />
-                           <Route
-                               path="enseignant/unitésEnseignement/creation-evaluation"
-                               element={<InfoGeneralesPage />}
-                           />
-                           <Route
-                               path="enseignant/test"
-                               element={<CreerEvaluation />}
-                           />
-                       </>
+                                <Route
+                                    path="enseignant/evaluation-details/:id_eva"
+                                    element={<DetailsEvaluationPage />}
+                                />
+                                <Route
+                                    path="enseignant/unitésEnseignement/creation-evaluation"
+                                    element={<InfoGeneralesPage />}
+                                />
+                                <Route
+                                    path="enseignant/test"
+                                    element={<CreerEvaluation />}
+                                />
+                            </>
                         )}
 
                         <Route path="/404" element={<Page404 />} />

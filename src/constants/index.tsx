@@ -42,12 +42,9 @@ export const LIST_Etat = {
         label: "Cloturé",
     },
     AN: {
-        value:"Tous",
-        label: "Tous"
-    }
-    
-    
-
+        value: "Tous",
+        label: "Tous",
+    },
 }
 export const LIST_Etat_Etudiant = {
     DIS: {
@@ -79,7 +76,7 @@ export const RUBRIQUE_COLUMNS = [
 export const PROMOTION_ADMIN_COLUMNS = [
     { id: "codeFormation", label: "Code Formation" },
     { id: "anneeUniversitaire", label: "Année Universitaire" },
-    { id: "siglePromotion", label:"Sigle Promotion"}  
+    { id: "siglePromotion", label: "Sigle Promotion" },
 ]
 
 export const Evalution_Etudiant_COLUMNS = [
@@ -173,22 +170,18 @@ export const ENSEIGNANT_DASHBOARD: Dashboard[] = [
         title: "Promotions",
         link: "/dashboard/enseignant/Promotion",
     },
-    
-  
 ]
 
 export const UE_COLUMNS = [
-   
     { id: "codeFormation", label: "Formation" },
     { id: "codeUE", label: "UE" },
     { id: "codeEC", label: "EC" },
-    { id: "nbhCM", label: "nbh CM"},
-    { id: "nbhTD", label: "nbh TD"},
-    { id: "nbhTP", label: "nbh TP"},
-    { id: "totaleHeures", label: "TOTAL"},
+    { id: "nbhCM", label: "nbh CM" },
+    { id: "nbhTD", label: "nbh TD" },
+    { id: "nbhTP", label: "nbh TP" },
+    { id: "totaleHeures", label: "TOTAL" },
     { id: "designation", label: "Désignation" },
     { id: "etat", label: "Etat" },
-
 ]
 export const UE_COLUMNS_FILTER = [
     { id: "anneePro", label: "Promotion" },
@@ -198,3 +191,59 @@ export const UE_COLUMNS_FILTER = [
     { id: "designation", label: "Désignation" },
 ]
 
+export const Enseignant_DASHBOARD: Dashboard[] = [
+    {
+        id: 1,
+        icon: <WidgetsIcon />,
+        title: "Menu",
+        link: "/dashboard/enseignant/Menu",
+    },
+    {
+        id: 2,
+        icon: <AccountTreeIcon />,
+        title: "Liste UE",
+        link: "/dashboard/enseignant",
+    },
+
+    {
+        id: 3,
+        icon: <AllOutIcon />,
+        title: "Rubrique Evaluation",
+        link: "/dashboard/enseignant/rubrique-evaluation",
+    },
+]
+
+export const GENDERS = {
+    homme: {
+        label: "Homme",
+        value: "H",
+    },
+    femme: {
+        label: "Femme",
+        value: "F",
+    },
+}
+
+export const UNIVERSITE_ORIGINE_OPTIONS = [
+    { label: "Université Abdelamlek Essaâdi - UAE", value: "UAE" },
+    { label: "Université Chouaïb Doukkali - UCD", value: "UCD" },
+    { label: "Université Cadi Ayyad - UCAM", value: "UCAM" },
+    { label: "Université Hassan 2 Mohamedia - UH2M", value: "UH2M" },
+    { label: "Université Ibn Tofail - UIT", value: "UIT" },
+    { label: "Université Hassan 1er - UH1", value: "UH1" },
+    { label: "Université Ibn Zhor - UIZ", value: "UIZ" },
+    { label: "Université Mohamed 5 Agdal - UM5A", value: "UM5A" },
+    { label: "Université Sidi Mohammed Ben Abdellah - USMBA", value: "USMBA" },
+    // Ajoutez d'autres options pertinentes
+]
+
+export const PAYS_OPTIONS = [
+    { label: "France", value: "FR" },
+    { label: "Maroc", value: "MA" },
+    { label: "Tunisie", value: "TU" },
+    { label: "Université Hassan 2 Mohamedia", value: "UH2M" },
+    { label: "Algérie", value: "AL" },
+    { label: "Burkina Faso", value: "BF" },
+
+    // Ajoutez d'autres options pertinentes
+]
