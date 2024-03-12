@@ -22,12 +22,18 @@ const UePage: React.FC = () => {
 
     const { ueList } = ueContext
 
+    console.log("je suis ueList", ueList)
+
     function extractNeededInfo(ue: UE) {
         let extractedInfo: any = {
             nomFormation: ue.nomFormation,
-            anneePro: ue.anneeUniversitaire,
+            codeFormation: ue.codeFormation,
             codeEC: ue.codeEc,
             codeUE: ue.codeUe,
+            nbhCM: ue.nbhCm,
+            nbhTP: ue.nbhTp,
+            nbhTD: ue.nbhTd,
+            totaleHeures: ue.totaleHeures,
             etat: "",
             designation: "",
             idEvaluation: "",
@@ -37,6 +43,8 @@ const UePage: React.FC = () => {
             createValue: true,
             soumettreValue: false,
         }
+
+       
 
         if (ue.evaluationId) {
             extractedInfo = {
@@ -61,6 +69,8 @@ const UePage: React.FC = () => {
 
         return extractedInfo
     }
+
+
 
     const handleDetails = (rowData: UE) => {
         const id_eva = trouverIdEvaluation(rowData, ueList)
@@ -115,14 +125,25 @@ const UePage: React.FC = () => {
     }
 
     const myData = ueList.map(extractNeededInfo)
-    console.log(myData)
 
+    
+
+function extractNomFormation(item: { nomFormation: any }) {
+    return item.nomFormation;
+}
+
+const formation = ueList.map(extractNomFormation)
+console.log("formation", formation)
+
+
+  
     return (
         <div>
              <SideBarEnseignant />
         <Header />
 
             <h1>{myData.some((item) => item.detailsValue)}</h1>
+            
             <ListComponent
                 title={"Liste des Unités d'enseignements"}
                 columns={UE_COLUMNS}
@@ -130,6 +151,7 @@ const UePage: React.FC = () => {
                 remove={false}
                 modify={false}
                 create={true}
+                indice={formation}
                 addElement={false}
                 soumettre={true}
                 detailsHandler={handleDetails}

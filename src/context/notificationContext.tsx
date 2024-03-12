@@ -22,6 +22,7 @@ export const NotificationContextProvider: React.FC<
         setType(type)
         setMessage(message)
         setToggle((prev) => !prev)
+       
     }
 
     return (

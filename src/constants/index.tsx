@@ -21,43 +21,45 @@ export const LIST_ACTIONS = {
     update: "UPDATE",
     delete: "DELETE",
     soumettre: "SOUMETTRE",
+    addRubriqueStandard: "ADD_RUBRIQUE_STANDARD",
 }
 
 export const LIST_ACTIONS_ETUDIANT = {
     read: "READ",
     answer: "ANSWER",
-    
 }
 
 export const LIST_Etat = {
     ELA: {
-        value:"ELA", 
-        label : "En cours d'elaboration"
+        value: "ELA",
+        label: "En cours d'elaboration",
     },
     DIS: {
-        value:"DIS", 
-        label : "Mise a disposition"
+        value: "DIS",
+        label: "Mise a disposition",
     },
     CLO: {
-        value:"CLO", 
-        label : "Cloturé"
+        value: "CLO",
+        label: "Cloturé",
     },
+    AN: {
+        value:"Tous",
+        label: "Tous"
+    }
     
     
+
 }
 export const LIST_Etat_Etudiant = {
     DIS: {
-        value:"DIS", 
-        label : "Mise a disposition"
+        value: "DIS",
+        label: "Mise a disposition",
     },
     CLO: {
-        value:"CLO", 
-        label : "Cloturé"
+        value: "CLO",
+        label: "Cloturé",
     },
-    
-    
 }
-
 
 export const QUALIFICATIF_COLUMNS = [
     { id: "minimal", label: "minimal" },
@@ -87,7 +89,7 @@ export const Evalution_Etudiant_COLUMNS = [
     { id: "finReponse", label: "fin Reponse" },
 ]
 
-export const UE_COLUMNS_FILTER_Etudiant= [
+export const UE_COLUMNS_FILTER_Etudiant = [
     { id: "codeFormation", label: "Nom Formation" },
     { id: "noEvaluation", label: "Evaluation" },
     { id: "designation", label: "designation" },
@@ -160,28 +162,7 @@ export const ADMIN_DASHBOARD: Dashboard[] = [
     },
 ]
 
-export const UE_COLUMNS = [
-    { id: "anneePro", label: "Promotion" },
-    { id: "nomFormation", label: "Formation" },
-    { id: "codeUE", label: "UE" },
-    { id: "codeEC", label: "EC" },
-    { id: "designation", label: "Désignation" },
-    { id: "etat", label: "Etat" },
-]
-export const UE_COLUMNS_FILTER = [
-    { id: "anneePro", label: "Promotion" },
-    { id: "nomFormation", label: "Formation" },
-    { id: "codeUE", label: "UE" },
-    { id: "codeEC", label: "EC" },
-    { id: "designation", label: "Désignation" },
-    
-]
-
-
-
-
-
-export const Enseignant_DASHBOARD: Dashboard[] = [
+export const ENSEIGNANT_DASHBOARD: Dashboard[] = [
     {
         id: 1,
         icon: <WidgetsIcon />,
@@ -189,23 +170,45 @@ export const Enseignant_DASHBOARD: Dashboard[] = [
         link: "/dashboard/enseignant/Menu",
     },
     {
-        id: 2,
-        icon: <AccountTreeIcon />,
-        title: "Liste UE",
+        id: 3,
+        icon: <AltRouteIcon />,
+        title: "Promotions",
         link: "/dashboard/enseignant",
     },
-
     {
-        id: 3,
+        id: 4,
+        icon: <VerifiedUserSharp />,
+        title: "Etudiants",
+        link: "/dashboard/enseignant/etudiantList",
+    },  
+    {
+        id: 5,
         icon: <AllOutIcon />,
         title: "Rubrique Evaluation",
         link: "/dashboard/enseignant/rubrique-evaluation",
     },
+  
+]
 
-    {
-        id: 3,
-        icon: <VerifiedUserSharp />,
-        title: "liste des etudiants",
-        link: "/dashboard/enseignant/listEtudiants",
-    },
-];
+export const UE_COLUMNS = [
+   
+    { id: "codeFormation", label: "Formation" },
+    { id: "codeUE", label: "UE" },
+    { id: "codeEC", label: "EC" },
+    { id: "nbhCM", label: "nbh CM"},
+    { id: "nbhTD", label: "nbh TD"},
+    { id: "nbhTP", label: "nbh TP"},
+    { id: "totaleHeures", label: "TOTAL"},
+    { id: "designation", label: "Désignation" },
+    { id: "etat", label: "Etat" },
+
+]
+export const UE_COLUMNS_FILTER = [
+    { id: "anneePro", label: "Promotion" },
+    { id: "nomFormation", label: "Formation" },
+    { id: "codeUE", label: "UE" },
+    { id: "codeEC", label: "EC" },
+    { id: "designation", label: "Désignation" },
+]
+
+

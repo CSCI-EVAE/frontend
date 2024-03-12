@@ -23,17 +23,19 @@ const QualificatifForm: React.FC<qualificatifFormProps> = ({ add }) => {
     const { updateModalOpen, selectedRow } = useContext(ListContext)
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
+        const trimmedQualificatifMinimal = qualificatifMinimal.trim()
+        const trimmedQualificatifMaximal = qualificatifMaximal.trim()
         if (add === true) {
             addNewQualificatif({
-                minimal: qualificatifMinimal,
-                maximal: qualificatifMaximal,
+                minimal: trimmedQualificatifMinimal,
+                maximal: trimmedQualificatifMaximal,
             })
         } else {
             const id = trouverIdQualificatif(selectedRow, qualificatifList)
             console.log("mod2", id)
             modifyQualificatif(id, {
-                minimal: qualificatifMinimal,
-                maximal: qualificatifMaximal,
+                minimal: trimmedQualificatifMinimal,
+                maximal: trimmedQualificatifMaximal,
             })
         }
 

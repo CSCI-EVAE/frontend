@@ -25,6 +25,7 @@ import AjoutQuestionEvaluation from "./AjoutQuestionEvaluation"
 import Header from "../../Layout/Header"
 import { RubriqueCompose, questionsInRubrique } from "../../types"
 import SideBarEnseignant from "../../Layout/sideBar/SideBarEnseignant"
+import EnseignantAddRubriqueStandard from "../../components/EnseignantAddRubriqueStandard"
 
 const AjoutRubriqueEvaluation = () => {
     const {
@@ -32,6 +33,7 @@ const AjoutRubriqueEvaluation = () => {
         rubriqueSelectedEns,
         updateRubriqueSelectedEns,
         updateRubriqueAddedByList,
+        updateRubriqueSelected,
     } = useContext(RubriqueEnseignantContext)
 
     const [dataset, setDataset] = useState<RubriqueCompose[]>(rubriqueAdded)
@@ -88,13 +90,14 @@ const AjoutRubriqueEvaluation = () => {
 
     const handleSubmit = () => {
         localStorage.getItem("formData")
+        updateRubriqueSelected([])
     }
 
     return (
         <>
-             <SideBarEnseignant /> 
-        <Header />
-       
+            <SideBarEnseignant />
+            <Header />
+
             <div
                 style={{
                     maxWidth: "70%",
@@ -119,7 +122,25 @@ const AjoutRubriqueEvaluation = () => {
                             updateSelectedRow({})
                         }}
                     >
-                        <AddCircleIcon /> Ajouter une Rubrique
+                        <AddCircleIcon /> Ajouter une Rubrique Composée
+                    </ListItemIcon>
+                </ListItemButton>
+                <ListItemButton
+                    sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        marginBottom: "16px",
+                    }}
+                >
+                    <ListItemIcon
+                        onClick={() => {
+                            setSelectedActions(LIST_ACTIONS.addRubriqueStandard)
+                            updateModalOpen(true)
+                            updateSelectedRow({})
+                        }}
+                    >
+                        <AddCircleIcon /> Ajouter une Rubrique Standard
                     </ListItemIcon>
                 </ListItemButton>
                 <DragDropContext onDragEnd={onDragEnd}>
@@ -255,7 +276,7 @@ const AjoutRubriqueEvaluation = () => {
                         },
                     }}
                 >
-                    <DialogTitle>{"name"}</DialogTitle>
+                    <DialogTitle>{"Ajout"}</DialogTitle>
                     <DialogContent
                         style={{
                             margin: "auto",
@@ -265,6 +286,10 @@ const AjoutRubriqueEvaluation = () => {
                             //border:"1px solid black"
                         }}
                     >
+                        {selectedAction ===
+                            LIST_ACTIONS.addRubriqueStandard && (
+                            <EnseignantAddRubriqueStandard />
+                        )}
                         {selectedAction === LIST_ACTIONS.add && (
                             <EnseignantRubrique add={true} />
                         )}
