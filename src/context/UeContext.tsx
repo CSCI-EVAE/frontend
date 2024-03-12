@@ -6,7 +6,7 @@ import React, {
     useEffect,
     useState,
 } from "react"
-import { UE } from "../types"
+import { Promotion, UE } from "../types"
 
 import { getRequest } from "../api/axios"
 import { ApiResponse } from "../types"
@@ -17,9 +17,11 @@ interface UEContextProps {
 }
 
 interface UEContextData {
+    promotionList: Promotion[]
     ueList: UE[]
     getUEList: () => void
     refreshList: () => void
+    getPromotionList : (codeFormation: string) => void
 }
 
 
@@ -47,7 +49,23 @@ export function trouverIdEvaluation(
 
 export const UEContextProvider: React.FC<UEContextProps> = ({ children }) => {
     const [ueList, setUeList] = useState<UE[]>([])
+    const [promotionList, setPromotionList] = useState<Promotion[]>([])
    
+
+
+    const fetchPromotionsPourFormation = useCallback(async (codeFormation: string) => {
+        try {
+            const response: ApiResponse = await getRequest(`/promotion/formationsForPromotion/${codeFormation}`);
+            setPromotionList(response.data.data);
+        } catch (error) {
+            console.error(error);
+        }
+    }, []);
+
+
+    
+    
+
 
     const fetchUEList = useCallback(async () => {
         try {
@@ -89,9 +107,10 @@ export const UEContextProvider: React.FC<UEContextProps> = ({ children }) => {
 
     const contextValue: UEContextData = {
         ueList,
-
+        promotionList,
         getUEList: fetchUEList,
         refreshList,
+        getPromotionList: fetchPromotionsPourFormation
     }
 
     return (
