@@ -11,11 +11,11 @@ import { getRequest } from "../api/axios"
 import { ApiResponse } from "../types"
 
 
-interface PromotionContextProps {
+interface PromotionAdminContextProps {
     children: ReactNode
 }
 
-interface PromotionContextData {
+interface PromotionAdminContextData {
     promotionList: Promotion[]
     getPromotionList: () => void
     refreshList: () => void
@@ -23,7 +23,7 @@ interface PromotionContextData {
 
 
 
-export const PromotionContext = createContext<PromotionContextData | null>(null)
+export const PromotionAdminContext = createContext<PromotionAdminContextData | null>(null)
 
 export function trouverIdsPromotion(
     promotion: Promotion,
@@ -46,15 +46,14 @@ export function trouverIdsPromotion(
     }
 }
 
-export const PromotionContextProvider: React.FC<PromotionContextProps> = ({ children }) => {
+export const PromotionContextProvider: React.FC<PromotionAdminContextProps> = ({ children }) => {
     const [promotionList, setPromotionList] = useState<Promotion[]>([])
    
 
     const fetchPromotionList = useCallback(async () => {
         try {
-            const response: ApiResponse = await getRequest("/admin/promotion")
-
-            setPromotionList(response.data)
+            const response: ApiResponse = await getRequest("/promotion/promotionsForADM")
+            setPromotionList(response.data.data)
         } catch (error) {
             console.error(error)
          
@@ -74,8 +73,8 @@ export const PromotionContextProvider: React.FC<PromotionContextProps> = ({ chil
     useEffect(() => {
         const fetchPromotionListA = async () => {
             try {
-                const response: ApiResponse = await getRequest("/admin/promotion")
-    
+                const response: ApiResponse = await getRequest("/promotion/promotionsForADM")
+            
                 setPromotionList(response.data.data)
             } catch (error) {
                 console.error(error)
@@ -86,15 +85,14 @@ export const PromotionContextProvider: React.FC<PromotionContextProps> = ({ chil
        
     }, [])
 
-    const contextValue: PromotionContextData = {
+    const contextValue: PromotionAdminContextData = {
         promotionList,
-
         getPromotionList: fetchPromotionList,
         refreshList,
     }
 
     return (
     
-        <PromotionContext.Provider value={contextValue}>{children}</PromotionContext.Provider>
+        <PromotionAdminContext.Provider value={contextValue}>{children}</PromotionAdminContext.Provider>
     )
 }

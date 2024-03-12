@@ -1,26 +1,22 @@
-import React, { useContext, useEffect, useState } from "react";
-import { PromotionContext } from "../../context/promotionContextEnseignant";
+import React, { useContext } from "react";
 import Header from "../../Layout/Header";
 import ListComponent from "../../common/List";
 import { PROMOTION_ADMIN_COLUMNS } from "../../constants";
-import { Promotion } from "../../types";
-import SideBarEnseignant from "../../Layout/sideBar/SideBarEnseignant";
+import { PromotionEnseignantContext } from "../../context/promotionContextEnseignant";
+import SideBarEnseignant from "../../Layout/sideBar/SideBarEnseignant"
 
-const PromotionPageEnseignant = () => {
-  const promotionContext = useContext(PromotionContext);
-  const [promotionData, setPromotionData] = useState<Promotion[]>([]);
+const PromotionPage: React.FC = () => {
 
-  useEffect(() => {
-    promotionContext?.getPromotionList();
-    promotionContext?.refreshList();
-  }, [promotionContext]);
 
-  useEffect(() => {
-    setPromotionData(promotionContext?.promotionList || []);
-  }, [promotionContext?.promotionList]);
+  const promotionContext = useContext(PromotionEnseignantContext)
+ 
+  if (!promotionContext) {
+      return <div>Loading...</div>
+  }
 
-  console.log(promotionData);
+  const { promotionList } = promotionContext
 
+  console.log("je suis liste", promotionList)
   return (
     <>
       <SideBarEnseignant />
@@ -30,15 +26,13 @@ const PromotionPageEnseignant = () => {
         <ListComponent
           title={"Liste des promotions"}
           columns={PROMOTION_ADMIN_COLUMNS}
-          data={promotionData ? promotionData.reverse() : []}
-          actions={true}
-          remove={true}
-          //deleteHandler={handleDelete}
-          modify={false}
+          data={promotionList}
+          actions={false}
+          
         />
       </div>
     </>
   );
 };
 
-export default PromotionPageEnseignant;
+export default PromotionPage;

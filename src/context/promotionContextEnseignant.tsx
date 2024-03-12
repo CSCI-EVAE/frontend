@@ -11,11 +11,11 @@ import { getRequest } from "../api/axios"
 import { ApiResponse } from "../types"
 
 
-interface PromotionContextProps {
+interface PromotionEnseignantContextProps {
     children: ReactNode
 }
 
-interface PromotionContextData {
+interface PromotionEnseignantContextData {
     promotionList: Promotion[]
     getPromotionList: () => void
     refreshList: () => void
@@ -23,7 +23,7 @@ interface PromotionContextData {
 
 
 
-export const PromotionContext = createContext<PromotionContextData | null>(null)
+export const PromotionEnseignantContext = createContext<PromotionEnseignantContextData | null>(null)
 
 export function trouverIdsPromotion(
     promotion: Promotion,
@@ -46,15 +46,15 @@ export function trouverIdsPromotion(
     }
 }
 
-export const PromotionContextProvider: React.FC<PromotionContextProps> = ({ children }) => {
+export const PromotionEnseignantContextProvider: React.FC<PromotionEnseignantContextProps> = ({ children }) => {
     const [promotionList, setPromotionList] = useState<Promotion[]>([])
    
 
     const fetchPromotionList = useCallback(async () => {
         try {
-            const response: ApiResponse = await getRequest("/admin/promotion")
-
-            setPromotionList(response.data)
+            const response: ApiResponse = await getRequest("/promotion/promotionsForENS")
+            setPromotionList(response.data.data)
+            console.log(promotionList)
         } catch (error) {
             console.error(error)
          
@@ -74,7 +74,7 @@ export const PromotionContextProvider: React.FC<PromotionContextProps> = ({ chil
     useEffect(() => {
         const fetchPromotionListA = async () => {
             try {
-                const response: ApiResponse = await getRequest("/admin/promotion")
+                const response: ApiResponse =  await getRequest("/promotion/promotionsForENS")
     
                 setPromotionList(response.data.data)
             } catch (error) {
@@ -86,7 +86,7 @@ export const PromotionContextProvider: React.FC<PromotionContextProps> = ({ chil
        
     }, [])
 
-    const contextValue: PromotionContextData = {
+    const contextValue: PromotionEnseignantContextData = {
         promotionList,
 
         getPromotionList: fetchPromotionList,
@@ -95,6 +95,6 @@ export const PromotionContextProvider: React.FC<PromotionContextProps> = ({ chil
 
     return (
     
-        <PromotionContext.Provider value={contextValue}>{children}</PromotionContext.Provider>
+        <PromotionEnseignantContext.Provider value={contextValue}>{children}</PromotionEnseignantContext.Provider>
     )
 }

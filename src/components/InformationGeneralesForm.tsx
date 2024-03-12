@@ -20,7 +20,9 @@ const InfoGenerales: React.FC = () => {
 const [designationError, setDesignationError] = useState(false);
     const [designation, setDesignation] = useState("")
     const [dateDebut, setDateDebut] = useState("")
+
     const [dateFin, setDateFin] = useState("")
+    const [periode, setPeriode] = useState("")
     const [error, setError] = useState("")
 
     const containerStyle: React.CSSProperties = {
@@ -66,6 +68,7 @@ const [designationError, setDesignationError] = useState(false);
 
         const infoGenerales = {
             nomFormation: infoGenerale.nomFormation,
+            codeFormation: infoGenerale.codeFormation,
             anneePro: infoGenerale.anneePro,
             codeUE: infoGenerale.codeUE,
             codeEC: infoGenerale.codeEC,
@@ -116,8 +119,8 @@ const [designationError, setDesignationError] = useState(false);
 
                             />
                         </Grid>
-                        <Grid item xs={10} sm={3}>
-                            {/* <TextField
+                        {/* <Grid item xs={10} sm={3}>
+                            <TextField
                                 label="Promotion"
                                 variant="outlined"
                                 fullWidth
@@ -128,8 +131,8 @@ const [designationError, setDesignationError] = useState(false);
                                     ...textFieldStyle,
                                     borderColor: infoGenerale.anneePro.trim() === '' ? 'red' : '',
                                 }}
-                            /> */}
-                        </Grid>
+                            /> 
+                        </Grid> */}
                         <Grid item xs={10} sm={6}>
                             <TextField
                                 label="Unité enseignement"
@@ -151,11 +154,12 @@ const [designationError, setDesignationError] = useState(false);
                                 fullWidth
                                 value={
                                     infoGenerale.codeEC ||
-                                    "------- Cette évaluation concerne UE --------"
+                                    ""
                                 }
                                
                             />
                         </Grid>
+                        <Grid item xs={10} sm={6}>
                         <TextField
                             label="Désignation"
                             variant="outlined"
@@ -169,6 +173,23 @@ const [designationError, setDesignationError] = useState(false);
                                 borderColor: designationError ? 'red' : '',
                             }}
                         />
+                        </Grid>
+                        <Grid item xs={10} sm={6}>
+                        <TextField
+                            label="periode"
+                            variant="outlined"
+                            fullWidth
+                            value={periode}
+                            onChange={(e) => setPeriode(e.target.value)}
+                           
+                           
+                            style={{
+                                ...textFieldStyle,
+                                borderColor: designationError ? 'red' : '',
+                            }}
+                        />
+                        </Grid>
+
 
 
                         <Grid item xs={10} sm={3}>
