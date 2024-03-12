@@ -15,7 +15,7 @@ function App() {
     return (
         <ThemeProvider theme={theme}>
             <div className="App">
-                <Box sx={{ marginTop: "128px" }}></Box>
+                <Box sx={{ marginTop: "96px" }}></Box>
                 <NotificationContextProvider>
                     <AuthContextProvider>
                         <Routes>
