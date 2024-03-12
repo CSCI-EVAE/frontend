@@ -1,7 +1,7 @@
 // evaluationContext.tsx
-import React, { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
+import React, { createContext, ReactNode, useCallback, useContext} from "react";
 import { ApiResponse, Evaluation} from "../types";
-import { getRequest, postRequest } from "../api/axios";
+import { postRequest } from "../api/axios";
 import { NotificationContext } from "./notificationContext";
 
 // Define the type for props of EvaluationContextProvider
@@ -14,14 +14,12 @@ export const EvaluationContext = createContext<any>(null); // You can replace 'a
 
 // EvaluationContextProvider component
 export const EvaluationContextProvider: React.FC<EvaluationContextProviderProps> = ({ children }) => {
-    const [evaluations, setEvaluations] = useState<Evaluation[]>([]);
+   
     const { showNotification } = useContext(NotificationContext);
 
-    const updateEvaluations = useCallback((value: Evaluation[]) => {
-        setEvaluations(value);
-    }, []);
+   
 
-    
+  
   
     const addNewEvaluation = useCallback(
         async (evaluationBody: Evaluation) => {
@@ -37,8 +35,10 @@ export const EvaluationContextProvider: React.FC<EvaluationContextProviderProps>
         [showNotification]
     )
 
+
+
     return (
-        <EvaluationContext.Provider value={{ evaluations, addNewEvaluation }}>
+        <EvaluationContext.Provider value={{ addNewEvaluation }}>
             {children}
         </EvaluationContext.Provider>
     );

@@ -54,7 +54,6 @@ export const PromotionEnseignantContextProvider: React.FC<PromotionEnseignantCon
         try {
             const response: ApiResponse = await getRequest("/promotion/promotionsForENS")
             setPromotionList(response.data.data)
-            console.log(promotionList)
         } catch (error) {
             console.error(error)
          
