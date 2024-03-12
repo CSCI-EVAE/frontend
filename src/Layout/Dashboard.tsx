@@ -30,6 +30,8 @@ import Promotion from "../pages/Admin/promotion"
 import PromotionPageEnseignant from "../pages/Enseignant/promotion"
 import CreerEtudiant from "../components/CreerEtudiant"
 import ModifierEtudiant from "../components/ModifierEtudiant"
+import DetailsPromotionAdmin from "../pages/Admin/detailsPromotionAdmin"
+import DetailsPromotionEnseignant from "../pages/Enseignant/detailsPromotionEnseignant"
 
 const Dashboard: React.FC = () => {
     // const role = Object.keys(ROLE_COMPONENTS).find(hasRole);
@@ -67,6 +69,10 @@ const Dashboard: React.FC = () => {
 
                         {role === ROLE.admin && (
                             <>
+                                <Route
+                                    path="/details-promotion"
+                                    element={<DetailsPromotionAdmin />}
+                                />
                                 <Route
                                     path="/creer-etudiant"
                                     element={<CreerEtudiant />}
@@ -138,6 +144,10 @@ const Dashboard: React.FC = () => {
                                 <Route
                                     path="enseignant/test"
                                     element={<CreerEvaluation />}
+                                />
+                                <Route
+                                    path="enseignant/details-promotion"
+                                    element={<DetailsPromotionEnseignant />}
                                 />
                             </>
                         )}

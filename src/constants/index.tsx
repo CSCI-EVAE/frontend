@@ -21,6 +21,7 @@ export const LIST_ACTIONS = {
     delete: "DELETE",
     soumettre: "SOUMETTRE",
     addRubriqueStandard: "ADD_RUBRIQUE_STANDARD",
+    redirect: "REDIRECT",
 }
 
 export const LIST_ACTIONS_ETUDIANT = {
