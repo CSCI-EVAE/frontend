@@ -1,3 +1,5 @@
+import { RubriqueEvaluation } from "./EvaluationTypes"
+
 export interface ApiResponse {
     success: boolean
     message: string
@@ -176,4 +178,30 @@ export interface UEListResponse {
     success: boolean
     message: string
     data: UE[]
+}
+
+
+export interface Promotion {
+    codeFormation: string
+    anneeUniversitaire: string
+    siglePromotion: string | null
+    nbMaxEtudiant: number
+    dateReponseLp: string | null
+    dateReponseLalp: string | null
+    dateRentree: string | null
+    lieuRentree: string | null
+    processusStage: string | null
+    commentaire: string | null
+}
+
+export interface Evaluation {
+    id: number
+    codeFormation: string
+    periode: string | null
+    designation: string
+    codeEC: string | null
+    codeUE: string 
+    debutReponse: string
+    finReponse: string
+    RubriqueQuestion: RubriqueEvaluation[]
 }

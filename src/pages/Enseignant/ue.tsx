@@ -160,6 +160,7 @@ console.log("formation", formation)
                 details={true}
                 data={myData}
                 columnsFilter={UE_COLUMNS_FILTER}
+                afficherEtat={true}
             />
         </div>
     )

@@ -11,9 +11,11 @@ import { SoumettreEvaluationContextProvider } from "./soumettreEvaluationContext
 import { StepContextProvider } from "./stepperContext"
 
 import { UEContextProvider } from "./UeContext"
-import {  EvaluationContextProvider } from "./evaluationEtudiantContext"
 import { ROLE } from "../constants"
 import { userInfos } from "../utils/authUtils"
+import { PromotionContextProvider } from "./promotionContextAdmin"
+import { PromotionEnseignantContextProvider } from "./promotionContextEnseignant"
+import { EvaluationContextProvider } from "./evaluationEnseignantContext"
 
 
 
@@ -33,6 +35,8 @@ export const GlobalContextProvider: React.FC<{ children: ReactNode }> = ({
                 <QuestionContextProvider>
                     <RubriqueContextProvider>
                         <RubriqueComposeContextProvider>
+                            <PromotionEnseignantContextProvider>
+                                <EvaluationContextProvider>
                             <ListContextProvider>
                                 <RubriqueEnseignantContextProvider>
                                     <SoumettreEvaluationContextProvider>
@@ -46,6 +50,8 @@ export const GlobalContextProvider: React.FC<{ children: ReactNode }> = ({
                                     </SoumettreEvaluationContextProvider>
                                 </RubriqueEnseignantContextProvider>
                             </ListContextProvider>
+                            </EvaluationContextProvider>
+                            </PromotionEnseignantContextProvider>
                         </RubriqueComposeContextProvider>
                     </RubriqueContextProvider>
                 </QuestionContextProvider>
@@ -57,17 +63,21 @@ export const GlobalContextProvider: React.FC<{ children: ReactNode }> = ({
                 <QuestionContextProvider>
                     <RubriqueContextProvider>
                         <RubriqueComposeContextProvider>
+                            
                             <ListContextProvider>
                                 <RubriqueEnseignantContextProvider>
                                     <SoumettreEvaluationContextProvider>
                                         <StepContextProvider>
+                                        <PromotionContextProvider>
                                             <GlobalContext.Provider value={{}}>
                                                 {children}
                                             </GlobalContext.Provider>
+                                           </PromotionContextProvider>
                                         </StepContextProvider>
                                     </SoumettreEvaluationContextProvider>
                                 </RubriqueEnseignantContextProvider>
                             </ListContextProvider>
+                            
                         </RubriqueComposeContextProvider>
                     </RubriqueContextProvider>
                 </QuestionContextProvider>
