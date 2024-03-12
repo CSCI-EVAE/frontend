@@ -3,7 +3,7 @@ import WidgetsIcon from "@mui/icons-material/Widgets"
 import AccountTreeIcon from "@mui/icons-material/AccountTree"
 import AllOutIcon from "@mui/icons-material/AllOut"
 import AltRouteIcon from "@mui/icons-material/AltRoute"
-import { FormatListBulleted } from "@mui/icons-material"
+import { FormatListBulleted, List } from "@mui/icons-material"
 
 export const API_URL = "http://localhost:8080/api/v1"
 
@@ -73,6 +73,12 @@ export const RUBRIQUE_COLUMNS = [
     //{ id: "ordre", label: "ordre" }
 ]
 
+export const PROMOTION_ADMIN_COLUMNS = [
+    { id: "codeFormation", label: "Code Formation" },
+    { id: "anneeUniversitaire", label: "Année Universitaire" },
+    { id: "siglePromotion", label: "Sigle Promotion" },
+]
+
 export const Evalution_Etudiant_COLUMNS = [
     { id: "anneeUniversitaire", label: "annee Universitaire" },
     { id: "codeFormation", label: "Nom Formation" },
@@ -136,6 +142,13 @@ export const ADMIN_DASHBOARD: Dashboard[] = [
         title: "Rubriques Composées",
         link: "/dashboard/rubriquecompose",
     },
+
+    {
+        id: 6,
+        icon: <List />,
+        title: "Promotions",
+        link: "/dashboard/promotions",
+    },
 ]
 
 export const ENSEIGNANT_DASHBOARD: Dashboard[] = [
@@ -155,7 +168,7 @@ export const ENSEIGNANT_DASHBOARD: Dashboard[] = [
         id: 3,
         icon: <AltRouteIcon />,
         title: "Promotions",
-        link: "/dashboard/enseignant",
+        link: "/dashboard/enseignant/Promotion",
     },
 ]
 
