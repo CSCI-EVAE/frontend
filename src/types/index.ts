@@ -1,3 +1,5 @@
+import { RubriqueEvaluation } from "./EvaluationTypes"
+
 export interface ApiResponse {
     success: boolean
     message: string
@@ -206,4 +208,52 @@ export interface EtudiantList {
     nationalite:string
     telephone:string
     email:string  
+}
+export interface EtudiantDTO {
+    noEtudiant: string
+    nom: string
+    prenom: string
+    sexe: string
+    dateNaissance: Date
+    lieuNaissance: string
+    nationalite: string
+    telephone: string
+    mobile: string
+    email: string
+    emailUbo: string
+    adresse: string
+    codePostal: string
+    ville: string
+    paysOrigine: string
+    universiteOrigine: string
+    groupeTp: number
+    groupeAnglais: number
+    //promotion
+    CodeFormation?: string
+    anneeUniversitaire?: string
+}
+
+export interface Promotion {
+    codeFormation: string
+    anneeUniversitaire: string
+    siglePromotion: string | null
+    nbMaxEtudiant: number
+    dateReponseLp: string | null
+    dateReponseLalp: string | null
+    dateRentree: string | null
+    lieuRentree: string | null
+    processusStage: string | null
+    commentaire: string | null
+}
+
+export interface Evaluation {
+    id: number
+    codeFormation: string
+    periode: string | null
+    designation: string
+    codeEC: string | null
+    codeUE: string
+    debutReponse: string
+    finReponse: string
+    RubriqueQuestion: RubriqueEvaluation[]
 }

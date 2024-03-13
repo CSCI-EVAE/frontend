@@ -4,7 +4,9 @@ import { useNavigate } from "react-router-dom"
 import { Icon } from "@mui/material"
 import {ENSEIGNANT_DASHBOARD } from "../../constants"
 import Header from "../../Layout/Header"
+
 import Sidebar from "../../Layout/sideBar/SideBarEnseignant"
+
 
 function BigMenu() {
     const navigate = useNavigate()
@@ -26,7 +28,7 @@ function BigMenu() {
 
     return (
         <>
-            <Sidebar />
+            <SideBarEnseignant />
             <Header />
 
             <Container maxWidth="lg">

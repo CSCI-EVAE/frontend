@@ -9,13 +9,14 @@ import { RubriqueContextProvider } from "./rubriqueContext"
 import { RubriqueEnseignantContextProvider } from "./rubriqueEnseignantContext"
 import { SoumettreEvaluationContextProvider } from "./soumettreEvaluationContext"
 import { StepContextProvider } from "./stepperContext"
-
 import { UEContextProvider } from "./UeContext"
-import {  EvaluationContextProvider } from "./evaluationEtudiantContext"
 import { ROLE } from "../constants"
 import { userInfos } from "../utils/authUtils"
 import { EtudiantListContextPorvider } from "./etudiantListContext"
 import { EtudiantEnseignantContextProvider } from "./ListEtudiantsEnseignantContext"
+import { PromotionContextProvider } from "./promotionContextAdmin"
+import { PromotionEnseignantContextProvider } from "./promotionContextEnseignant"
+import { EvaluationContextProvider } from "./evaluationEnseignantContext"
 
 
 
@@ -35,6 +36,8 @@ export const GlobalContextProvider: React.FC<{ children: ReactNode }> = ({
                 <QuestionContextProvider>
                     <RubriqueContextProvider>
                         <RubriqueComposeContextProvider>
+                            <PromotionEnseignantContextProvider>
+                                <EvaluationContextProvider>
                             <ListContextProvider>
                                 <RubriqueEnseignantContextProvider>
                                     <SoumettreEvaluationContextProvider>
@@ -50,6 +53,8 @@ export const GlobalContextProvider: React.FC<{ children: ReactNode }> = ({
                                     </SoumettreEvaluationContextProvider>
                                 </RubriqueEnseignantContextProvider>
                             </ListContextProvider>
+                            </EvaluationContextProvider>
+                            </PromotionEnseignantContextProvider>
                         </RubriqueComposeContextProvider>
                     </RubriqueContextProvider>
                 </QuestionContextProvider>
@@ -61,19 +66,25 @@ export const GlobalContextProvider: React.FC<{ children: ReactNode }> = ({
                 <QuestionContextProvider>
                     <RubriqueContextProvider>
                         <RubriqueComposeContextProvider>
+                            
                             <ListContextProvider>
                                 <RubriqueEnseignantContextProvider>
                                     <SoumettreEvaluationContextProvider>
                                         <StepContextProvider>
+
+                                        <PromotionContextProvider>
                                           <EtudiantListContextPorvider>
                                             <GlobalContext.Provider value={{}}>
                                                 {children}
                                             </GlobalContext.Provider>
                                             </EtudiantListContextPorvider>
+                                           </PromotionContextProvider>
+
                                         </StepContextProvider>
                                     </SoumettreEvaluationContextProvider>
                                 </RubriqueEnseignantContextProvider>
                             </ListContextProvider>
+                            
                         </RubriqueComposeContextProvider>
                     </RubriqueContextProvider>
                 </QuestionContextProvider>

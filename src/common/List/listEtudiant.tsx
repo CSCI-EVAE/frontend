@@ -62,7 +62,6 @@ const ListComponent: React.FC<Props> = ({
     const [filterread, setFilterreads] = useState<{ [key: string]: boolean }>(filterreades || {}); 
     const [filteranswer, setFilteranswers] = useState<{ [key: string]: boolean}>(filteransweres || {}); 
   //  console.log("The value from etudiant list "+JSON.stringify(filterread,null))
-    console.log("The value from etudiant list answ "+JSON.stringify(filteransweres,null))
 
     const handleFilterChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,

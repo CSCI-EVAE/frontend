@@ -15,6 +15,7 @@ import {
     DialogActions,
     Typography,
     Tooltip,
+    TablePagination
 } from "@mui/material"
 import {
     AddCircleOutline,
@@ -73,9 +74,27 @@ const ListComponent: React.FC<Props> = ({
     detailsElement,
 }) => {
     const [filters, setFilters] = useState<{ [key: string]: string }>({})
+    const [page, setPage] = useState(0); // État pour la pagination
+    const [rowsPerPage, setRowsPerPage] = useState(10); // État pour les lignes par page
     const { openModal, updateModalOpen, selectedRow, updateSelectedRow } =
         useContext(ListContext)
     const [selectedAction, setSelectedActions] = useState<any | null>(null)
+
+
+    // Fonction pour changer de page
+    const handleChangePage = (event: unknown, newPage: number) => {
+        setPage(newPage);
+    };
+
+    // Fonction pour changer le nombre de lignes par page
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
+
+    // Calcul de l'index de départ et de fin pour l'affichage des données selon la pagination
+    const startIndex = page * rowsPerPage;
+    const endIndex = startIndex + rowsPerPage;
 
     const textStyle: React.CSSProperties = {
         fontFamily: "cursive",
@@ -122,6 +141,7 @@ const ListComponent: React.FC<Props> = ({
         })
     })
     const navigate = useNavigate()
+
 
     return (
         <>
@@ -230,143 +250,145 @@ const ListComponent: React.FC<Props> = ({
                                             {...provided.droppableProps}
                                             ref={provided.innerRef}
                                         >
-                                            {filteredData.map(
-                                                (row: any, rowIndex: any) => (
-                                                    <Draggable
-                                                        key={rowIndex}
-                                                        draggableId={String(
-                                                            rowIndex
-                                                        )}
-                                                        index={rowIndex}
-                                                    >
-                                                        {(provided: any) => (
-                                                            <TableRow
-                                                                key={rowIndex}
-                                                                style={{
-                                                                    backgroundColor:
-                                                                        rowIndex %
-                                                                            2 ===
-                                                                        0
-                                                                            ? "#fffff"
-                                                                            : "#f9f9f9",
-                                                                }}
-                                                                ref={
-                                                                    provided.innerRef
-                                                                }
-                                                                {...provided.draggableProps}
-                                                                {...provided.dragHandleProps}
-                                                            >
-                                                                {columns.map(
-                                                                    (
-                                                                        column,
-                                                                        colIndex
-                                                                    ) => (
-                                                                        <TableCell
-                                                                            key={`${rowIndex}-${colIndex}`}
-                                                                        >
-                                                                            {
-                                                                                row[
+                                            {filteredData
+                                                .slice(startIndex, endIndex)
+                                                .map(
+                                                    (row: any, rowIndex: any) => (
+                                                        <Draggable
+                                                            key={rowIndex}
+                                                            draggableId={String(
+                                                                rowIndex
+                                                            )}
+                                                            index={rowIndex}
+                                                        >
+                                                            {(provided: any) => (
+                                                                <TableRow
+                                                                    key={rowIndex}
+                                                                    style={{
+                                                                        backgroundColor:
+                                                                            rowIndex %
+                                                                                2 ===
+                                                                                0
+                                                                                ? "#fffff"
+                                                                                : "#f9f9f9",
+                                                                    }}
+                                                                    ref={
+                                                                        provided.innerRef
+                                                                    }
+                                                                    {...provided.draggableProps}
+                                                                    {...provided.dragHandleProps}
+                                                                >
+                                                                    {columns.map(
+                                                                        (
+                                                                            column,
+                                                                            colIndex
+                                                                        ) => (
+                                                                            <TableCell
+                                                                                key={`${rowIndex}-${colIndex}`}
+                                                                            >
+                                                                                {
+                                                                                    row[
                                                                                     column
                                                                                         .id
-                                                                                ]
-                                                                            }
-                                                                        </TableCell>
-                                                                    )
-                                                                )}
-                                                                {actions && (
-                                                                    <TableCell>
-                                                                        {create && (
-                                                                            <IconButton
-                                                                                onClick={() => {
-                                                                                    setSelectedActions(
-                                                                                        LIST_ACTIONS.create
-                                                                                    )
-                                                                                    updateSelectedRow(
-                                                                                        row
-                                                                                    )
-                                                                                    createHandler &&
-                                                                                        createHandler(
-                                                                                            row
-                                                                                        )
-                                                                                }}
-                                                                            >
-                                                                                <AddCircleIcon />
-                                                                            </IconButton>
-                                                                        )}
-                                                                        {details && (
-                                                                            <Tooltip title="Consulter le détails">
-                                                                            <IconButton
-                                                                                onClick={() => {
-                                                                                    setSelectedActions(
-                                                                                        LIST_ACTIONS.read
-                                                                                    )
-                                                                                    updateSelectedRow(
-                                                                                        row
-                                                                                    )
-                                                                                    detailsHandler &&
-                                                                                        detailsHandler(
-                                                                                            row
-                                                                                        )
-                                                                                    updateModalOpen(
-                                                                                        true
-                                                                                    )
-                                                                                }}
-                                                                            >
-                                                                                <Visibility />
-                                                                            </IconButton>
-                                                                            </Tooltip>
-                                                                        )}
-                                                                        {modify && (
-                                                                            <>
-                                                                              <Tooltip title="Modifier">
+                                                                                    ]
+                                                                                }
+                                                                            </TableCell>
+                                                                        )
+                                                                    )}
+                                                                    {actions && (
+                                                                        <TableCell>
+                                                                            {create && (
                                                                                 <IconButton
                                                                                     onClick={() => {
-                                                                                        modifyHandler &&
-                                                                                            modifyHandler(
-                                                                                                row
-                                                                                            )
                                                                                         setSelectedActions(
-                                                                                            LIST_ACTIONS.update
-                                                                                        )
-                                                                                        updateModalOpen(
-                                                                                            true
+                                                                                            LIST_ACTIONS.create
                                                                                         )
                                                                                         updateSelectedRow(
                                                                                             row
                                                                                         )
+                                                                                        createHandler &&
+                                                                                            createHandler(
+                                                                                                row
+                                                                                            )
                                                                                     }}
                                                                                 >
-                                                                                    <Edit />
+                                                                                    <AddCircleIcon />
                                                                                 </IconButton>
+                                                                            )}
+                                                                            {details && (
+                                                                                <Tooltip title="Consulter le détails">
+                                                                                    <IconButton
+                                                                                        onClick={() => {
+                                                                                            setSelectedActions(
+                                                                                                LIST_ACTIONS.read
+                                                                                            )
+                                                                                            updateSelectedRow(
+                                                                                                row
+                                                                                            )
+                                                                                            detailsHandler &&
+                                                                                                detailsHandler(
+                                                                                                    row
+                                                                                                )
+                                                                                            updateModalOpen(
+                                                                                                true
+                                                                                            )
+                                                                                        }}
+                                                                                    >
+                                                                                        <Visibility />
+                                                                                    </IconButton>
                                                                                 </Tooltip>
-                                                                            </>
-                                                                        )}
-                                                                        {remove && (
-                                                                             <Tooltip title="Supprimer">
-                                                                            <IconButton
-                                                                                onClick={() => {
-                                                                                    setSelectedActions(
-                                                                                        LIST_ACTIONS.delete
-                                                                                    )
-                                                                                    updateModalOpen(
-                                                                                        true
-                                                                                    )
-                                                                                    updateSelectedRow(
-                                                                                        row
-                                                                                    )
-                                                                                }}
-                                                                            >
-                                                                                <Delete />
-                                                                            </IconButton>
-                                                                           </Tooltip>
-                                                                        )}
-                                                                    </TableCell>
-                                                                )}
-                                                            </TableRow>
-                                                        )}
-                                                    </Draggable>
-                                                )
-                                            )}
+                                                                            )}
+                                                                            {modify && (
+                                                                                <>
+                                                                                    <Tooltip title="Modifier">
+                                                                                        <IconButton
+                                                                                            onClick={() => {
+                                                                                                modifyHandler &&
+                                                                                                    modifyHandler(
+                                                                                                        row
+                                                                                                    )
+                                                                                                setSelectedActions(
+                                                                                                    LIST_ACTIONS.update
+                                                                                                )
+                                                                                                updateModalOpen(
+                                                                                                    true
+                                                                                                )
+                                                                                                updateSelectedRow(
+                                                                                                    row
+                                                                                                )
+                                                                                            }}
+                                                                                        >
+                                                                                            <Edit />
+                                                                                        </IconButton>
+                                                                                    </Tooltip>
+                                                                                </>
+                                                                            )}
+                                                                            {remove && (
+                                                                                <Tooltip title="Supprimer">
+                                                                                    <IconButton
+                                                                                        onClick={() => {
+                                                                                            setSelectedActions(
+                                                                                                LIST_ACTIONS.delete
+                                                                                            )
+                                                                                            updateModalOpen(
+                                                                                                true
+                                                                                            )
+                                                                                            updateSelectedRow(
+                                                                                                row
+                                                                                            )
+                                                                                        }}
+                                                                                    >
+                                                                                        <Delete />
+                                                                                    </IconButton>
+                                                                                </Tooltip>
+                                                                            )}
+                                                                        </TableCell>
+                                                                    )}
+                                                                </TableRow>
+                                                            )}
+                                                        </Draggable>
+                                                    )
+                                                )}
                                             {provided.placeholder}
                                         </TableBody>
                                     )}
@@ -374,6 +396,20 @@ const ListComponent: React.FC<Props> = ({
                             </DragDropContext>
                         </Table>
                     </TableContainer>
+
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '40px', marginTop: '40px' }}>
+                    <TablePagination 
+                        rowsPerPageOptions={[5, 10, 20]}
+                        component="div"
+                        count={filteredData.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                        labelRowsPerPage="Lignes par page :"
+                        labelDisplayedRows={({ from, to, count }) => `${from}-${to} sur ${count}`}
+                    />
+                    </div>
                 </div>
 
                 {selectedRow && actions && selectedAction && (
