@@ -80,6 +80,16 @@ export const PROMOTION_ADMIN_COLUMNS = [
     { id: "siglePromotion", label: "Sigle Promotion" },
 ]
 
+export const UE_LIST_COLUMNS = [
+    { id: "codeUe", label: "UE" },
+    { id: "designation", label: "Désignation" },
+    { id: "nbhCm", label: "nbh CM" },
+    { id: "nbhTd", label: "nbh TD" },
+    { id: "nbhTp", label: "nbh TP" },
+    { id: "totaleHeures", label: "TOTAL" },
+    { id: "nomEnseignant", label: "Enseignant" },
+]
+
 export const Evalution_Etudiant_COLUMNS = [
     { id: "anneeUniversitaire", label: "annee Universitaire" },
     { id: "codeFormation", label: "Nom Formation" },

@@ -72,6 +72,7 @@ interface Props {
     afficherEtat?: boolean
     redirect?: boolean
     url?: string
+    filter?: boolean
 }
 
 const ListComponent: React.FC<Props> = ({
@@ -97,6 +98,7 @@ const ListComponent: React.FC<Props> = ({
     afficherEtat,
     url,
     redirect,
+    filter,
 }) => {
     const [filters, setFilters] = useState<{ [key: string]: string }>({})
     const navigate = useNavigate()
@@ -167,89 +169,103 @@ const ListComponent: React.FC<Props> = ({
                     marginBottom: "100px",
                 }}
             >
-                <h2 style={textStyle}>{title}</h2>
-
-                <div
-                    style={{
-                        border: "1px solid #ccc",
-                        padding: "10px",
-                        marginBottom: "10px",
-                        width: "100%",
-                        boxSizing: "border-box",
-                    }}
-                >
+                <Typography variant="h4" style={textStyle}>
+                    {title}
+                </Typography>
+                {!filter && (
                     <div
                         style={{
-                            maxWidth: "90%",
-                            margin: "auto",
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "center",
+                            border: "1px solid #ccc",
+                            padding: "10px",
+                            marginBottom: "10px",
+                            width: "100%",
+                            boxSizing: "border-box",
                         }}
                     >
-                        <Typography variant="h5">Filtre</Typography>
+                        <div
+                            style={{
+                                maxWidth: "90%",
+                                margin: "auto",
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                            }}
+                        >
+                            <Typography variant="h5">Filtre</Typography>
+                        </div>
+
+                        <>
+                            {afficherEtat && afficherEtat === true ? (
+                                <>
+                                    {columnsFilter &&
+                                        columnsFilter.map((column) => (
+                                            <TextField
+                                                key={column.id}
+                                                label={` ${column.label}`}
+                                                variant="outlined"
+                                                value={filters[column.id] || ""}
+                                                onChange={(e) =>
+                                                    handleFilterChange(
+                                                        e,
+                                                        column.id
+                                                    )
+                                                }
+                                                style={{
+                                                    width: "220px",
+                                                    marginRight: "10px",
+                                                }}
+                                            />
+                                        ))}
+
+                                    <FormControl style={{ width: "250px" }}>
+                                        <InputLabel id="etat">Etat</InputLabel>
+                                        <Select
+                                            labelId="etat"
+                                            id="etat"
+                                            label="Etat"
+                                            onChange={handleChangeSelect}
+                                            value={etats}
+                                        >
+                                            <MenuItem
+                                                value={LIST_Etat.ELA.value}
+                                            >
+                                                {LIST_Etat.ELA.label}
+                                            </MenuItem>
+                                            <MenuItem
+                                                value={LIST_Etat.CLO.value}
+                                            >
+                                                {LIST_Etat.CLO.label}
+                                            </MenuItem>
+                                            <MenuItem
+                                                value={LIST_Etat.DIS.value}
+                                            >
+                                                {LIST_Etat.DIS.label}
+                                            </MenuItem>
+                                            <MenuItem value="">
+                                                {LIST_Etat.AN.label}
+                                            </MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </>
+                            ) : (
+                                <>
+                                    {columns.map((column) => (
+                                        <TextField
+                                            key={column.id}
+                                            label={` ${column.label}`}
+                                            variant="outlined"
+                                            value={filters[column.id] || ""}
+                                            onChange={(e) =>
+                                                handleFilterChange(e, column.id)
+                                            }
+                                            style={{ marginRight: "10px" }}
+                                        />
+                                    ))}
+                                </>
+                            )}
+                        </>
                     </div>
-                    {afficherEtat && afficherEtat === true ? (
-                        <>
-                            {columnsFilter &&
-                                columnsFilter.map((column) => (
-                                    <TextField
-                                        key={column.id}
-                                        label={` ${column.label}`}
-                                        variant="outlined"
-                                        value={filters[column.id] || ""}
-                                        onChange={(e) =>
-                                            handleFilterChange(e, column.id)
-                                        }
-                                        style={{
-                                            width: "220px",
-                                            marginRight: "10px",
-                                        }}
-                                    />
-                                ))}
-
-                            <FormControl style={{ width: "250px" }}>
-                                <InputLabel id="etat">Etat</InputLabel>
-                                <Select
-                                    labelId="etat"
-                                    id="etat"
-                                    label="Etat"
-                                    onChange={handleChangeSelect}
-                                    value={etats}
-                                >
-                                    <MenuItem value={LIST_Etat.ELA.value}>
-                                        {LIST_Etat.ELA.label}
-                                    </MenuItem>
-                                    <MenuItem value={LIST_Etat.CLO.value}>
-                                        {LIST_Etat.CLO.label}
-                                    </MenuItem>
-                                    <MenuItem value={LIST_Etat.DIS.value}>
-                                        {LIST_Etat.DIS.label}
-                                    </MenuItem>
-                                    <MenuItem value="">
-                                        {LIST_Etat.AN.label}
-                                    </MenuItem>
-                                </Select>
-                            </FormControl>
-                        </>
-                    ) : (
-                        <>
-                            {columns.map((column) => (
-                                <TextField
-                                    key={column.id}
-                                    label={` ${column.label}`}
-                                    variant="outlined"
-                                    value={filters[column.id] || ""}
-                                    onChange={(e) =>
-                                        handleFilterChange(e, column.id)
-                                    }
-                                    style={{ marginRight: "10px" }}
-                                />
-                            ))}
-                        </>
-                    )}
-                </div>
-
+                )}
                 <TableContainer component={Paper}>
                     <Table>
                         <TableHead>
