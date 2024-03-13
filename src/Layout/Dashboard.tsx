@@ -32,6 +32,7 @@ import CreerEtudiant from "../components/CreerEtudiant"
 import ModifierEtudiant from "../components/ModifierEtudiant"
 import DetailsPromotionAdmin from "../pages/Admin/detailsPromotionAdmin"
 import DetailsPromotionEnseignant from "../pages/Enseignant/detailsPromotionEnseignant"
+import ReponseEvaluationEnseignant from "../pages/Enseignant/ReponseEvaluationEnseignant"
 import EtudiantListPage from "../pages/Admin/etudiantList"
 
 const Dashboard: React.FC = () => {
@@ -154,11 +155,15 @@ const Dashboard: React.FC = () => {
                                     path="enseignant/details-promotion"
                                     element={<DetailsPromotionEnseignant />}
                                 />
-                                 {/* <Route
+                                <Route
+                                    path="enseignant/reponse-evaluation"
+                                    element={<ReponseEvaluationEnseignant />}
+                                />
+                                {/* <Route
                                     path="enseignant/etudiantList"
                                     element={<ListEtudiantPage />}
                                 /> */}
-                                 {/* <Route
+                                {/* <Route
                                     path="enseignant/etudiantList"
                                     element={<ListEtudiantPage />}
                                 /> */}
