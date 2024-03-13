@@ -18,6 +18,25 @@ export interface AuthResponse {
     success: boolean
 }
 
+
+export interface Etudiant {
+    noEtudiant: string
+    nom: string
+    prenom: string
+    sex:string
+    datenaissance:string
+    lieuNaissance?:string
+    nationalite?:string
+    telephone?:string
+    email?:string
+    emailUBO?:string
+    adress?:string
+    codePostale?:string
+    ville?:string
+    promotion?:string
+}
+
+
 export interface User {
     id: number
     username: string
