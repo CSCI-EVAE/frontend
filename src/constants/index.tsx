@@ -15,10 +15,9 @@ export const ROLE = {
 
 export const UE_COLUMNS_LISTEtudiant= [
     { id: "noEtudiant", label: "numero Etudiant" },
-    { id: "promotion", label: "promotion" },
     { id: "nom", label: "nom" },
     { id: "prenom", label: "prenom" },
-    { id: "datenaissance", label: "date naissance" },
+    { id: "dateNaissance", label: "date naissance" },
     { id: "nationalite", label: "nationalite" },
     { id: "telephone", label: "telephone" },
     { id: "email", label: "email" },

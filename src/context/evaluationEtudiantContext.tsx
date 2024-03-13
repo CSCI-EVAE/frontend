@@ -17,7 +17,7 @@ interface EvaluationContextProviderProps {
     children: ReactNode;
 }
 
-export const EvaluationContext = createContext<any>(null);
+export const EvaluationEtudiantContext = createContext<any>(null);
      
 export function AdjustColumns(evaluationList: Evaluation[]): any[] {
     if (evaluationList) {
@@ -57,7 +57,7 @@ export function AdjustColumns(evaluationList: Evaluation[]): any[] {
 }
 
 
-export const EvaluationContextProvider: React.FC<EvaluationContextProviderProps> = ({ children }) => {
+export const EvaluationEtudiantContextProvider: React.FC<EvaluationContextProviderProps> = ({ children }) => {
     const [evaluationList, setEvaluationList] = useState<Evaluation[] | undefined>();
     const { showNotification } = useContext(NotificationContext);
 
@@ -88,13 +88,13 @@ export const EvaluationContextProvider: React.FC<EvaluationContextProviderProps>
 
 
     return (
-        <EvaluationContext.Provider
+        <EvaluationEtudiantContext.Provider
             value={{
                 updateEvaluationList,
                 evaluationList,
             }}
         >
             {children}
-        </EvaluationContext.Provider>
+        </EvaluationEtudiantContext.Provider>
     );
 };

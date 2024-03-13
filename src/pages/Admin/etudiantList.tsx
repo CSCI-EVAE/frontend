@@ -3,16 +3,12 @@ import ListComponent from "../../common/List/list"
 import { useContext } from "react"
 import { UE_COLUMNS_LISTEtudiant } from "../../constants/index"
 import { EtudiantListContext } from "../../context/etudiantListContext"
-import { AdjustColumns } from "../../context/etudiantListContext"
-import Header from "../../Layout/Header"
-import Sidebar from "../../Layout/sideBar/SidebarPage"
-
 const EtudiantListPage: React.FC = () => {
     const {
      etudiantList
     } = useContext(EtudiantListContext);
    
-     const dat = etudiantList ? AdjustColumns(etudiantList) : [];
+     const dat = etudiantList ? etudiantList : [];
      const handleEdit = (rowData: any) => {
         console.log("Modifier:", rowData)
        
@@ -26,8 +22,7 @@ const EtudiantListPage: React.FC = () => {
     return (
        
      <div>
-               <Sidebar />
-        <Header />
+             
           
             <ListComponent
                     title={"Liste des etudiants"}
@@ -37,6 +32,7 @@ const EtudiantListPage: React.FC = () => {
                     remove={true}
                     deleteHandler={handleDelete}
                     modify={true}
+                    filter={true}
                     modifyElement={
                         <div>
                             <p>Update etudiant</p>
@@ -48,6 +44,9 @@ const EtudiantListPage: React.FC = () => {
                              <p>creer etudiant</p>
                         </div>
                     }
+                  noBoutonRetour={true}
+                    
+
                 />
      </div>  
     );

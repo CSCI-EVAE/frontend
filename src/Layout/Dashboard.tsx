@@ -33,7 +33,6 @@ import ModifierEtudiant from "../components/ModifierEtudiant"
 import DetailsPromotionAdmin from "../pages/Admin/detailsPromotionAdmin"
 import DetailsPromotionEnseignant from "../pages/Enseignant/detailsPromotionEnseignant"
 import EtudiantListPage from "../pages/Admin/etudiantList"
-import ListEtudiantPage from "../pages/Enseignant/listEtudiants"
 
 const Dashboard: React.FC = () => {
     // const role = Object.keys(ROLE_COMPONENTS).find(hasRole);
@@ -155,10 +154,10 @@ const Dashboard: React.FC = () => {
                                     path="enseignant/details-promotion"
                                     element={<DetailsPromotionEnseignant />}
                                 />
-                                 <Route
+                                 {/* <Route
                                     path="enseignant/etudiantList"
                                     element={<ListEtudiantPage />}
-                                />
+                                /> */}
                                  {/* <Route
                                     path="enseignant/etudiantList"
                                     element={<ListEtudiantPage />}

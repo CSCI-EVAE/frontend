@@ -15,7 +15,9 @@ import { ROLE } from "../constants"
 import { userInfos } from "../utils/authUtils"
 import { PromotionContextProvider } from "./promotionContextAdmin"
 import { PromotionEnseignantContextProvider } from "./promotionContextEnseignant"
-import { EvaluationContextProvider } from "./evaluationEtudiantContext"
+import { EvaluationContextProvider } from "./evaluationEnseignantContext"
+import { EvaluationEtudiantContextProvider } from "./evaluationEtudiantContext"
+
 import { EtudiantListContextPorvider } from "./etudiantListContext"
 import { EtudiantEnseignantContextProvider } from "./ListEtudiantsEnseignantContext"
 
@@ -45,7 +47,6 @@ export const GlobalContextProvider: React.FC<{ children: ReactNode }> = ({
                                         <UEContextProvider>
                                         <EtudiantEnseignantContextProvider>
                                             <StepContextProvider>
-                                            
                                                 <GlobalContext.Provider value={{}}>
                                                     {children}
                                                 </GlobalContext.Provider>
@@ -97,11 +98,11 @@ export const GlobalContextProvider: React.FC<{ children: ReactNode }> = ({
                             <ListContextProvider>
                         
                                         <StepContextProvider>
-                                        <EvaluationContextProvider>
+                                        <EvaluationEtudiantContextProvider>
                                             <GlobalContext.Provider value={{}}>
                                                 {children}
                                             </GlobalContext.Provider>
-                                            </EvaluationContextProvider>
+                                            </EvaluationEtudiantContextProvider>
                                         </StepContextProvider>
                                    
                             </ListContextProvider>
