@@ -15,7 +15,7 @@ import {
     DialogActions,
     Typography,
     Tooltip,
-    TablePagination
+    TablePagination,
 } from "@mui/material"
 import {
     AddCircleOutline,
@@ -53,6 +53,8 @@ interface Props {
     addElement?: ReactNode
     detailsElement?: ReactNode
     handleAdd?: (rowData: any) => void
+    redirect?: boolean
+    url?: string
 }
 
 const ListComponent: React.FC<Props> = ({
@@ -72,29 +74,32 @@ const ListComponent: React.FC<Props> = ({
     handleAdd,
     modifyHandler,
     detailsElement,
+    url,
+    redirect,
 }) => {
     const [filters, setFilters] = useState<{ [key: string]: string }>({})
-    const [page, setPage] = useState(0); // État pour la pagination
-    const [rowsPerPage, setRowsPerPage] = useState(10); // État pour les lignes par page
+    const [page, setPage] = useState(0) // État pour la pagination
+    const [rowsPerPage, setRowsPerPage] = useState(10) // État pour les lignes par page
     const { openModal, updateModalOpen, selectedRow, updateSelectedRow } =
         useContext(ListContext)
     const [selectedAction, setSelectedActions] = useState<any | null>(null)
 
-
     // Fonction pour changer de page
     const handleChangePage = (event: unknown, newPage: number) => {
-        setPage(newPage);
-    };
+        setPage(newPage)
+    }
 
     // Fonction pour changer le nombre de lignes par page
-    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
-    };
+    const handleChangeRowsPerPage = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setRowsPerPage(parseInt(event.target.value, 10))
+        setPage(0)
+    }
 
     // Calcul de l'index de départ et de fin pour l'affichage des données selon la pagination
-    const startIndex = page * rowsPerPage;
-    const endIndex = startIndex + rowsPerPage;
+    const startIndex = page * rowsPerPage
+    const endIndex = startIndex + rowsPerPage
 
     const textStyle: React.CSSProperties = {
         fontFamily: "cursive",
@@ -142,7 +147,6 @@ const ListComponent: React.FC<Props> = ({
         })
     })
     const navigate = useNavigate()
-
 
     return (
         <>
@@ -254,7 +258,10 @@ const ListComponent: React.FC<Props> = ({
                                             {filteredData
                                                 .slice(startIndex, endIndex)
                                                 .map(
-                                                    (row: any, rowIndex: any) => (
+                                                    (
+                                                        row: any,
+                                                        rowIndex: any
+                                                    ) => (
                                                         <Draggable
                                                             key={rowIndex}
                                                             draggableId={String(
@@ -262,14 +269,18 @@ const ListComponent: React.FC<Props> = ({
                                                             )}
                                                             index={rowIndex}
                                                         >
-                                                            {(provided: any) => (
+                                                            {(
+                                                                provided: any
+                                                            ) => (
                                                                 <TableRow
-                                                                    key={rowIndex}
+                                                                    key={
+                                                                        rowIndex
+                                                                    }
                                                                     style={{
                                                                         backgroundColor:
                                                                             rowIndex %
                                                                                 2 ===
-                                                                                0
+                                                                            0
                                                                                 ? "#fffff"
                                                                                 : "#f9f9f9",
                                                                     }}
@@ -289,8 +300,8 @@ const ListComponent: React.FC<Props> = ({
                                                                             >
                                                                                 {
                                                                                     row[
-                                                                                    column
-                                                                                        .id
+                                                                                        column
+                                                                                            .id
                                                                                     ]
                                                                                 }
                                                                             </TableCell>
@@ -320,19 +331,31 @@ const ListComponent: React.FC<Props> = ({
                                                                                 <Tooltip title="Consulter le détails">
                                                                                     <IconButton
                                                                                         onClick={() => {
-                                                                                            setSelectedActions(
-                                                                                                LIST_ACTIONS.read
-                                                                                            )
-                                                                                            updateSelectedRow(
-                                                                                                row
-                                                                                            )
-                                                                                            detailsHandler &&
-                                                                                                detailsHandler(
+                                                                                            if (
+                                                                                                redirect
+                                                                                            ) {
+                                                                                                updateSelectedRow(
                                                                                                     row
                                                                                                 )
-                                                                                            updateModalOpen(
-                                                                                                true
-                                                                                            )
+                                                                                                url &&
+                                                                                                    navigate(
+                                                                                                        url
+                                                                                                    )
+                                                                                            } else {
+                                                                                                setSelectedActions(
+                                                                                                    LIST_ACTIONS.read
+                                                                                                )
+                                                                                                updateSelectedRow(
+                                                                                                    row
+                                                                                                )
+                                                                                                detailsHandler &&
+                                                                                                    detailsHandler(
+                                                                                                        row
+                                                                                                    )
+                                                                                                updateModalOpen(
+                                                                                                    true
+                                                                                                )
+                                                                                            }
                                                                                         }}
                                                                                     >
                                                                                         <Visibility />
@@ -398,18 +421,27 @@ const ListComponent: React.FC<Props> = ({
                         </Table>
                     </TableContainer>
 
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '40px', marginTop: '40px' }}>
-                    <TablePagination 
-                        rowsPerPageOptions={[5, 10, 20]}
-                        component="div"
-                        count={filteredData.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                        labelRowsPerPage="Lignes par page :"
-                        labelDisplayedRows={({ from, to, count }) => `${from}-${to} sur ${count}`}
-                    />
+                    <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "flex-end",
+                            marginBottom: "40px",
+                            marginTop: "40px",
+                        }}
+                    >
+                        <TablePagination
+                            rowsPerPageOptions={[5, 10, 20]}
+                            component="div"
+                            count={filteredData.length}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            onPageChange={handleChangePage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                            labelRowsPerPage="Lignes par page :"
+                            labelDisplayedRows={({ from, to, count }) =>
+                                `${from}-${to} sur ${count}`
+                            }
+                        />
                     </div>
                 </div>
 

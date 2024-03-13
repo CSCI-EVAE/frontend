@@ -229,3 +229,13 @@ export interface Evaluation {
     finReponse: string
     RubriqueQuestion: RubriqueEvaluation[]
 }
+
+export interface UeToDisplay {
+    codeUe: string
+    nomEnseignant: string
+    designation: string
+    nbhCm: number
+    nbhTd: number
+    nbhTp: number
+    totaleHeures: number
+}
