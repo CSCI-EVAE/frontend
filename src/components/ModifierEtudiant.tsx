@@ -32,7 +32,7 @@ export default function ModifierEtudiant() {
         nom: "Dupont",
         prenom: "Jean",
         sexe: "H",
-        dateNaissance: new Date("2024-03-01"),
+        dateNaissance: "2024-03-01",
         lieuNaissance: "Paris",
         nationalite: "Française",
         telephone: "0123456789",
@@ -49,8 +49,9 @@ export default function ModifierEtudiant() {
         CodeFormation: "INF123",
         anneeUniversitaire: "2022-2023",
     }
-    const formatDate = (date: Date) => {
-        const isoDate = date.toISOString().split("T")[0]
+    const formatDate = (date: string) => {
+        const d = new Date(date)
+        const isoDate = d.toISOString().split("T")[0]
         return isoDate
     }
 

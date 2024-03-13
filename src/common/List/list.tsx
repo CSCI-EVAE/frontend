@@ -55,6 +55,9 @@ interface Props {
     handleAdd?: (rowData: any) => void
     redirect?: boolean
     url?: string
+    filter?: boolean
+    noBoutonAjouter? : boolean
+    noBoutonRetour ? : boolean
 }
 
 const ListComponent: React.FC<Props> = ({
@@ -76,6 +79,10 @@ const ListComponent: React.FC<Props> = ({
     detailsElement,
     url,
     redirect,
+    filter,
+    noBoutonAjouter,
+    noBoutonRetour
+    
 }) => {
     const [filters, setFilters] = useState<{ [key: string]: string }>({})
     const [page, setPage] = useState(0) // État pour la pagination
@@ -150,6 +157,7 @@ const ListComponent: React.FC<Props> = ({
 
     return (
         <>
+        {!noBoutonRetour && 
             <div
                 style={{
                     maxWidth: "90%",
@@ -168,6 +176,7 @@ const ListComponent: React.FC<Props> = ({
                     }}
                 />
             </div>
+            }
             <div
                 style={{
                     maxWidth: "90%",
@@ -177,7 +186,10 @@ const ListComponent: React.FC<Props> = ({
                     alignItems: "center",
                 }}
             >
-                <h2 style={textStyle}>{title}</h2>
+                <Typography variant="h4" style={textStyle}>
+                    {title}
+                </Typography>
+                {!noBoutonAjouter &&
                 <ButtonComponent
                     text="Ajouter"
                     variant="contained"
@@ -188,7 +200,10 @@ const ListComponent: React.FC<Props> = ({
                         updateSelectedRow({})
                     }}
                 />
+            }
+                    
                 <div style={{ width: "90%" }}>
+                {!filter && (
                     <div
                         style={{
                             border: "3px solid #3c768c",
@@ -199,6 +214,7 @@ const ListComponent: React.FC<Props> = ({
                             marginTop: "20px",
                         }}
                     >
+                        <>
                         <div
                             style={{
                                 maxWidth: "90%",
@@ -226,7 +242,11 @@ const ListComponent: React.FC<Props> = ({
                                 }}
                             />
                         ))}
+                        </>
                     </div>
+                    
+                    )}
+                    
                     <TableContainer component={Paper}>
                         <Table>
                             <TableHead>

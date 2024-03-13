@@ -3,7 +3,7 @@ import WidgetsIcon from "@mui/icons-material/Widgets"
 import AccountTreeIcon from "@mui/icons-material/AccountTree"
 import AllOutIcon from "@mui/icons-material/AllOut"
 import AltRouteIcon from "@mui/icons-material/AltRoute"
-import { FormatListBulleted, List } from "@mui/icons-material"
+import { FormatListBulleted, List, VerifiedUserSharp } from "@mui/icons-material"
 
 export const API_URL = "http://localhost:8080/api/v1"
 
@@ -12,6 +12,17 @@ export const ROLE = {
     enseigannt: "ENS",
     etudiant: "ETU",
 }
+
+export const UE_COLUMNS_LISTEtudiant= [
+    { id: "noEtudiant", label: "numero Etudiant" },
+    { id: "nom", label: "nom" },
+    { id: "prenom", label: "prenom" },
+    { id: "dateNaissance", label: "date naissance" },
+    { id: "nationalite", label: "nationalite" },
+    { id: "telephone", label: "telephone" },
+    { id: "email", label: "email" },
+]
+
 
 export const LIST_ACTIONS = {
     create: "CREATE",
@@ -160,6 +171,12 @@ export const ADMIN_DASHBOARD: Dashboard[] = [
         title: "Promotions",
         link: "/dashboard/promotions",
     },
+    {
+        id: 7,
+        icon: <VerifiedUserSharp />,
+        title: "Etudiants",
+        link: "/dashboard/etudiantList",
+    },
 ]
 
 export const ENSEIGNANT_DASHBOARD: Dashboard[] = [
@@ -181,6 +198,12 @@ export const ENSEIGNANT_DASHBOARD: Dashboard[] = [
         title: "Promotions",
         link: "/dashboard/enseignant/Promotion",
     },
+    {
+        id: 4,
+        icon: <VerifiedUserSharp />,
+        title: "Etudiants",
+        link: "/dashboard/enseignant/etudiantList",
+    },  
 ]
 
 export const UE_COLUMNS = [
@@ -222,6 +245,12 @@ export const Enseignant_DASHBOARD: Dashboard[] = [
         title: "Rubrique Evaluation",
         link: "/dashboard/enseignant/rubrique-evaluation",
     },
+    {
+        id: 4,
+        icon: <VerifiedUserSharp />,
+        title: "Etudiants",
+        link: "/dashboard/enseignant/etudiantList",
+    }, 
 ]
 
 export const GENDERS = {

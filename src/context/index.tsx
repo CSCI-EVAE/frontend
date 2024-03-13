@@ -16,6 +16,10 @@ import { userInfos } from "../utils/authUtils"
 import { PromotionContextProvider } from "./promotionContextAdmin"
 import { PromotionEnseignantContextProvider } from "./promotionContextEnseignant"
 import { EvaluationContextProvider } from "./evaluationEnseignantContext"
+import { EvaluationEtudiantContextProvider } from "./evaluationEtudiantContext"
+
+import { EtudiantListContextPorvider } from "./etudiantListContext"
+import { EtudiantEnseignantContextProvider } from "./ListEtudiantsEnseignantContext"
 
 
 
@@ -41,11 +45,14 @@ export const GlobalContextProvider: React.FC<{ children: ReactNode }> = ({
                                 <RubriqueEnseignantContextProvider>
                                     <SoumettreEvaluationContextProvider>
                                         <UEContextProvider>
+                                        <EtudiantEnseignantContextProvider>
                                             <StepContextProvider>
                                                 <GlobalContext.Provider value={{}}>
                                                     {children}
                                                 </GlobalContext.Provider>
+                                              
                                             </StepContextProvider>
+                                            </EtudiantEnseignantContextProvider>
                                         </UEContextProvider>
                                     </SoumettreEvaluationContextProvider>
                                 </RubriqueEnseignantContextProvider>
@@ -69,9 +76,11 @@ export const GlobalContextProvider: React.FC<{ children: ReactNode }> = ({
                                     <SoumettreEvaluationContextProvider>
                                         <StepContextProvider>
                                         <PromotionContextProvider>
+                                        <EtudiantListContextPorvider>
                                             <GlobalContext.Provider value={{}}>
                                                 {children}
                                             </GlobalContext.Provider>
+                                            </EtudiantListContextPorvider>
                                            </PromotionContextProvider>
                                         </StepContextProvider>
                                     </SoumettreEvaluationContextProvider>
@@ -89,11 +98,11 @@ export const GlobalContextProvider: React.FC<{ children: ReactNode }> = ({
                             <ListContextProvider>
                         
                                         <StepContextProvider>
-                                        <EvaluationContextProvider>
+                                        <EvaluationEtudiantContextProvider>
                                             <GlobalContext.Provider value={{}}>
                                                 {children}
                                             </GlobalContext.Provider>
-                                            </EvaluationContextProvider>
+                                            </EvaluationEtudiantContextProvider>
                                         </StepContextProvider>
                                    
                             </ListContextProvider>
