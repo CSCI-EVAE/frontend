@@ -16,17 +16,17 @@ interface UEContextProps {
     children: ReactNode
 }
 
-interface UEContextData {
-    promotionList: Promotion[]
-    ueList: UE[]
-    getUEList: () => void
-    refreshList: () => void
-    getPromotionList : (codeFormation: string) => void
-}
+// interface UEContextData {
+//     promotionList: Promotion[]
+//     ueList: UE[]
+//     getUEList: () => void
+//     refreshList: () => void
+//     getPromotionList : (codeFormation: string) => void
+// }
 
 
 
-export const UEContext = createContext<UEContextData | null>(null)
+export const UEContext = createContext<any>(null)
 
 export function trouverIdEvaluation(
     evaluation: UE,
@@ -71,14 +71,12 @@ export const UEContextProvider: React.FC<UEContextProps> = ({ children }) => {
         try {
             const response: ApiResponse = await getRequest("/enseignant/ue")
 
-            setUeList(response.data)
+            setUeList(response.data.data)
         } catch (error) {
             console.error(error)
          
         }
     }, [])
-
-  
 
   
     const refreshList = useCallback(async () => {
@@ -105,16 +103,20 @@ export const UEContextProvider: React.FC<UEContextProps> = ({ children }) => {
        
     }, [])
 
-    const contextValue: UEContextData = {
-        ueList,
-        promotionList,
-        getUEList: fetchUEList,
-        refreshList,
-        getPromotionList: fetchPromotionsPourFormation
-    }
+    // const contextValue: UEContextData = {
+    //     ueList,
+    //     promotionList,
+    //     getUEList: fetchUEList,
+    //     refreshList,
+    //     getPromotionList: fetchPromotionsPourFormation
+    // }
 
     return (
     
-        <UEContext.Provider value={contextValue}>{children}</UEContext.Provider>
+        <UEContext.Provider value={{ueList,
+            promotionList,
+            getUEList: fetchUEList,
+            refreshList,
+            getPromotionList: fetchPromotionsPourFormation}}>{children}</UEContext.Provider>
     )
 }

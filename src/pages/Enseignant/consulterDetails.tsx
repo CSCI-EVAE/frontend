@@ -14,11 +14,12 @@ const DetailsEvaluationPage: React.FC = () => {
     const { state } = useLocation()
     const infoGenerale = state?.rowDataInfo
 
-    console.log("INFO GENERALE :" + infoGenerale.debutReponse)
+ 
 
     const { evaluationDetails, fetchEvaluationDetails } = useContext(
         DetailsEvaluationContext
-    ) || {
+    ) 
+    || {
         evaluationDetails: null,
         evaluationError: "",
         fetchEvaluationDetails: () => {},

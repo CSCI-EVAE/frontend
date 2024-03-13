@@ -10,7 +10,8 @@ import {
 import ButtonComponent from "../common/Button"
 import { useLocation, useNavigate } from "react-router-dom"
 import { UEContext } from "../context/UeContext"
-import SelectComponent from "../common/Select"
+import SelectComponent from "../common/Select/newSelect"
+import { Promotion } from "../types"
 
 
 const InfoGenerales: React.FC = () => {
@@ -30,7 +31,9 @@ const InfoGenerales: React.FC = () => {
     const [dateFin, setDateFin] = useState("")
     const [periode, setPeriode] = useState("")
     const [error, setError] = useState("")
-    const [selectedAnneeUniversitaire, setSelectedAnneeUniversitaire] = useState<string | number | (string | number)[]>(0); // Assurez-vous que l'état est de type string | number | (string | number)[]
+    const [anneePro, setAnneePro] = useState<string>(''); // Assurez-vous que l'état est de type string | number | (string | number)[]
+
+
 
 
     interface PromotionOption {
@@ -63,11 +66,12 @@ const InfoGenerales: React.FC = () => {
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault()
 
-        if (!designation || !dateDebut || !dateFin) {
+        if (!designation || !dateDebut || !dateFin || !anneePro) {
             setError("Veuillez remplir les champs obligatoires de date debut et fin et designation.")
             setDesignationError(!designation);
             setDateDebutError(!dateDebut);
             setDateFinError(!dateFin);
+            
             return
         }
 
@@ -82,7 +86,6 @@ const InfoGenerales: React.FC = () => {
         const infoGenerales = {
             nomFormation: infoGenerale.nomFormation,
             codeFormation: infoGenerale.codeFormation,
-            anneePro: infoGenerale.anneePro,
             codeUE: infoGenerale.codeUE,
             codeEC: infoGenerale.codeEC,
             designation,
@@ -90,11 +93,18 @@ const InfoGenerales: React.FC = () => {
             dateFin,
         }
 
+        const infoSup = {
+            anneePro: anneePro,
+            periode: periode
+        }
+
         localStorage.setItem("formData", JSON.stringify(infoGenerales))
+        localStorage.setItem("data",  JSON.stringify(infoSup))
         navigate(`/dashboard/enseignant/rubrique-evaluation`)
         setDesignation("")
         setDateDebut("")
         setDateFin("")
+        setAnneePro("")
         setError("")
 
         // Supprimer les données du localStorage apres 10 minutes
@@ -104,6 +114,8 @@ const InfoGenerales: React.FC = () => {
             },
             10 * 60 * 1000
         )
+
+        
     }
 
 
@@ -113,12 +125,12 @@ const InfoGenerales: React.FC = () => {
         if (getPromotionList) {
             getPromotionList(infoGenerale.codeFormation);
         }
-    }, [getPromotionList, infoGenerale.codeFormation, promotionList]);
+    }, [getPromotionList, infoGenerale.codeFormation]);
 
 
     let promotionOptions: PromotionOption[] = [];
     if (promotionList) {
-        promotionOptions = promotionList.map((promotion) => ({
+        promotionOptions = promotionList.map((promotion : Promotion) => ({
             value: promotion.anneeUniversitaire,
             label: promotion.anneeUniversitaire,
         }));
@@ -156,12 +168,18 @@ const InfoGenerales: React.FC = () => {
                         </Grid>
 
                         <Grid item xs={10} sm={3}>
+
                             <SelectComponent
+                                onChange={(selectedAnneeUniversitaire) => {
+                                    console.log(selectedAnneeUniversitaire)
+                                    setAnneePro(selectedAnneeUniversitaire as string)
+                                }}
+                                placeholder="Année Universitaire"
+                                name="Année Universitaire"
+                                label="Année Universitaire"
                                 options={promotionOptions}
-                                label="Année universitaire"
-                                value={selectedAnneeUniversitaire}
-                                onChange={setSelectedAnneeUniversitaire} 
-                                placeholder="Sélectionner une année universitaire"
+                                
+                            
                             />
                         </Grid>
 

@@ -118,6 +118,7 @@ const Dashboard: React.FC = () => {
                                     path="/enseignant/unitésEnseignement"
                                     element={<UePage />}
                                 />
+                                
                                 <Route
                                     path="enseignant/rubrique-evaluation"
                                     element={<AjoutRubriqueEvaluation />}
@@ -128,7 +129,7 @@ const Dashboard: React.FC = () => {
                                 />
 
                                 <Route
-                                    path="enseignant/evaluation-details/:id_eva"
+                                    path="enseignant/unitésEnseignement/evaluation-details/:id_eva"
                                     element={<DetailsEvaluationPage />}
                                 />
                                 <Route
