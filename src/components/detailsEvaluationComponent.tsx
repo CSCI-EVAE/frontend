@@ -1,9 +1,8 @@
 import { KeyboardBackspace } from "@mui/icons-material"
 import ButtonComponent from "../common/Button"
-import { useLocation, useNavigate, useParams } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { FC } from "react"
 import { Box, Grid, Typography } from "@mui/material"
-import { Promotion } from "../types"
 import { Evaluation } from "../types/EvaluationTypes"
 import React from "react"
 
@@ -26,7 +25,7 @@ const DetailsEvaluationComponent: FC<DetailsProps> = ({
     const infoGenerale = state?.rowDataInfo
     const navigate = useNavigate()
     
-    var newEtat = "En cours d'élaboration"
+    var newEtat = ""
     if (evaluation.etat === "ELA") {
         newEtat = "En cours d'élaboration"
     }
@@ -223,6 +222,20 @@ const DetailsEvaluationComponent: FC<DetailsProps> = ({
                                             Du  {evaluation.debutReponse} au {evaluation.finReponse}
                                         </React.Fragment>
                                     )}
+                                </Typography>
+                            </Grid>
+                            <Grid
+                                item
+                                sm={3}
+                                sx={{
+                                    marginBottom: "10px",
+                                }}
+                            >
+                                <Typography variant="body1">
+
+                                    <strong>Etat : </strong>{newEtat}
+                                    
+
                                 </Typography>
                             </Grid>
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from "react"
 import List from "@mui/material/List"
 import ListItemText from "@mui/material/ListItemText"
-import { useParams, useLocation } from "react-router-dom"
+import { useParams} from "react-router-dom"
 import { DetailsEvaluationContext } from "../../context/detailsEvaluationContext"
 import { Evaluation } from "../../types/EvaluationTypes"
 import Header from "../../Layout/Header"
@@ -11,7 +11,7 @@ import { ListItem } from "@mui/material"
 
 const DetailsEvaluationPage: React.FC = () => {
     const { id_eva } = useParams()
-    const { state } = useLocation()
+
 
 
  
