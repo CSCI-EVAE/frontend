@@ -1,68 +1,35 @@
-import React, { FC } from "react"
-// Import Swiper React components
-import { Swiper, SwiperSlide } from "swiper/react"
-
-// Import Swiper styles
-import "swiper/css"
-//import "swiper/css/effect-coverflow"
-import "swiper/css/effect-cube"
-import "swiper/css/pagination"
-import "swiper/css/navigation"
-
-import "../constants/style.css"
-
-// import required modules
-import {
-    //EffectCoverflow,
-    Pagination,
-    EffectCube,
-    Navigation,
-} from "swiper/modules"
+import React from "react"
 import { Card, CardContent, Typography, Slider, Box, Grid } from "@mui/material"
-//import { blue } from "@mui/material/colors"
 
 interface QuestionProps {
-    question: any
-    average: any
+    question: string
+    average: number
 }
+
 interface RubriqueProps {
-    questions: any
-    title: any
+    questions: { question: string; average: number }[]
+    title: string
 }
-const QuestionCard: FC<QuestionProps> = ({ question, average }) => {
+
+const QuestionCard: React.FC<QuestionProps> = ({ question, average }) => {
     const marks = [
-        {
-            value: 1,
-            label: "1",
-        },
-        {
-            value: 2,
-            //label: "20°C",
-        },
-        {
-            value: 3,
-            //label: "37°C",
-        },
-        {
-            value: 4,
-            // label: "100°C",
-        },
-        {
-            value: 5,
-            label: "5",
-        },
+        { value: 1, label: "1" },
+        { value: 2 },
+        { value: 3 },
+        { value: 4 },
+        { value: 5, label: "5" },
     ]
+
     return (
-        <Card variant="outlined" sx={{ maxWidth: 400, marginBottom: 2 }}>
-            <CardContent>
+        <Card variant="outlined" sx={{ maxWidth: 500, marginBottom: -8 }}>
+            <CardContent sx={{ paddingBottom: 1 }}>
                 <Typography variant="body1" gutterBottom>
                     {question}
                 </Typography>
-                {/* Slider affichant la moyenne de la question */}
                 <Typography variant="body1" gutterBottom>
                     Moyenne :
                 </Typography>
-                <Box sx={{ width: "80%", margin: "auto" }}>
+                <Box sx={{ width: "100%", margin: "auto" }}>
                     <Slider
                         marks={marks}
                         value={average}
@@ -70,17 +37,6 @@ const QuestionCard: FC<QuestionProps> = ({ question, average }) => {
                         min={1}
                         max={5}
                         disabled
-                        // sx={{
-                        //     "& .MuiSlider-thumb": {
-                        //         backgroundColor: blue[300], // Modifier la couleur du curseur
-                        //     },
-                        //     "& .MuiSlider-rail": {
-                        //         backgroundColor: blue[100], // Modifier la couleur de la barre
-                        //     },
-                        //     "& .MuiSlider-track": {
-                        //         backgroundColor: blue[500], // Modifier la couleur de la piste
-                        //     },
-                        // }}
                     />
                 </Box>
             </CardContent>
@@ -88,27 +44,18 @@ const QuestionCard: FC<QuestionProps> = ({ question, average }) => {
     )
 }
 
-const RubriqueCard: FC<RubriqueProps> = ({ title, questions }) => {
+const RubriqueCard: React.FC<RubriqueProps> = ({ title, questions }) => {
     return (
-        <Card
-            variant="outlined"
-            sx={{
-                width: "100%",
-                height: 600,
-                paddingLeft: "60px",
-                //paddingRight: "70px",
-            }}
-        >
-            <CardContent sx={{ maxHeight: 500, overflowY: "auto" }}>
-                <Typography variant="h5" component="h2" gutterBottom>
-                    {title}
-                </Typography>
-                <Grid container>
-                    {/* Affichage des questions avec leur moyenne respective */}
-                    {questions.map((question: any, index: any) => (
-                        <Grid item sm={6}>
+        <Card variant="outlined" sx={{ marginBottom: 6, height: 670 }}>
+            <CardContent>
+            <Typography variant="h5" component="h2" gutterBottom sx={{ textAlign: "center"  }}>
+    {title}
+</Typography>
+
+                <Grid container spacing={15}>
+                    {questions.map((question, index) => (
+                        <Grid item key={index} xs={10} sm={6}>
                             <QuestionCard
-                                key={index}
                                 question={question.question}
                                 average={question.average}
                             />
@@ -119,7 +66,8 @@ const RubriqueCard: FC<RubriqueProps> = ({ title, questions }) => {
         </Card>
     )
 }
-export default function ReponsesEvaluationDetails() {
+
+const ReponsesEvaluationDetails: React.FC = () => {
     const exampleQuestions = [
         { question: "Question 1", average: 4.2 },
         { question: "Question 2", average: 3.8 },
@@ -127,71 +75,23 @@ export default function ReponsesEvaluationDetails() {
         { question: "Question 4", average: 4.7 },
         { question: "Question 5", average: 3.9 },
     ]
+
     return (
-        <>
-            <div
-            // style={{
-            //     maxWidth: "90%",
-            //     marginLeft: "150px",
-            //     display: "flex",
-            //     flexDirection: "column",
-            //     alignItems: "center",
-            // }}
-            >
-                <Swiper
-                    effect={"cube"}
-                    grabCursor={true}
-                    cubeEffect={{
-                        shadow: true,
-                        slideShadows: true,
-                        shadowOffset: 20,
-                        shadowScale: 0.94,
-                    }}
-                    pagination={true}
-                    navigation={true}
-                    modules={[EffectCube, Pagination, Navigation]}
-                    className="mySwiper"
-                    // effect={"coverflow"}
-                    // grabCursor={true}
-                    //centeredSlides={true}
-                    // slidesPerView={"auto"}
-                    // coverflowEffect={{
-                    //     rotate: 50,
-                    //     stretch: 0,
-                    //     depth: 100,
-                    //     modifier: 1,
-                    //     slideShadows: true,
-                    // }}
-                    // pagination={true}
-                    // modules={[EffectCoverflow, Pagination]}
-                    // className="mySwiper"
-                >
-                    <SwiperSlide>
-                        <RubriqueCard
-                            title="Titre de la rubrique"
-                            questions={exampleQuestions}
-                        />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <RubriqueCard
-                            title="Titre de la rubrique"
-                            questions={exampleQuestions}
-                        />{" "}
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <RubriqueCard
-                            title="Titre de la rubrique"
-                            questions={exampleQuestions}
-                        />{" "}
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <RubriqueCard
-                            title="Titre de la rubrique"
-                            questions={exampleQuestions}
-                        />{" "}
-                    </SwiperSlide>
-                </Swiper>
-            </div>
-        </>
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                maxWidth: "80%",
+                margin: "auto",
+            }}
+        >
+            <RubriqueCard title="Titre de la rubrique" questions={exampleQuestions} />
+            <RubriqueCard title="Titre de la rubrique" questions={exampleQuestions} />
+            <RubriqueCard title="Titre de la rubrique" questions={exampleQuestions} />
+            <RubriqueCard title="Titre de la rubrique" questions={exampleQuestions} />
+        </div>
     )
 }
+
+export default ReponsesEvaluationDetails
