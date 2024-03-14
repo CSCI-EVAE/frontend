@@ -191,6 +191,7 @@ export interface UE {
     nbhCm: number
     nbhTd: number
     nbhTp: number
+    anneePro: string | null
 }
 
 export interface UEListResponse {

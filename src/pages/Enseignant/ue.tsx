@@ -1,9 +1,8 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import ListComponent from "../../common/List"
-import { UEContext, trouverIdEvaluation } from "../../context/UeContext"
+import { UEContext } from "../../context/UeContext"
 import { UE_COLUMNS, UE_COLUMNS_FILTER } from "../../constants"
 import { UE } from "../../types"
-import { DetailsEvaluationContext } from "../../context/detailsEvaluationContext"
 import { useNavigate } from "react-router-dom"
 import { SoumettreEvaluationContext } from "../../context/soumettreEvaluationContext"
 import Header from "../../Layout/Header"
@@ -13,16 +12,23 @@ const UePage: React.FC = () => {
     const navigate = useNavigate()
 
     const ueContext = useContext(UEContext)
-    const evaContext = useContext(DetailsEvaluationContext)
     const soumettre = useContext(SoumettreEvaluationContext)
 
-    if (!ueContext) {
-        return <div>Loading...</div>
-    }
 
-    const { ueList } = ueContext
+ 
+    const [ueList, setUeList] = useState<UE[]>([]);
 
-    console.log("je suis ueList", ueList)
+
+    useEffect(() => {
+        if (ueContext) {
+            setUeList(ueContext.ueList);
+        }
+    }, [ueContext]);
+
+
+
+   
+
 
     function extractNeededInfo(ue: UE) {
         let extractedInfo: any = {
@@ -44,12 +50,25 @@ const UePage: React.FC = () => {
             soumettreValue: false,
         }
 
+        var newEtat = "En cours d'élaboration"
+        if (ue.etat === "ELA") {
+            newEtat = "En cours d'élaboration"
+        }
+        if (ue.etat === "DIS") {
+            newEtat = "Mise en disposition"
+        }
+        if(ue.etat === "CLO"){
+            newEtat = "Cloturé"
+        }
+        
+
        
 
         if (ue.evaluationId) {
             extractedInfo = {
                 ...extractedInfo,
-                etat: ue.etat,
+                
+                etat: newEtat,
                 designation: ue.designation,
                 debutReponse: ue.debutReponse,
                 finReponse: ue.finReponse,
@@ -72,22 +91,25 @@ const UePage: React.FC = () => {
 
 
 
-    const handleDetails = (rowData: UE) => {
-        const id_eva = trouverIdEvaluation(rowData, ueList)
+    const handleDetails = (rowData: any) => {
 
-        if (id_eva) {
-            evaContext?.fetchEvaluationDetails(id_eva)
+        const selectedUe = ueList.find(
+            (ue) =>
+                ue.nomFormation === rowData.nomFormation &&
+                ue.codeUe === rowData.codeUE &&
+                ue.codeEc === rowData.codeEC
+        )
 
-            const selectedUe = ueList.find((ue) => ue.evaluationId === id_eva)
-
+        console.log("jjjjjjj", selectedUe)
+          
             if (selectedUe) {
                 const rowDataInfo = extractNeededInfo(selectedUe)
 
-                navigate(`evaluation-details/${id_eva}`, {
+                navigate(`evaluation-details/${selectedUe.evaluationId}`, {
                     state: { rowDataInfo },
                 })
             }
-        }
+        
     }
 
     const handleCreate = (rowData: any) => {
@@ -124,7 +146,11 @@ const UePage: React.FC = () => {
         }
     }
 
-    const myData = ueList.map(extractNeededInfo)
+        console.log("eee",ueList)
+        const myData = ueList.map(extractNeededInfo)
+    
+
+    
 
     
 
