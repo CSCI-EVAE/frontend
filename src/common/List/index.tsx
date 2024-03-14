@@ -355,10 +355,11 @@ const ListComponent: React.FC<Props> = ({
                                                                     updateSelectedRow(
                                                                         row
                                                                     )
+                                                                    localStorage.setItem("promotion", JSON.stringify(row))
                                                                     url &&
-                                                                        navigate(
-                                                                            url
-                                                                        )
+                                                                    navigate(
+                                                                        url+`/${row.codeFormation}/${row.anneeUniversitaire}`
+                                                                    )
                                                                 } else {
                                                                     setSelectedActions(
                                                                         LIST_ACTIONS.read

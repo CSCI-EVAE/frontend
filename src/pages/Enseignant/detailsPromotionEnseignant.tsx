@@ -1,6 +1,5 @@
 import { useContext, useEffect } from "react"
 import { Promotion } from "../../types"
-import { ListContext } from "../../context/listContext"
 import { PromotionEnseignantContext } from "../../context/promotionContextEnseignant"
 import DetailsPromotionComponent from "../../components/detailsPromotionComponent"
 import UeListComponent from "../../components/UeListComponent"
@@ -11,6 +10,8 @@ import { ArrowDropDown } from "@mui/icons-material"
 import { Typography } from "@mui/material"
 import Header from "../../Layout/Header"
 import ListEtudiantPage from "./listEtudiants"
+import { EtudiantEnseignantContext } from "../../context/ListEtudiantsEnseignantContext"
+import { useParams } from "react-router-dom"
 const textStyle: React.CSSProperties = {
     fontFamily: "cursive",
     color: "#e3a12f",
@@ -21,12 +22,20 @@ const textStyle: React.CSSProperties = {
 }
 const DetailsPromotionEnseignant = () => {
     const { getUeList, ueList } = useContext(PromotionEnseignantContext)
-    const { selectedRow } = useContext(ListContext)
-    const promotion: Promotion = selectedRow
+    const codeFormation  = useParams().codeFormation
+const anneeUniversitaire = useParams().anneeUniversitaire
+    const promotionStorage = localStorage.getItem("promotion")
+    const promotion: Promotion = JSON.parse(promotionStorage || "0")
 
     useEffect(() => {
-        getUeList(promotion.codeFormation)
-    }, [getUeList, promotion.codeFormation])
+        getUeList(codeFormation)
+    }, [getUeList,codeFormation])
+    
+    const {getList, etudiantList} = useContext(EtudiantEnseignantContext)
+    useEffect(() => {
+        getList(anneeUniversitaire, codeFormation);
+
+    }, [getList,anneeUniversitaire,codeFormation]);
 
     return (
         <>
@@ -65,7 +74,7 @@ const DetailsPromotionEnseignant = () => {
                     </AccordionDetails>
                     
                 </Accordion>
-                <ListEtudiantPage/>
+                <ListEtudiantPage listEtudiant={etudiantList} />
                
             </div>
         </>
