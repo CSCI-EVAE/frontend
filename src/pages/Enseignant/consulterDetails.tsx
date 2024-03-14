@@ -1,18 +1,18 @@
 import React, { useEffect, useContext } from "react"
 import List from "@mui/material/List"
-import ListItemButton from "@mui/material/ListItemButton"
 import ListItemText from "@mui/material/ListItemText"
-import ListSubheader from "@mui/material/ListSubheader"
 import { useParams, useLocation } from "react-router-dom"
 import { DetailsEvaluationContext } from "../../context/detailsEvaluationContext"
 import { Evaluation } from "../../types/EvaluationTypes"
 import Header from "../../Layout/Header"
 import SideBarEnseignant from "../../Layout/sideBar/SideBarEnseignant"
+import DetailsEvaluationComponent from "../../components/detailsEvaluationComponent"
+import { ListItem } from "@mui/material"
 
 const DetailsEvaluationPage: React.FC = () => {
     const { id_eva } = useParams()
     const { state } = useLocation()
-    const infoGenerale = state?.rowDataInfo
+
 
  
 
@@ -35,12 +35,13 @@ const DetailsEvaluationPage: React.FC = () => {
         return <div>Loading...</div>
     }
 
-    function trierEvaluations(evaluation: Evaluation): Evaluation {
-        // Tri des rubriques
 
+
+    function trierEvaluations(evaluation: Evaluation): Evaluation {
+     
         evaluation.rubriqueEvaluations.sort((a, b) => a.ordre - b.ordre)
 
-        // Tri des questions à l'intérieur de chaque rubrique
+    
         evaluation.rubriqueEvaluations.forEach((rubrique) => {
             if (rubrique.questionEvaluations) {
                 rubrique.questionEvaluations.sort((a, b) => a.ordre - b.ordre)
@@ -55,68 +56,46 @@ const DetailsEvaluationPage: React.FC = () => {
         <>
             <SideBarEnseignant />
         <Header />
-            <div style={{ margin: "50px" }}>
-                <div
-                    style={{
-                        display: "inline-block",
-                        marginRight: "250px",
-                        marginLeft: "100px",
-                    }}
-                >
-                    <h3>Formation : {infoGenerale.nomFormation}</h3>
-                    <h3>Unité Enseignement : {infoGenerale.codeUE}</h3>
-                </div>
 
-                <div style={{ display: "inline-block" }}>
-                    <h3>Promotion : {infoGenerale.anneePro}</h3>
-                    <h3>Element Constitutif : {infoGenerale.codeEC}</h3>
-                </div>
-
-                <div style={{ display: "inline-block", marginLeft: "100px" }}>
-                    <h3>
-                        Période : De {infoGenerale.debutReponse} à{" "}
-                        {infoGenerale.finReponse}
-                    </h3>
-                </div>
-            </div>
+        <DetailsEvaluationComponent
+                evaluation={evaluationDetails}
+                urlRetour="/dashboard/enseignant/Promotion"
+            />
+           
 
             <List
                 sx={{
                     width: "100%",
-                    maxWidth: 800,
+                    maxWidth: "70%",
                     bgcolor: "background.paper",
                     margin: "auto",
+                    marginTop:"30px",
+                    marginBottom:"50px"
                 }}
                 component="nav"
                 aria-labelledby="nested-list-subheader"
-                subheader={
-                    <ListSubheader
-                        component="div"
-                        id="nested-list-subheader"
-                        sx={{ fontSize: "25px", fontWeight: "bold" }}
-                    >
-                        {evaluationDetails.designation}
-                    </ListSubheader>
-                }
+                
             >
                 {ordonnerRubrique.rubriqueEvaluations.map((rubrique) => (
                     <div key={rubrique.idRubrique.id}>
-                        <ListItemButton
+                        <ListItem
                             sx={{
-                                background: "#f0f0f0",
+                                background: "#6d6d6d",
                                 borderRadius: "4px",
                                 margin: "4px 0",
+                                color: "white",
+                                
                             }}
                         >
-                            <ListItemText
-                                primary={`Rubrique: ${rubrique.idRubrique.designation}`}
-                                sx={{ fontWeight: "bold" }}
+                            <ListItemText style={{fontWeight:"bold"}}
+                                primary={rubrique.idRubrique.designation}
+                               
                             />
-                        </ListItemButton>
+                        </ListItem>
                         <List sx={{ pl: 4 }}>
                             {rubrique.questionEvaluations &&
                                 rubrique.questionEvaluations.map((question) => (
-                                    <ListItemButton
+                                    <ListItem
                                         key={question.idQuestion.id}
                                         sx={{
                                             background: "#fafafa",
@@ -125,7 +104,7 @@ const DetailsEvaluationPage: React.FC = () => {
                                         }}
                                     >
                                         <ListItemText
-                                            primary={`Question: ${question.idQuestion.intitule}`}
+                                            primary={question.idQuestion.intitule}
                                             sx={{ fontStyle: "italic" }}
                                         />
                                         <ListItemText
@@ -135,7 +114,7 @@ const DetailsEvaluationPage: React.FC = () => {
                                                 textAlign: "right",
                                             }}
                                         />
-                                    </ListItemButton>
+                                    </ListItem>
                                 ))}
                         </List>
                     </div>

@@ -31,7 +31,7 @@ const InfoGenerales: React.FC = () => {
     const [dateFin, setDateFin] = useState("")
     const [periode, setPeriode] = useState("")
     const [error, setError] = useState("")
-    const [anneePro, setAnneePro] = useState<string>(''); // Assurez-vous que l'état est de type string | number | (string | number)[]
+    const [anneePro, setAnneePro] = useState<string>('');
 
 
 
@@ -46,6 +46,19 @@ const InfoGenerales: React.FC = () => {
         flexDirection: "column",
         alignItems: "center",
         marginTop: "2rem",
+    }
+    
+    const textStyle: React.CSSProperties = {
+        fontFamily: "cursive",
+        color: "#e3a12f",
+        marginTop: "20px",
+        marginBottom: "50px",
+    }
+
+    const infoPreDefinie: React.CSSProperties = {
+        fontFamily: "cursive",
+        marginTop: "20px",
+        marginBottom: "50px",
     }
 
 
@@ -71,7 +84,7 @@ const InfoGenerales: React.FC = () => {
             setDesignationError(!designation);
             setDateDebutError(!dateDebut);
             setDateFinError(!dateFin);
-            
+
             return
         }
 
@@ -99,7 +112,7 @@ const InfoGenerales: React.FC = () => {
         }
 
         localStorage.setItem("formData", JSON.stringify(infoGenerales))
-        localStorage.setItem("data",  JSON.stringify(infoSup))
+        localStorage.setItem("data", JSON.stringify(infoSup))
         navigate(`/dashboard/enseignant/rubrique-evaluation`)
         setDesignation("")
         setDateDebut("")
@@ -115,7 +128,7 @@ const InfoGenerales: React.FC = () => {
             10 * 60 * 1000
         )
 
-        
+
     }
 
 
@@ -130,7 +143,7 @@ const InfoGenerales: React.FC = () => {
 
     let promotionOptions: PromotionOption[] = [];
     if (promotionList) {
-        promotionOptions = promotionList.map((promotion : Promotion) => ({
+        promotionOptions = promotionList.map((promotion: Promotion) => ({
             value: promotion.anneeUniversitaire,
             label: promotion.anneeUniversitaire,
         }));
@@ -143,75 +156,52 @@ const InfoGenerales: React.FC = () => {
     return (
         <Container style={containerStyle}>
             <Paper elevation={3} style={paperStyle}>
-                <Typography variant="h5" gutterBottom>
+
+            <div
+                    style={{
+                        maxWidth: "90%",
+                        margin: "auto",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
+                        fontSize: "14px",
+                    }}
+                >
+                <Typography variant="h4" gutterBottom style={textStyle}>
                     Formulaire d'Informations Générales
                 </Typography>
-                <form onSubmit={handleSubmit} style={formStyle}>
+                </div>
+                <form onSubmit={handleSubmit} style={infoPreDefinie}>
                     {error && <Alert severity="error">{error}</Alert>}
 
                     <Grid container spacing={2}>
                         <Grid item xs={10} sm={9}>
-                            <TextField
-                                label="Formation"
-                                variant="outlined"
-                                fullWidth
-                                value={infoGenerale.nomFormation}
+                            <Typography variant="body1" >
+                                <strong>Formation : </strong>{infoGenerale.nomFormation} - {infoGenerale.codeFormation}
 
-                                error={infoGenerale.nomFormation.trim() === ''}
-                                helperText={infoGenerale.nomFormation.trim() === '' ? 'Le champ nom formation ne peut pas être vide.' : ''}
-                                style={{
-                                    ...textFieldStyle,
-                                    borderColor: infoGenerale.nomFormation.trim() === '' ? 'red' : '',
-                                }}
-
-                            />
+                            </Typography>
                         </Grid>
 
-                        <Grid item xs={10} sm={3}>
 
-                            <SelectComponent
-                                onChange={(selectedAnneeUniversitaire) => {
-                                    console.log(selectedAnneeUniversitaire)
-                                    setAnneePro(selectedAnneeUniversitaire as string)
-                                }}
-                                placeholder="Année Universitaire"
-                                name="Année Universitaire"
-                                label="Année Universitaire"
-                                options={promotionOptions}
-                                
-                            
-                            />
-                        </Grid>
 
                         <Grid item xs={10} sm={6}>
-                            <TextField
-                                label="Unité enseignement"
-                                variant="outlined"
-                                fullWidth
-                                value={infoGenerale.codeUE}
-                                error={infoGenerale.codeUE.trim() === ''}
-                                helperText={infoGenerale.codeUE.trim() === '' ? 'Le champ code UE ne peut pas être vide.' : ''}
-                                style={{
-                                    ...textFieldStyle,
-                                    borderColor: infoGenerale.codeUE.trim() === '' ? 'red' : '',
-                                }}
-                            />
+                            <Typography variant="body1">
+                                <strong>Unité enseignement : </strong>{infoGenerale.codeUE}
+
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={10} sm={6}>
+                            {infoGenerale.codeEC &&
+                                <Typography variant="body1">
+                                    <strong>Elément constitutif : </strong>{infoGenerale.codeEC}
+
+                                </Typography>
+                            }
                         </Grid>
                         <Grid item xs={10} sm={6}>
                             <TextField
-                                label="Unité enseignement"
-                                variant="outlined"
-                                fullWidth
-                                value={
-                                    infoGenerale.codeEC ||
-                                    ""
-                                }
-
-                            />
-                        </Grid>
-                        <Grid item xs={10} sm={6}>
-                            <TextField
-                                label="Désignation"
+                                label="Désignation *"
                                 variant="outlined"
                                 fullWidth
                                 value={designation}
@@ -224,6 +214,8 @@ const InfoGenerales: React.FC = () => {
                                 }}
                             />
                         </Grid>
+
+
                         <Grid item xs={10} sm={6}>
                             <TextField
                                 label="periode"
@@ -233,6 +225,7 @@ const InfoGenerales: React.FC = () => {
                                 onChange={(e) => setPeriode(e.target.value)}
 
 
+
                                 style={{
                                     ...textFieldStyle,
                                     borderColor: designationError ? 'red' : '',
@@ -240,9 +233,24 @@ const InfoGenerales: React.FC = () => {
                             />
                         </Grid>
 
+                        <Grid item xs={10} sm={4}>
 
+                            <SelectComponent
+                                onChange={(selectedAnneeUniversitaire) => {
+                                    console.log(selectedAnneeUniversitaire)
+                                    setAnneePro(selectedAnneeUniversitaire as string)
+                                }}
+                                placeholder="Année Universitaire *"
+                                name="Année Universitaire"
+                                label="Année Universitaire"
+                                options={promotionOptions}
+                                error={designationError}
+                               
+                            />
 
-                        <Grid item xs={10} sm={3}>
+                        </Grid>
+
+                        <Grid item xs={10} sm={4}>
                             <TextField
                                 label="Date de début"
                                 type="date"
@@ -261,7 +269,7 @@ const InfoGenerales: React.FC = () => {
                                 }}
                             />
                         </Grid>
-                        <Grid item xs={10} sm={3}>
+                        <Grid item xs={10} sm={4}>
                             <TextField
                                 label="Date de fin"
                                 type="date"

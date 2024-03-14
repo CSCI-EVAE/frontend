@@ -50,12 +50,25 @@ const UePage: React.FC = () => {
             soumettreValue: false,
         }
 
+        var newEtat = "En cours d'élaboration"
+        if (ue.etat === "ELA") {
+            newEtat = "En cours d'élaboration"
+        }
+        if (ue.etat === "DIS") {
+            newEtat = "Mise en disposition"
+        }
+        if(ue.etat === "CLO"){
+            newEtat = "Cloturé"
+        }
+        
+
        
 
         if (ue.evaluationId) {
             extractedInfo = {
                 ...extractedInfo,
-                etat: ue.etat,
+                
+                etat: newEtat,
                 designation: ue.designation,
                 debutReponse: ue.debutReponse,
                 finReponse: ue.finReponse,
