@@ -47,7 +47,7 @@ const InfoGenerales: React.FC = () => {
         alignItems: "center",
         marginTop: "2rem",
     }
-    
+
     const textStyle: React.CSSProperties = {
         fontFamily: "cursive",
         color: "#e3a12f",
@@ -56,9 +56,9 @@ const InfoGenerales: React.FC = () => {
     }
 
     const infoPreDefinie: React.CSSProperties = {
-        fontFamily: "cursive",
-        marginTop: "20px",
-        marginBottom: "50px",
+
+        marginBottom: "10px",
+        fontSize: "20px"
     }
 
 
@@ -90,7 +90,7 @@ const InfoGenerales: React.FC = () => {
 
         if (dateDebut > dateFin) {
             setError(
-                "Choisir une date valid : Date de fin inferieur a date de début"
+                "Sélectionnez une date valide en veillant à ce que la date de fin soit antérieure à la date de début."
             )
 
             return
@@ -157,7 +157,7 @@ const InfoGenerales: React.FC = () => {
         <Container style={containerStyle}>
             <Paper elevation={3} style={paperStyle}>
 
-            <div
+                <div
                     style={{
                         maxWidth: "90%",
                         margin: "auto",
@@ -168,16 +168,16 @@ const InfoGenerales: React.FC = () => {
                         fontSize: "14px",
                     }}
                 >
-                <Typography variant="h4" gutterBottom style={textStyle}>
-                    Formulaire d'Informations Générales
-                </Typography>
+                    <Typography variant="h4" gutterBottom style={textStyle}>
+                        Formulaire d'Informations Générales
+                    </Typography>
                 </div>
-                <form onSubmit={handleSubmit} style={infoPreDefinie}>
-                    {error && <Alert severity="error">{error}</Alert>}
+                <form onSubmit={handleSubmit} style={formStyle}>
+                    {error && <Alert style={{margin:"15px"}}severity="error">{error}</Alert>}
 
                     <Grid container spacing={2}>
-                        <Grid item xs={10} sm={9}>
-                            <Typography variant="body1" >
+                        <Grid item xs={10} sm={10}>
+                            <Typography variant="body1" style={infoPreDefinie}>
                                 <strong>Formation : </strong>{infoGenerale.nomFormation} - {infoGenerale.codeFormation}
 
                             </Typography>
@@ -186,18 +186,35 @@ const InfoGenerales: React.FC = () => {
 
 
                         <Grid item xs={10} sm={6}>
-                            <Typography variant="body1">
+                            <Typography variant="body1" style={infoPreDefinie}>
                                 <strong>Unité enseignement : </strong>{infoGenerale.codeUE}
 
                             </Typography>
                         </Grid>
                         <Grid item xs={10} sm={6}>
                             {infoGenerale.codeEC &&
-                                <Typography variant="body1">
+                                <Typography variant="body1" style={infoPreDefinie}>
                                     <strong>Elément constitutif : </strong>{infoGenerale.codeEC}
 
                                 </Typography>
                             }
+                        </Grid>
+
+                        <Grid item xs={10} sm={4}>
+
+                            <SelectComponent
+                                onChange={(selectedAnneeUniversitaire) => {
+                                    console.log(selectedAnneeUniversitaire)
+                                    setAnneePro(selectedAnneeUniversitaire as string)
+                                }}
+                                placeholder="Année Universitaire *"
+                                name="Année Universitaire"
+                                label="Année Universitaire *"
+                                options={promotionOptions}
+                                error={designationError}
+
+                            />
+
                         </Grid>
                         <Grid item xs={10} sm={6}>
                             <TextField
@@ -212,43 +229,16 @@ const InfoGenerales: React.FC = () => {
                                     ...textFieldStyle,
                                     borderColor: designationError ? 'red' : '',
                                 }}
+
+                                
+
                             />
                         </Grid>
 
 
-                        <Grid item xs={10} sm={6}>
-                            <TextField
-                                label="periode"
-                                variant="outlined"
-                                fullWidth
-                                value={periode}
-                                onChange={(e) => setPeriode(e.target.value)}
+                        
 
 
-
-                                style={{
-                                    ...textFieldStyle,
-                                    borderColor: designationError ? 'red' : '',
-                                }}
-                            />
-                        </Grid>
-
-                        <Grid item xs={10} sm={4}>
-
-                            <SelectComponent
-                                onChange={(selectedAnneeUniversitaire) => {
-                                    console.log(selectedAnneeUniversitaire)
-                                    setAnneePro(selectedAnneeUniversitaire as string)
-                                }}
-                                placeholder="Année Universitaire *"
-                                name="Année Universitaire"
-                                label="Année Universitaire"
-                                options={promotionOptions}
-                                error={designationError}
-                               
-                            />
-
-                        </Grid>
 
                         <Grid item xs={10} sm={4}>
                             <TextField
@@ -285,6 +275,23 @@ const InfoGenerales: React.FC = () => {
                                 style={{
                                     ...textFieldStyle,
                                     borderColor: dateFinError ? 'red' : '',
+                                }}
+                            />
+                        </Grid>
+
+                        <Grid item xs={10} sm={4}>
+                            <TextField
+                                label="periode"
+                                variant="outlined"
+                                fullWidth
+                                value={periode}
+                                onChange={(e) => setPeriode(e.target.value)}
+
+
+
+                                style={{
+                                    ...textFieldStyle,
+                                    borderColor: designationError ? 'red' : '',
                                 }}
                             />
                         </Grid>

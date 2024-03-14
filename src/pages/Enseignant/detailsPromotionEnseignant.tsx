@@ -10,6 +10,7 @@ import AccordionSummary from "@mui/material/AccordionSummary"
 import { ArrowDropDown } from "@mui/icons-material"
 import { Typography } from "@mui/material"
 import Header from "../../Layout/Header"
+import ListEtudiantPage from "./listEtudiants"
 const textStyle: React.CSSProperties = {
     fontFamily: "cursive",
     color: "#e3a12f",
@@ -62,7 +63,10 @@ const DetailsPromotionEnseignant = () => {
                     <AccordionDetails>
                         <UeListComponent ue={ueList} />
                     </AccordionDetails>
+                    
                 </Accordion>
+                <ListEtudiantPage/>
+               
             </div>
         </>
     )

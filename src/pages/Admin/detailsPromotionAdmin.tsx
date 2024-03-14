@@ -5,6 +5,7 @@ import DetailsPromotionComponent from "../../components/detailsPromotionComponen
 import UeListComponent from "../../components/UeListComponent"
 import { PromotionAdminContext } from "../../context/promotionContextAdmin"
 import Header from "../../Layout/Header"
+import EtudiantListPage from "./etudiantList"
 
 const DetailsPromotionAdmin = () => {
     const { getUeList, ueList } = useContext(PromotionAdminContext)
@@ -24,7 +25,9 @@ const DetailsPromotionAdmin = () => {
             />
 
             <UeListComponent ue={ueList} />
-        </>
+            <EtudiantListPage/>
+            </>
+       
     )
 }
 
