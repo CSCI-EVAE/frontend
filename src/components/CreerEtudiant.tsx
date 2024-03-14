@@ -162,9 +162,9 @@ export default function CreerEtudiant() {
                                                     value.trim() !== "" ||
                                                     "Le nom ne peut pas être vide",
                                                 maxLength: {
-                                                    value: 255,
+                                                    value: 50,
                                                     message:
-                                                        "Le nom ne doit pas excéder 255 caractères...!",
+                                                        "Le nom ne doit pas excéder 50 caractères...!",
                                                 },
                                             })}
                                         />
@@ -193,9 +193,9 @@ export default function CreerEtudiant() {
                                                     value.trim() !== "" ||
                                                     "Le prenom ne peut pas être vide",
                                                 maxLength: {
-                                                    value: 255,
+                                                    value: 50,
                                                     message:
-                                                        "Le prenom ne doit pas excéder 255 caractères...!",
+                                                        "Le prenom ne doit pas excéder 50 caractères...!",
                                                 },
                                             })}
                                         />
@@ -224,6 +224,11 @@ export default function CreerEtudiant() {
                                                     message:
                                                         "L'adresse mail doit etre  valide...!",
                                                 },
+                                                maxLength: {
+                                                    value: 255,
+                                                    message:
+                                                        "L'adresse mail ne doit pas excéder 255 caractères...!",
+                                                },
                                             })}
                                         />
                                         {typeof errors.mail?.message ===
@@ -250,6 +255,11 @@ export default function CreerEtudiant() {
                                                     value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                                                     message:
                                                         "L'adresse mail UBO doit etre  valide...!",
+                                                },
+                                                maxLength: {
+                                                    value: 255,
+                                                    message:
+                                                        "L'adresse mail UBO ne doit pas excéder 255 caractères...!",
                                                 },
                                             })}
                                         />
@@ -285,14 +295,14 @@ export default function CreerEtudiant() {
                                                 },
 
                                                 minLength: {
-                                                    value: 8,
+                                                    value: 10,
                                                     message:
-                                                        "Le Numéro de téléphone doit avoir au moins 8 caractères...!",
+                                                        "Le Numéro de téléphone doit avoir au moins 10 caractères...!",
                                                 },
                                                 maxLength: {
-                                                    value: 15,
+                                                    value: 20,
                                                     message:
-                                                        "Le Numéro de téléphone doit avoir au plus 15 caractères...!",
+                                                        "Le Numéro de téléphone doit avoir au plus 20 caractères...!",
                                                 },
                                             })}
                                             error={!!errors.telephone} // Set error prop based on the presence of errors
@@ -329,14 +339,14 @@ export default function CreerEtudiant() {
                                                 },
 
                                                 minLength: {
-                                                    value: 8,
+                                                    value: 10,
                                                     message:
-                                                        "Le Mobile doit avoir au moins 8 caractères...!",
+                                                        "Le Mobile doit avoir au moins 10 caractères...!",
                                                 },
                                                 maxLength: {
-                                                    value: 15,
+                                                    value: 20,
                                                     message:
-                                                        "Le Mobile doit avoir au plus 15 caractères...!",
+                                                        "Le Mobile doit avoir au plus 20 caractères...!",
                                                 },
                                             })}
                                             error={!!errors.mobile} // Set error prop based on the presence of errors
@@ -397,9 +407,9 @@ export default function CreerEtudiant() {
                                                     value.trim() !== "" ||
                                                     "La nationalité ne peut pas être vide",
                                                 maxLength: {
-                                                    value: 255,
+                                                    value: 50,
                                                     message:
-                                                        "La nationalité ne doit pas excéder 255 caractères...!",
+                                                        "La nationalité ne doit pas excéder 50 caractères...!",
                                                 },
                                             })}
                                         />
@@ -470,9 +480,9 @@ export default function CreerEtudiant() {
                                                 },
 
                                                 minLength: {
-                                                    value: 1,
+                                                    value: 3,
                                                     message:
-                                                        "Le code Postal doit avoir au moins 1 caractère...!",
+                                                        "Le code Postal doit avoir au moins 3 caractère...!",
                                                 },
                                             })}
                                         />

@@ -9,13 +9,13 @@ import { RubriqueContextProvider } from "./rubriqueContext"
 import { RubriqueEnseignantContextProvider } from "./rubriqueEnseignantContext"
 import { SoumettreEvaluationContextProvider } from "./soumettreEvaluationContext"
 import { StepContextProvider } from "./stepperContext"
-
 import { UEContextProvider } from "./UeContext"
 import { ROLE } from "../constants"
 import { userInfos } from "../utils/authUtils"
 import { PromotionContextProvider } from "./promotionContextAdmin"
 import { PromotionEnseignantContextProvider } from "./promotionContextEnseignant"
 import { EvaluationContextProvider } from "./evaluationEnseignantContext"
+import { DetailsEvaluationContextProvider } from "./detailsEvaluationContext"
 import { EvaluationEtudiantContextProvider } from "./evaluationEtudiantContext"
 
 import { EtudiantListContextPorvider } from "./etudiantListContext"
@@ -39,11 +39,13 @@ export const GlobalContextProvider: React.FC<{ children: ReactNode }> = ({
                 <QuestionContextProvider>
                     <RubriqueContextProvider>
                         <RubriqueComposeContextProvider>
+                        <UEContextProvider>
                             <PromotionEnseignantContextProvider>
                                 <EvaluationContextProvider>
-                            <ListContextProvider>
+                                  <ListContextProvider>
                                 <RubriqueEnseignantContextProvider>
                                     <SoumettreEvaluationContextProvider>
+                                    <DetailsEvaluationContextProvider>
                                         <UEContextProvider>
                                         <EtudiantEnseignantContextProvider>
                                             <StepContextProvider>
@@ -52,13 +54,16 @@ export const GlobalContextProvider: React.FC<{ children: ReactNode }> = ({
                                                 </GlobalContext.Provider>
                                               
                                             </StepContextProvider>
+                                    
                                             </EtudiantEnseignantContextProvider>
                                         </UEContextProvider>
+                                        </DetailsEvaluationContextProvider>
                                     </SoumettreEvaluationContextProvider>
                                 </RubriqueEnseignantContextProvider>
                             </ListContextProvider>
                             </EvaluationContextProvider>
                             </PromotionEnseignantContextProvider>
+                            </UEContextProvider>
                         </RubriqueComposeContextProvider>
                     </RubriqueContextProvider>
                 </QuestionContextProvider>

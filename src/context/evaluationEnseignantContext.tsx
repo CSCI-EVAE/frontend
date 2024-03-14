@@ -3,6 +3,7 @@ import React, { createContext, ReactNode, useCallback, useContext} from "react";
 import { ApiResponse, Evaluation} from "../types";
 import { postRequest } from "../api/axios";
 import { NotificationContext } from "./notificationContext";
+import { UEContext } from "./UeContext";
 
 // Define the type for props of EvaluationContextProvider
 interface EvaluationContextProviderProps {
@@ -17,10 +18,8 @@ export const EvaluationContextProvider: React.FC<EvaluationContextProviderProps>
    
     const { showNotification } = useContext(NotificationContext);
 
-   
+    const ueContext = useContext(UEContext)
 
-  
-  
     const addNewEvaluation = useCallback(
         async (evaluationBody: Evaluation) => {
             const response: ApiResponse = await postRequest("/evaluation/create", evaluationBody);
@@ -28,11 +27,15 @@ export const EvaluationContextProvider: React.FC<EvaluationContextProviderProps>
                 showNotification("Erreur", response.message, "error")
                 return
             }
+            ueContext.refreshList()
             showNotification("Génial !", response.message, "success")
+          
+          
+
 
             return
         },
-        [showNotification]
+        [showNotification,ueContext]
     )
 
 
