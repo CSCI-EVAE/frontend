@@ -281,7 +281,6 @@ export const PAYS_OPTIONS = [
     { label: "France", value: "FR" },
     { label: "Maroc", value: "MA" },
     { label: "Tunisie", value: "TU" },
-    { label: "Université Hassan 2 Mohamedia", value: "UH2M" },
     { label: "Algérie", value: "AL" },
     { label: "Burkina Faso", value: "BF" },
 
