@@ -1,10 +1,12 @@
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import QuestionRating from "../../components/QuestionRating"
 import StepperComponent from "../../common/Stepper"
 import { StepContext } from "../../context/stepperContext"
 import { RubriqueCompose } from "../../types"
 import RecapitulatifReponses from "../../components/RecapitulatifReponses"
 import Header from "../../Layout/Header"
+import { useParams } from "react-router-dom"
+import { EvaluationEtudiantContext } from "../../context/evaluationEtudiantContext"
 
 const rubriques: RubriqueCompose[] = [
     {
@@ -87,6 +89,17 @@ const rubriques: RubriqueCompose[] = [
 ]
 
 const ReponseEvaluation = () => {
+    const idEvaluation = useParams().id
+    console.log("🚀 ~ ReponseEvaluation ~ idEvaluation:", idEvaluation)
+    const { getEvaluationDetails, evaluationDetails } = useContext(
+        EvaluationEtudiantContext
+    )
+    useEffect(() => {
+        const getEvae = async () => await getEvaluationDetails(idEvaluation)
+        getEvae()
+    }, [getEvaluationDetails, idEvaluation])
+    // getEvaluationDetails(idEvaluation)
+
     const { activeStep, handleComplete } = useContext(StepContext)
     const handleValidateElement = (
         rubrique: RubriqueCompose,

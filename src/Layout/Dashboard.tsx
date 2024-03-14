@@ -58,7 +58,7 @@ const Dashboard: React.FC = () => {
                                 />
 
                                 <Route
-                                    path="/reponse"
+                                    path="/reponse-evaluation/:id"
                                     element={<ReponseEvaluation />}
                                 />
                                 <Route
