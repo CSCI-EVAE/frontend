@@ -54,7 +54,11 @@ interface Props {
     detailsElement?: ReactNode
     handleAdd?: (rowData: any) => void
     redirect?: boolean
+    redirectEdit?:boolean
+    redirectAdd?:boolean
     url?: string
+    urlEdit?:string
+    urlAdd?:string
     filter?: boolean
     noBoutonAjouter? : boolean
     noBoutonRetour ? : boolean
@@ -67,9 +71,12 @@ const ListComponent: React.FC<Props> = ({
     actions,
     create,
     createHandler,
+    redirectEdit,
     remove,
+    redirectAdd,
     deleteHandler,
     details,
+    urlAdd,
     detailsHandler,
     modify,
     modifyElement,
@@ -77,6 +84,7 @@ const ListComponent: React.FC<Props> = ({
     handleAdd,
     modifyHandler,
     detailsElement,
+    urlEdit,
     url,
     redirect,
     filter,
@@ -195,12 +203,23 @@ const ListComponent: React.FC<Props> = ({
                     variant="contained"
                     icon={<AddCircleOutline />}
                     onClick={() => {
+                        if (
+                            redirectAdd
+                        ) {
+                            
+                            urlAdd &&
+                                navigate(
+                                    urlAdd
+                                )
+                        } 
                         setSelectedActions(LIST_ACTIONS.add)
                         updateModalOpen(true)
                         updateSelectedRow({})
                     }}
                 />
+                
             }
+            <div style={{ height: "20px" }} />
                     
                 <div style={{ width: "90%" }}>
                 {!filter && (
@@ -357,10 +376,14 @@ const ListComponent: React.FC<Props> = ({
                                                                                                 updateSelectedRow(
                                                                                                     row
                                                                                                 )
-                                                                                                url &&
+                                                                                                localStorage.setItem("promotion", JSON.stringify(row))
+                                                                                                url &&(
                                                                                                     navigate(
-                                                                                                        url
+                                                                                                        url+`/${row.codeFormation}/${row.anneeUniversitaire}`
                                                                                                     )
+                                                                                                    
+                                                                                                    )
+                                                                                                    
                                                                                             } else {
                                                                                                 setSelectedActions(
                                                                                                     LIST_ACTIONS.read
@@ -387,7 +410,19 @@ const ListComponent: React.FC<Props> = ({
                                                                                     <Tooltip title="Modifier">
                                                                                         <IconButton
                                                                                             onClick={() => {
-                                                                                                modifyHandler &&
+                                                                                                if (
+                                                                                                    redirectEdit
+                                                                                                ) {
+                                                                                                    updateSelectedRow(
+                                                                                                        row
+                                                                                                    )
+                                                                                                    urlEdit &&
+                                                                                                        navigate(
+                                                                                                            urlEdit
+                                                                                                        )
+                                                                                                } 
+                                                                                                 else{
+                                                                                                    modifyHandler &&
                                                                                                     modifyHandler(
                                                                                                         row
                                                                                                     )
@@ -400,6 +435,9 @@ const ListComponent: React.FC<Props> = ({
                                                                                                 updateSelectedRow(
                                                                                                     row
                                                                                                 )
+                                                                                                 }
+
+                                                                                                
                                                                                             }}
                                                                                         >
                                                                                             <Edit />
