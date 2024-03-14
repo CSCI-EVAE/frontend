@@ -32,6 +32,7 @@ import CreerEtudiant from "../components/CreerEtudiant"
 import ModifierEtudiant from "../components/ModifierEtudiant"
 import DetailsPromotionAdmin from "../pages/Admin/detailsPromotionAdmin"
 import DetailsPromotionEnseignant from "../pages/Enseignant/detailsPromotionEnseignant"
+import ReponseEvaluationEnseignant from "../pages/Enseignant/ReponseEvaluationEnseignant"
 
 const Dashboard: React.FC = () => {
     // const role = Object.keys(ROLE_COMPONENTS).find(hasRole);
@@ -125,6 +126,7 @@ const Dashboard: React.FC = () => {
                                     path="/enseignant/unitésEnseignement"
                                     element={<UePage />}
                                 />
+                                
                                 <Route
                                     path="enseignant/rubrique-evaluation"
                                     element={<AjoutRubriqueEvaluation />}
@@ -135,7 +137,7 @@ const Dashboard: React.FC = () => {
                                 />
 
                                 <Route
-                                    path="enseignant/evaluation-details/:id_eva"
+                                    path="enseignant/unitésEnseignement/evaluation-details/:id_eva"
                                     element={<DetailsEvaluationPage />}
                                 />
                                 <Route
@@ -150,7 +152,10 @@ const Dashboard: React.FC = () => {
                                     path="enseignant/details-promotion/:codeFormation/:anneeUniversitaire"
                                     element={<DetailsPromotionEnseignant />}
                                 />
-                                 
+                                 <Route
+                                    path="enseignant/reponse-evaluation"
+                                    element={<ReponseEvaluationEnseignant />}
+                                />
                             </>
                         )}
 

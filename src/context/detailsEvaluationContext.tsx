@@ -41,6 +41,7 @@ export const DetailsEvaluationContextProvider: React.FC<
                     return
                 }
                 const data = response.data
+                console.log(data)
 
                 setEvaluationDetails(data.data)
             } catch (error) {
@@ -54,6 +55,8 @@ export const DetailsEvaluationContextProvider: React.FC<
         evaluationDetails,
         fetchEvaluationDetails,
     }
+
+   
 
     return (
         <DetailsEvaluationContext.Provider value={contextValue}>

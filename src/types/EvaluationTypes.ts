@@ -41,6 +41,10 @@ export interface Evaluation {
     designation: string
     debutReponse: string
     finReponse: string
+    etat: string
+    periode: string | null
+    anneUniv: string
+    noEvaluation: string
     rubriqueEvaluations: RubriqueEvaluation[]
 }
 

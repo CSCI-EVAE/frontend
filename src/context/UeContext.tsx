@@ -6,7 +6,7 @@ import React, {
     useEffect,
     useState,
 } from "react"
-import { UE } from "../types"
+import { Promotion, UE } from "../types"
 
 import { getRequest } from "../api/axios"
 import { ApiResponse } from "../types"
@@ -16,15 +16,17 @@ interface UEContextProps {
     children: ReactNode
 }
 
-interface UEContextData {
-    ueList: UE[]
-    getUEList: () => void
-    refreshList: () => void
-}
+// interface UEContextData {
+//     promotionList: Promotion[]
+//     ueList: UE[]
+//     getUEList: () => void
+//     refreshList: () => void
+//     getPromotionList : (codeFormation: string) => void
+// }
 
 
 
-export const UEContext = createContext<UEContextData | null>(null)
+export const UEContext = createContext<any>(null)
 
 export function trouverIdEvaluation(
     evaluation: UE,
@@ -47,20 +49,34 @@ export function trouverIdEvaluation(
 
 export const UEContextProvider: React.FC<UEContextProps> = ({ children }) => {
     const [ueList, setUeList] = useState<UE[]>([])
+    const [promotionList, setPromotionList] = useState<Promotion[]>([])
    
+
+
+    const fetchPromotionsPourFormation = useCallback(async (codeFormation: string) => {
+        try {
+            const response: ApiResponse = await getRequest(`/promotion/formationsForPromotion/${codeFormation}`);
+            setPromotionList(response.data.data);
+        } catch (error) {
+            console.error(error);
+        }
+    }, []);
+
+
+    
+    
+
 
     const fetchUEList = useCallback(async () => {
         try {
             const response: ApiResponse = await getRequest("/enseignant/ue")
 
-            setUeList(response.data)
+            setUeList(response.data.data)
         } catch (error) {
             console.error(error)
          
         }
     }, [])
-
-  
 
   
     const refreshList = useCallback(async () => {
@@ -87,15 +103,20 @@ export const UEContextProvider: React.FC<UEContextProps> = ({ children }) => {
        
     }, [])
 
-    const contextValue: UEContextData = {
-        ueList,
-
-        getUEList: fetchUEList,
-        refreshList,
-    }
+    // const contextValue: UEContextData = {
+    //     ueList,
+    //     promotionList,
+    //     getUEList: fetchUEList,
+    //     refreshList,
+    //     getPromotionList: fetchPromotionsPourFormation
+    // }
 
     return (
     
-        <UEContext.Provider value={contextValue}>{children}</UEContext.Provider>
+        <UEContext.Provider value={{ueList,
+            promotionList,
+            getUEList: fetchUEList,
+            refreshList,
+            getPromotionList: fetchPromotionsPourFormation}}>{children}</UEContext.Provider>
     )
 }

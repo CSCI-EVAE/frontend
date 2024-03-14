@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import {
     TextField,
     Alert,
@@ -9,21 +9,37 @@ import {
 } from "@mui/material"
 import ButtonComponent from "../common/Button"
 import { useLocation, useNavigate } from "react-router-dom"
+import { UEContext } from "../context/UeContext"
+import SelectComponent from "../common/Select/newSelect"
+import { Promotion } from "../types"
+
 
 const InfoGenerales: React.FC = () => {
+
+
+
     const navigate = useNavigate()
     const { state } = useLocation()
     const infoGenerale = state?.rowDataInfo
-    const [dateDebutError , setDateDebutError] = useState(false);
+    const [dateDebutError, setDateDebutError] = useState(false);
     const [dateFinError, setDateFinError] = useState(false);
 
-const [designationError, setDesignationError] = useState(false);
+    const [designationError, setDesignationError] = useState(false);
     const [designation, setDesignation] = useState("")
     const [dateDebut, setDateDebut] = useState("")
 
     const [dateFin, setDateFin] = useState("")
     const [periode, setPeriode] = useState("")
     const [error, setError] = useState("")
+    const [anneePro, setAnneePro] = useState<string>('');
+
+
+
+
+    interface PromotionOption {
+        value: string;
+        label: string;
+    }
 
     const containerStyle: React.CSSProperties = {
         display: "flex",
@@ -31,7 +47,20 @@ const [designationError, setDesignationError] = useState(false);
         alignItems: "center",
         marginTop: "2rem",
     }
-   
+
+    const textStyle: React.CSSProperties = {
+        fontFamily: "cursive",
+        color: "#e3a12f",
+        marginTop: "20px",
+        marginBottom: "50px",
+    }
+
+    const infoPreDefinie: React.CSSProperties = {
+
+        marginBottom: "10px",
+        fontSize: "20px"
+    }
+
 
     const paperStyle: React.CSSProperties = {
         padding: "1.5rem",
@@ -50,26 +79,26 @@ const [designationError, setDesignationError] = useState(false);
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault()
 
-        if (!designation || !dateDebut || !dateFin) {
+        if (!designation || !dateDebut || !dateFin || !anneePro) {
             setError("Veuillez remplir les champs obligatoires de date debut et fin et designation.")
-             setDesignationError(!designation); 
-             setDateDebutError(!dateDebut);
+            setDesignationError(!designation);
+            setDateDebutError(!dateDebut);
             setDateFinError(!dateFin);
+
             return
         }
 
         if (dateDebut > dateFin) {
             setError(
-                "Choisir une date valid : Date de fin inferieur a date de début"
+                "Sélectionnez une date valide en veillant à ce que la date de fin soit antérieure à la date de début."
             )
-            
+
             return
         }
 
         const infoGenerales = {
             nomFormation: infoGenerale.nomFormation,
             codeFormation: infoGenerale.codeFormation,
-            anneePro: infoGenerale.anneePro,
             codeUE: infoGenerale.codeUE,
             codeEC: infoGenerale.codeEC,
             designation,
@@ -77,11 +106,18 @@ const [designationError, setDesignationError] = useState(false);
             dateFin,
         }
 
+        const infoSup = {
+            anneePro: anneePro,
+            periode: periode
+        }
+
         localStorage.setItem("formData", JSON.stringify(infoGenerales))
+        localStorage.setItem("data", JSON.stringify(infoSup))
         navigate(`/dashboard/enseignant/rubrique-evaluation`)
         setDesignation("")
         setDateDebut("")
         setDateFin("")
+        setAnneePro("")
         setError("")
 
         // Supprimer les données du localStorage apres 10 minutes
@@ -91,108 +127,120 @@ const [designationError, setDesignationError] = useState(false);
             },
             10 * 60 * 1000
         )
+
+
     }
+
+
+    const { promotionList, getPromotionList } = useContext(UEContext) || {};
+
+    useEffect(() => {
+        if (getPromotionList) {
+            getPromotionList(infoGenerale.codeFormation);
+        }
+    }, [getPromotionList, infoGenerale.codeFormation]);
+
+
+    let promotionOptions: PromotionOption[] = [];
+    if (promotionList) {
+        promotionOptions = promotionList.map((promotion: Promotion) => ({
+            value: promotion.anneeUniversitaire,
+            label: promotion.anneeUniversitaire,
+        }));
+    }
+
+
+
+
 
     return (
         <Container style={containerStyle}>
             <Paper elevation={3} style={paperStyle}>
-                <Typography variant="h5" gutterBottom>
-                    Formulaire d'Informations Générales
-                </Typography>
+
+                <div
+                    style={{
+                        maxWidth: "90%",
+                        margin: "auto",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
+                        fontSize: "14px",
+                    }}
+                >
+                    <Typography variant="h4" gutterBottom style={textStyle}>
+                        Formulaire d'Informations Générales
+                    </Typography>
+                </div>
                 <form onSubmit={handleSubmit} style={formStyle}>
-                    {error && <Alert severity="error">{error}</Alert>}
+                    {error && <Alert style={{margin:"15px"}}severity="error">{error}</Alert>}
 
                     <Grid container spacing={2}>
-                        <Grid item xs={10} sm={9}>
-                            <TextField
-                                label="Formation"
-                                variant="outlined"
-                                fullWidth
-                                value={infoGenerale.nomFormation}
-                              
-                                error={infoGenerale.nomFormation.trim() === ''}
-                                helperText={infoGenerale.nomFormation.trim() === '' ? 'Le champ nom formation ne peut pas être vide.' : ''}
-                                style={{
-                              ...textFieldStyle,
-                                 borderColor: infoGenerale.nomFormation.trim() === '' ? 'red' : '',
+                        <Grid item xs={10} sm={10}>
+                            <Typography variant="body1" style={infoPreDefinie}>
+                                <strong>Formation : </strong>{infoGenerale.nomFormation} - {infoGenerale.codeFormation}
+
+                            </Typography>
+                        </Grid>
+
+
+
+                        <Grid item xs={10} sm={6}>
+                            <Typography variant="body1" style={infoPreDefinie}>
+                                <strong>Unité enseignement : </strong>{infoGenerale.codeUE}
+
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={10} sm={6}>
+                            {infoGenerale.codeEC &&
+                                <Typography variant="body1" style={infoPreDefinie}>
+                                    <strong>Elément constitutif : </strong>{infoGenerale.codeEC}
+
+                                </Typography>
+                            }
+                        </Grid>
+
+                        <Grid item xs={10} sm={4}>
+
+                            <SelectComponent
+                                onChange={(selectedAnneeUniversitaire) => {
+                                    console.log(selectedAnneeUniversitaire)
+                                    setAnneePro(selectedAnneeUniversitaire as string)
                                 }}
+                                placeholder="Année Universitaire *"
+                                name="Année Universitaire"
+                                label="Année Universitaire *"
+                                options={promotionOptions}
+                                error={designationError}
 
                             />
+
                         </Grid>
-                        {/* <Grid item xs={10} sm={3}>
+                        <Grid item xs={10} sm={6}>
                             <TextField
-                                label="Promotion"
+                                label="Désignation *"
                                 variant="outlined"
                                 fullWidth
-                                value={infoGenerale}
-                                error={infoGenerale.anneePro.trim() === ''}
-                                helperText={infoGenerale.anneePro.trim() === '' ? 'Le champ année promotion ne peut pas être vide.' : ''}
+                                value={designation}
+                                onChange={(e) => setDesignation(e.target.value)}
+                                error={designationError}
+                                helperText={designationError ? 'La désignation ne peut pas être vide.' : ''}
                                 style={{
                                     ...textFieldStyle,
-                                    borderColor: infoGenerale.anneePro.trim() === '' ? 'red' : '',
+                                    borderColor: designationError ? 'red' : '',
                                 }}
-                            /> 
-                        </Grid> */}
-                        <Grid item xs={10} sm={6}>
-                            <TextField
-                                label="Unité enseignement"
-                                variant="outlined"
-                                fullWidth
-                                value={infoGenerale.codeUE}
-                                error={infoGenerale.codeUE.trim() === ''}
-                                helperText={infoGenerale.codeUE.trim() === '' ? 'Le champ code UE ne peut pas être vide.' : ''}
-                                style={{
-                                    ...textFieldStyle,
-                                    borderColor: infoGenerale.codeUE.trim() === '' ? 'red' : '',
-                                }}
+
+                                
+
                             />
                         </Grid>
-                        <Grid item xs={10} sm={6}>
-                            <TextField
-                                label="Unité enseignement"
-                                variant="outlined"
-                                fullWidth
-                                value={
-                                    infoGenerale.codeEC ||
-                                    ""
-                                }
-                               
-                            />
-                        </Grid>
-                        <Grid item xs={10} sm={6}>
-                        <TextField
-                            label="Désignation"
-                            variant="outlined"
-                            fullWidth
-                            value={designation}
-                            onChange={(e) => setDesignation(e.target.value)}
-                            error={designationError}
-                            helperText={designationError ? 'La désignation ne peut pas être vide.' : ''}
-                            style={{
-                                ...textFieldStyle,
-                                borderColor: designationError ? 'red' : '',
-                            }}
-                        />
-                        </Grid>
-                        <Grid item xs={10} sm={6}>
-                        <TextField
-                            label="periode"
-                            variant="outlined"
-                            fullWidth
-                            value={periode}
-                            onChange={(e) => setPeriode(e.target.value)}
-                           
-                           
-                            style={{
-                                ...textFieldStyle,
-                                borderColor: designationError ? 'red' : '',
-                            }}
-                        />
-                        </Grid>
+
+
+                        
 
 
 
-                        <Grid item xs={10} sm={3}>
+                        <Grid item xs={10} sm={4}>
                             <TextField
                                 label="Date de début"
                                 type="date"
@@ -211,7 +259,7 @@ const [designationError, setDesignationError] = useState(false);
                                 }}
                             />
                         </Grid>
-                        <Grid item xs={10} sm={3}>
+                        <Grid item xs={10} sm={4}>
                             <TextField
                                 label="Date de fin"
                                 type="date"
@@ -227,6 +275,23 @@ const [designationError, setDesignationError] = useState(false);
                                 style={{
                                     ...textFieldStyle,
                                     borderColor: dateFinError ? 'red' : '',
+                                }}
+                            />
+                        </Grid>
+
+                        <Grid item xs={10} sm={4}>
+                            <TextField
+                                label="periode"
+                                variant="outlined"
+                                fullWidth
+                                value={periode}
+                                onChange={(e) => setPeriode(e.target.value)}
+
+
+
+                                style={{
+                                    ...textFieldStyle,
+                                    borderColor: designationError ? 'red' : '',
                                 }}
                             />
                         </Grid>

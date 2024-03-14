@@ -27,6 +27,7 @@ import { CreateRubriqueCompose, RubriqueCompose, questionsInRubrique } from "../
 import SideBarEnseignant from "../../Layout/sideBar/SideBarEnseignant"
 import EnseignantAddRubriqueStandard from "../../components/EnseignantAddRubriqueStandard"
 import { EvaluationContext } from "../../context/evaluationEnseignantContext"
+import { useNavigate } from "react-router"
 
 const AjoutRubriqueEvaluation = () => {
     const {
@@ -36,6 +37,9 @@ const AjoutRubriqueEvaluation = () => {
         updateRubriqueAddedByList,
         updateRubriqueSelected,
     } = useContext(RubriqueEnseignantContext)
+
+
+    const navigate = useNavigate();
 
 
     const {
@@ -108,15 +112,18 @@ const AjoutRubriqueEvaluation = () => {
 
     console.log(rubriquesToAdd)
 
-    const handleSubmit = () => {
+    const handleSubmit =  async() => {
          const formData = localStorage.getItem("formData");
+         const data = localStorage.getItem("data")
             if (formData) {
                 const parsedFormData = JSON.parse(formData);
+                if(data){
+                const parsedData = JSON.parse(data);
                 const evaluationData = {
                     codeFormation: parsedFormData.codeFormation,
                     designation: parsedFormData.designation,
-                    anneePro: "2014-2015",
-                    //periode: "aaa",
+                    anneePro: parsedData.anneePro,
+                    periode: parsedData.periode,
                     codeEC: parsedFormData.codeEC ? parsedFormData.codeEC : "", 
                     codeUE: parsedFormData.codeUE,
                     debutReponse: parsedFormData.dateDebut,
@@ -124,11 +131,15 @@ const AjoutRubriqueEvaluation = () => {
                     RubriqueQuestion:  rubriquesToAdd
                 };
                 console.log(evaluationData)
-                
+               
                addNewEvaluation(evaluationData);
             }
         updateRubriqueSelected([])
+        navigate("/dashboard/enseignant/unitésEnseignement")
+        
+        
     }
+}
 
     return (
         <>
