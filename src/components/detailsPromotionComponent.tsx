@@ -8,9 +8,11 @@ import { Promotion } from "../types"
 interface DetailsProps {
     promotion: Promotion
     urlRetour: string
+    effectifReel: number
 }
 const DetailsPromotionComponent: FC<DetailsProps> = ({
     promotion,
+    effectifReel,
     urlRetour,
 }) => {
     const textStyle: React.CSSProperties = {
@@ -117,7 +119,7 @@ const DetailsPromotionComponent: FC<DetailsProps> = ({
                         >
                             <Typography variant="body1">
                                 <strong>Nombre d'Étudiants :</strong>{" "}
-                                {promotion.nbMaxEtudiant} /{" "}
+                                {effectifReel} /{" "}
                                 {promotion.nbMaxEtudiant}
                             </Typography>
                         </Grid>

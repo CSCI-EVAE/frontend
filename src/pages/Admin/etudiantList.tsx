@@ -34,7 +34,7 @@ const EtudiantListPage: React.FC<PromotionProps> = ({etudiantList}:PromotionProp
              
           
             <ListComponent
-                    title={"Liste des etudiants"}
+                    title={""}
                     columns={UE_COLUMNS_LISTEtudiant}
                     data={data}
                     actions={true}
