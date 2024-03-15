@@ -23,7 +23,11 @@ import { LIST_ACTIONS } from "../../constants"
 import { RubriqueEnseignantContext } from "../../context/rubriqueEnseignantContext"
 import AjoutQuestionEvaluation from "./AjoutQuestionEvaluation"
 import Header from "../../Layout/Header"
-import { CreateRubriqueCompose, RubriqueCompose, questionsInRubrique } from "../../types"
+import {
+    CreateRubriqueCompose,
+    RubriqueCompose,
+    questionsInRubrique,
+} from "../../types"
 import SideBarEnseignant from "../../Layout/sideBar/SideBarEnseignant"
 import EnseignantAddRubriqueStandard from "../../components/EnseignantAddRubriqueStandard"
 import { EvaluationContext } from "../../context/evaluationEnseignantContext"
@@ -38,13 +42,9 @@ const AjoutRubriqueEvaluation = () => {
         updateRubriqueSelected,
     } = useContext(RubriqueEnseignantContext)
 
+    const navigate = useNavigate()
 
-    const navigate = useNavigate();
-
-
-    const {
-        addNewEvaluation
-    } = useContext(EvaluationContext)
+    const { addNewEvaluation } = useContext(EvaluationContext)
 
     const [dataset, setDataset] = useState<RubriqueCompose[]>(rubriqueAdded)
 
@@ -98,48 +98,50 @@ const AjoutRubriqueEvaluation = () => {
         updateRubriqueAddedByList(NewList)
     }
 
-    const rubriquesToAdd: CreateRubriqueCompose[] = rubriqueAdded.map((rubrique: any) => {
-        return {
-            idRubrique: rubrique.idRubrique || 0, 
-            questionIds: rubrique.questions.reduce((acc: { [questionId: number]: number }, question: any) => {
-                acc[question.idQuestion || 0] = question.ordre || 0; 
-                return acc;
-            }, {}),
-            ordre: rubrique.ordre || 0 
-        };
-    });
-    
+    const rubriquesToAdd: CreateRubriqueCompose[] = rubriqueAdded.map(
+        (rubrique: any) => {
+            return {
+                idRubrique: rubrique.idRubrique || 0,
+                questionIds: rubrique.questions.reduce(
+                    (acc: { [questionId: number]: number }, question: any) => {
+                        acc[question.idQuestion || 0] = question.ordre || 0
+                        return acc
+                    },
+                    {}
+                ),
+                ordre: rubrique.ordre || 0,
+            }
+        }
+    )
 
     console.log(rubriquesToAdd)
 
-    const handleSubmit =  async() => {
-         const formData = localStorage.getItem("formData");
-         const data = localStorage.getItem("data")
-            if (formData) {
-                const parsedFormData = JSON.parse(formData);
-                if(data){
-                const parsedData = JSON.parse(data);
+    const handleSubmit = async () => {
+        const formData = localStorage.getItem("formData")
+        const data = localStorage.getItem("data")
+        if (formData) {
+            const parsedFormData = JSON.parse(formData)
+            if (data) {
+                const parsedData = JSON.parse(data)
                 const evaluationData = {
                     codeFormation: parsedFormData.codeFormation,
                     designation: parsedFormData.designation,
                     anneePro: parsedData.anneePro,
                     periode: parsedData.periode,
-                    codeEC: parsedFormData.codeEC ? parsedFormData.codeEC : "", 
+                    codeEC: parsedFormData.codeEC ? parsedFormData.codeEC : "",
                     codeUE: parsedFormData.codeUE,
                     debutReponse: parsedFormData.dateDebut,
                     finReponse: parsedFormData.dateFin,
-                    RubriqueQuestion:  rubriquesToAdd
-                };
+                    RubriqueQuestion: rubriquesToAdd,
+                }
                 console.log(evaluationData)
-               
-               addNewEvaluation(evaluationData);
+
+                addNewEvaluation(evaluationData)
             }
-        updateRubriqueSelected([])
-        navigate("/dashboard/enseignant/unitésEnseignement")
-        
-        
+            updateRubriqueSelected([])
+            navigate("/dashboard/enseignant/unitésEnseignement")
+        }
     }
-}
 
     return (
         <>

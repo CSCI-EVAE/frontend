@@ -72,6 +72,7 @@ const ReponseEvaluation = () => {
             handleComplete()
             localStorage.setItem("reponseEvaluation", JSON.stringify(reponse))
         } else {
+            console.log("🚀 ~ ReponseEvaluation ~ reponseNESKLJDLJKL:", reponse)
             //fin du remplissage
             alert("formulaire fini")
         }

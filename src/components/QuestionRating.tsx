@@ -1,10 +1,44 @@
-import React, { FC, useState } from "react"
+import React, { FC, useEffect, useState } from "react"
 import Rating from "@mui/material/Rating"
 import Typography from "@mui/material/Typography"
 import { Card, CardContent, Divider, Paper } from "@mui/material"
 import { StepContext } from "../context/stepperContext"
 import ButtonComponent from "../common/Button"
-import { RubriqueEvaluation } from "../types/EvaluationTypes"
+import {
+    QuestionEvaluation,
+    RubriqueEvaluation,
+} from "../types/EvaluationTypes"
+import { DefaultValue, ReponseEvaluation, reponseQuestions } from "../types"
+
+const createDefaultValue = (
+    reponseQuestions: reponseQuestions[],
+    questionEvaluations: QuestionEvaluation[]
+): DefaultValue => {
+    const defaultValue: DefaultValue = {}
+    console.log(questionEvaluations)
+    // Parcourt chaque réponse
+    reponseQuestions.forEach((reponse) => {
+        // Trouve la question correspondante dans les évaluations de questions
+        const question = questionEvaluations.find(
+            (q) => q.id === reponse.idQuestionEvaluation.id
+        )
+
+        // Si la question est trouvée, ajoute l'id de la question avec son positionnement à defaultValue
+        if (question) {
+            defaultValue[question.id] = reponse.positionnement
+        }
+    })
+
+    // Parcourt chaque questionEvaluation pour vérifier si elle est présente dans defaultValue
+    questionEvaluations.forEach((question) => {
+        if (!(question.id in defaultValue)) {
+            // Si la question n'est pas présente, ajoute l'id de la question avec positionnement 0 à defaultValue
+            defaultValue[question.id] = 0
+        }
+    })
+
+    return defaultValue
+}
 interface QuestionRatingProps {
     rubrique: RubriqueEvaluation
     handleSubmit: () => void
@@ -20,9 +54,6 @@ const QuestionRating: FC<QuestionRatingProps> = ({
 
     const [ratings, setRatings] = useState(new Array(arrayLength).fill(0))
 
-    if (!rubrique) {
-        return <>Loading</>
-    }
     const handleRatingChange = (
         index: number,
         value: number,
@@ -42,7 +73,35 @@ const QuestionRating: FC<QuestionRatingProps> = ({
         setRatings(new Array(arrayLength).fill(0))
         //handleComplete();
     }
+    const rep = localStorage.getItem("reponseEvaluation") || ""
+    const evae: ReponseEvaluation = JSON.parse(rep)
+    const defaultV = createDefaultValue(
+        evae.reponseQuestions,
+        rubrique.questionEvaluations || []
+    )
+    const [defaultValue, setDefaultValue] = useState<DefaultValue>(defaultV)
+    useEffect(() => {
+        const rep = localStorage.getItem("reponseEvaluation")
 
+        if (rep && rubrique.questionEvaluations) {
+            const evae: ReponseEvaluation = JSON.parse(rep)
+            const defaultV = createDefaultValue(
+                evae.reponseQuestions,
+                rubrique.questionEvaluations
+            )
+            console.log("🚀 ~ useEffect ~ defaultV:", defaultV)
+            console.log(
+                "🚀 ~ useEffect ~ hjfjhghjgjgjgjghjghgjhghfghfh:",
+                rubrique.questionEvaluations
+            )
+
+            setDefaultValue(defaultV)
+            setRatings(new Array(arrayLength).fill(1))
+        }
+    }, [rubrique.questionEvaluations, arrayLength])
+    if (!rubrique) {
+        return <>Loading</>
+    }
     return (
         <div
             style={{
@@ -115,7 +174,11 @@ const QuestionRating: FC<QuestionRatingProps> = ({
                                             <Rating
                                                 name={`rating-${qIndex}`}
                                                 //value={ratings[qIndex]}
-
+                                                defaultValue={
+                                                    defaultValue[
+                                                        questionItem.id
+                                                    ]
+                                                }
                                                 onChange={(event, value) =>
                                                     handleRatingChange(
                                                         qIndex,

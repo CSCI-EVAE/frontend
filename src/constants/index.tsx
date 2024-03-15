@@ -14,7 +14,7 @@ export const ROLE = {
     etudiant: "ETU",
 }
 
-export const UE_COLUMNS_LISTEtudiant= [
+export const UE_COLUMNS_LISTEtudiant = [
     { id: "noEtudiant", label: "numero Etudiant" },
     { id: "nom", label: "nom" },
     { id: "prenom", label: "prenom" },
@@ -23,7 +23,6 @@ export const UE_COLUMNS_LISTEtudiant= [
     { id: "mobile", label: "mobile" },
     { id: "email", label: "email" },
 ]
-
 
 export const LIST_ACTIONS = {
     create: "CREATE",
@@ -103,7 +102,7 @@ export const UE_LIST_COLUMNS = [
 ]
 
 export const Evalution_Etudiant_COLUMNS = [
-    { id: "anneeUniversitaire", label: "annee Universitaire" },
+    // { id: "anneeUniversitaire", label: "annee Universitaire" },
     { id: "codeFormation", label: "Nom Formation" },
     { id: "noEvaluation", label: "Evaluation" },
     { id: "designation", label: "designation" },
