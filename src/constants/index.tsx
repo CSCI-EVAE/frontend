@@ -3,9 +3,10 @@ import WidgetsIcon from "@mui/icons-material/Widgets"
 import AccountTreeIcon from "@mui/icons-material/AccountTree"
 import AllOutIcon from "@mui/icons-material/AllOut"
 import AltRouteIcon from "@mui/icons-material/AltRoute"
-import { FormatListBulleted, List, VerifiedUserSharp } from "@mui/icons-material"
+import { FormatListBulleted, List } from "@mui/icons-material"
 
 export const API_URL = "http://localhost:8080/api/v1"
+export const API_URL1 = "http://localhost:8080/api"
 
 export const ROLE = {
     admin: "ADM",
@@ -19,7 +20,7 @@ export const UE_COLUMNS_LISTEtudiant= [
     { id: "prenom", label: "prenom" },
     { id: "dateNaissance", label: "date naissance" },
     { id: "nationalite", label: "nationalite" },
-    { id: "telephone", label: "telephone" },
+    { id: "mobile", label: "mobile" },
     { id: "email", label: "email" },
 ]
 
@@ -171,12 +172,6 @@ export const ADMIN_DASHBOARD: Dashboard[] = [
         title: "Promotions",
         link: "/dashboard/promotions",
     },
-    {
-        id: 7,
-        icon: <VerifiedUserSharp />,
-        title: "Etudiants",
-        link: "/dashboard/etudiantList",
-    },
 ]
 
 export const ENSEIGNANT_DASHBOARD: Dashboard[] = [
@@ -198,12 +193,6 @@ export const ENSEIGNANT_DASHBOARD: Dashboard[] = [
         title: "Promotions",
         link: "/dashboard/enseignant/Promotion",
     },
-    {
-        id: 4,
-        icon: <VerifiedUserSharp />,
-        title: "Etudiants",
-        link: "/dashboard/enseignant/etudiantList",
-    },  
 ]
 
 export const UE_COLUMNS = [
@@ -245,12 +234,6 @@ export const Enseignant_DASHBOARD: Dashboard[] = [
         title: "Rubrique Evaluation",
         link: "/dashboard/enseignant/rubrique-evaluation",
     },
-    {
-        id: 4,
-        icon: <VerifiedUserSharp />,
-        title: "Etudiants",
-        link: "/dashboard/enseignant/etudiantList",
-    }, 
 ]
 
 export const GENDERS = {
@@ -281,7 +264,6 @@ export const PAYS_OPTIONS = [
     { label: "France", value: "FR" },
     { label: "Maroc", value: "MA" },
     { label: "Tunisie", value: "TU" },
-    { label: "Université Hassan 2 Mohamedia", value: "UH2M" },
     { label: "Algérie", value: "AL" },
     { label: "Burkina Faso", value: "BF" },
 

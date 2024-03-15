@@ -4,7 +4,6 @@ import { Controller, useForm } from "react-hook-form"
 import {
     Grid,
     Typography,
-    Avatar,
     Paper,
     Box,
     CssBaseline,
@@ -16,7 +15,6 @@ import {
     FormControlLabel,
     Radio,
 } from "@mui/material"
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined"
 import ButtonComponent from "../common/Button"
 import { ThemeProvider, createTheme } from "@mui/material/styles"
 import SelectComponent from "../common/Select/newSelect"
@@ -119,6 +117,21 @@ export default function ModifierEtudiant() {
         )
     }
 
+    const styleInput: React.CSSProperties = {
+        width: "70%",
+        marginLeft: "60px",
+        marginTop: "10px"
+    }
+
+    const textStyle: React.CSSProperties = {
+        fontFamily: "cursive",
+        color: "#e3a12f",
+        marginTop: "50px",
+        marginBottom: "50px",
+    }
+
+
+
     return (
         <>
             <Header />
@@ -132,6 +145,7 @@ export default function ModifierEtudiant() {
                         display: "flex",
                         justifyContent: "center",
                         //width: "500px",
+                        paddingBottom: "100px"
                     }}
                 >
                     <CssBaseline />
@@ -157,11 +171,9 @@ export default function ModifierEtudiant() {
                                 alignItems: "center",
                             }}
                         >
-                            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                                <LockOutlinedIcon />
-                            </Avatar>
-                            <Typography component="h1" variant="h5">
-                                Modification d'un étudiant
+                       
+                            <Typography component="h1" variant="h4" style={textStyle}>
+                                Modifier un étudiant
                             </Typography>
 
                             <Grid
@@ -169,12 +181,13 @@ export default function ModifierEtudiant() {
                                 sx={{
                                     mt: 0,
                                     margin: "auto",
-                                    width: "70%",
+                                    width: "90%",
+                                    marginBottom:"60px"
                                 }}
                                 spacing={2}
                             >
                                 <Grid item xs={12} sm={6}>
-                                    <FormControl>
+                                    <FormControl style={styleInput}>
                                         <TextField
                                             // margin="normal"
                                             required
@@ -205,7 +218,7 @@ export default function ModifierEtudiant() {
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <FormControl>
+                                    <FormControl style={styleInput}>
                                         <TextField
                                             //margin="normal"
                                             required
@@ -236,7 +249,7 @@ export default function ModifierEtudiant() {
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <FormControl>
+                                    <FormControl style={styleInput}>
                                         <TextField
                                             //margin="normal"
                                             required
@@ -264,7 +277,7 @@ export default function ModifierEtudiant() {
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <FormControl>
+                                    <FormControl style={styleInput}>
                                         <TextField
                                             //margin="normal"
                                             required
@@ -292,7 +305,7 @@ export default function ModifierEtudiant() {
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <FormControl>
+                                    <FormControl style={styleInput}>
                                         <TextField
                                             //margin="normal"
                                             type="tel"
@@ -336,7 +349,7 @@ export default function ModifierEtudiant() {
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <FormControl>
+                                    <FormControl style={styleInput}>
                                         <TextField
                                             //margin="normal"
                                             type="mobile"
@@ -380,7 +393,7 @@ export default function ModifierEtudiant() {
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <FormControl>
+                                    <FormControl style={styleInput}>
                                         <TextField
                                             //margin="normal"
                                             required
@@ -413,7 +426,7 @@ export default function ModifierEtudiant() {
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <FormControl>
+                                    <FormControl style={styleInput}>
                                         <TextField
                                             //margin="normal"
                                             required
@@ -444,7 +457,7 @@ export default function ModifierEtudiant() {
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <FormControl>
+                                    <FormControl style={styleInput}>
                                         <TextField
                                             //margin="normal"
                                             required
@@ -475,7 +488,7 @@ export default function ModifierEtudiant() {
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <FormControl>
+                                    <FormControl style={styleInput}>
                                         <TextField
                                             //margin="normal"
                                             required
@@ -517,7 +530,7 @@ export default function ModifierEtudiant() {
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <FormControl>
+                                    <FormControl style={styleInput}>
                                         <TextField
                                             //margin="normal"
                                             required
@@ -548,7 +561,7 @@ export default function ModifierEtudiant() {
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <FormControl
+                                    <FormControl style={styleInput}
                                         error={!!errors.sexe}
                                         component="fieldset"
                                     >
@@ -607,7 +620,7 @@ export default function ModifierEtudiant() {
                                 <Grid item xs={12} sm={6}>
                                     <FormControl
                                         required
-                                        sx={{ width: "250px" }}
+                                        style={styleInput}
                                         error={!!universite}
                                     >
                                         <SelectComponent
@@ -634,7 +647,7 @@ export default function ModifierEtudiant() {
                                 <Grid item xs={12} sm={6}>
                                     <FormControl
                                         required
-                                        sx={{ width: "250px" }}
+                                        style={styleInput}
                                         error={!!pays}
                                     >
                                         <SelectComponent
@@ -655,7 +668,7 @@ export default function ModifierEtudiant() {
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <FormControl sx={{ width: "250px" }}>
+                                    <FormControl style={styleInput}>
                                         <TextField
                                             //margin="normal"
                                             type="date"
@@ -685,7 +698,7 @@ export default function ModifierEtudiant() {
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <FormControl>
+                                    <FormControl style={styleInput}>
                                         <TextField
                                             //margin="normal"
                                             type="number"
@@ -718,7 +731,7 @@ export default function ModifierEtudiant() {
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <FormControl>
+                                    <FormControl style={styleInput}>
                                         <TextField
                                             //margin="normal"
                                             type="number"
@@ -753,7 +766,7 @@ export default function ModifierEtudiant() {
                                     </FormControl>
                                 </Grid>
                             </Grid>
-                            <div>
+                            <div style={{marginBottom:"40px"}}> 
                                 <ButtonComponent
                                     type="submit"
                                     variant="contained"

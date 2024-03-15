@@ -1,20 +1,31 @@
 import { useContext, useEffect } from "react"
 import { Promotion } from "../../types"
-import { ListContext } from "../../context/listContext"
 import DetailsPromotionComponent from "../../components/detailsPromotionComponent"
 import UeListComponent from "../../components/UeListComponent"
 import { PromotionAdminContext } from "../../context/promotionContextAdmin"
 import Header from "../../Layout/Header"
 import EtudiantListPage from "./etudiantList"
+import { EtudiantListContext } from "../../context/etudiantListContext"
+import { useParams } from "react-router-dom"
 
 const DetailsPromotionAdmin = () => {
     const { getUeList, ueList } = useContext(PromotionAdminContext)
-
-    const { selectedRow } = useContext(ListContext)
-    const promotion: Promotion = selectedRow
+const codeFormation  = useParams().codeFormation
+const anneeUniversitaire = useParams().anneeUniversitaire
+    // const { selectedRow } = useContext(ListContext)
+    const promotionStorage = localStorage.getItem("promotion")
+     const promotion: Promotion = JSON.parse(promotionStorage || "0")
     useEffect(() => {
-        getUeList(promotion.codeFormation)
-    }, [getUeList, promotion.codeFormation])
+        getUeList(codeFormation)
+    }, [getUeList,codeFormation])
+    
+     const {getList,etudiantList} = useContext(EtudiantListContext)
+
+     useEffect(() => {
+        getList(anneeUniversitaire, codeFormation);
+
+    }, [getList,anneeUniversitaire,codeFormation]);
+    
 
     return (
         <>
@@ -23,11 +34,10 @@ const DetailsPromotionAdmin = () => {
                 promotion={promotion}
                 urlRetour="/dashboard/promotions"
             />
-
             <UeListComponent ue={ueList} />
-            <EtudiantListPage/>
+            <EtudiantListPage etudiantList={etudiantList}  />
+
             </>
-       
     )
 }
 

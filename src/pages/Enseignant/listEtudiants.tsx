@@ -1,35 +1,36 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import ListComponent from "../../common/List/list"
-import { useContext } from "react"
 import { UE_COLUMNS_LISTEtudiant } from "../../constants/index"
-import { EtudiantEnseignantContext } from "../../context/ListEtudiantsEnseignantContext"
+import { EtudiantDTO } from "../../types"
+
+type PromotionProps = {
+    listEtudiant : any[]
+}
 
 
-const ListEtudiantPage: React.FC = () => {
-    const {
-     etudiantList
-    } = useContext(EtudiantEnseignantContext);
+const ListEtudiantPage: React.FC<PromotionProps> = ({listEtudiant}:PromotionProps) => {
     
-    const dat = etudiantList ? etudiantList: [];
+    const [data, setData] = useState<EtudiantDTO[]>([]);
+
+    useEffect(() => {
+        if (listEtudiant && Array.isArray(listEtudiant)) {
+            setData([...listEtudiant].reverse());
+        } else {
+            setData([]);
+        }
+    }, [listEtudiant]); 
 
 
     return (
-       
-     <div>
-                
-          
+     <div>       
             <ListComponent
                     title={"Liste des etudiants"}
                     columns={UE_COLUMNS_LISTEtudiant}
-                    data={dat.reverse()}
-                    actions={true}
+                    data={data}
+                    actions={false}
                    // details={true}
                    noBoutonAjouter={true}
-                    
-
                     filter={true}
-                    
-                   
                 />
      </div>  
     );
