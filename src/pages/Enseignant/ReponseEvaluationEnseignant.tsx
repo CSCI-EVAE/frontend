@@ -19,7 +19,6 @@ export default function ReponseEvaluationEnseignant() {
 console.log("aaa",statistiqueList)
    useEffect(()=> {
     getStatistiques(idEvaluation)
-    console.log("akjhkjk",statistiqueList)
 
    },[getStatistiques,idEvaluation])
 

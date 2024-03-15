@@ -50,7 +50,10 @@ const QuestionCard: React.FC<QuestionProps> = ({ question, average, min , max })
 }
 
 const RubriqueCard: React.FC<RubriqueProps> = ({ title, questions }) => {
-  
+    if (!questions) {
+        return <div>Chargement...</div>;
+    }
+    
     return (
         <div>
         <Card variant="outlined" sx={{ marginBottom: 6, height: 660, overflowY: 'auto'}}>
