@@ -14,21 +14,13 @@ const UePage: React.FC = () => {
     const ueContext = useContext(UEContext)
     const soumettre = useContext(SoumettreEvaluationContext)
 
-
- 
-    const [ueList, setUeList] = useState<UE[]>([]);
-
+    const [ueList, setUeList] = useState<UE[]>([])
 
     useEffect(() => {
         if (ueContext) {
-            setUeList(ueContext.ueList);
+            setUeList(ueContext.ueList)
         }
-    }, [ueContext]);
-
-
-
-   
-
+    }, [ueContext])
 
     function extractNeededInfo(ue: UE) {
         let extractedInfo: any = {
@@ -57,17 +49,14 @@ const UePage: React.FC = () => {
         if (ue.etat === "DIS") {
             newEtat = "Mise en disposition"
         }
-        if(ue.etat === "CLO"){
+        if (ue.etat === "CLO") {
             newEtat = "Cloturé"
         }
-        
-
-       
 
         if (ue.evaluationId) {
             extractedInfo = {
                 ...extractedInfo,
-                
+
                 etat: newEtat,
                 designation: ue.designation,
                 debutReponse: ue.debutReponse,
@@ -89,10 +78,7 @@ const UePage: React.FC = () => {
         return extractedInfo
     }
 
-
-
     const handleDetails = (rowData: any) => {
-
         const selectedUe = ueList.find(
             (ue) =>
                 ue.nomFormation === rowData.nomFormation &&
@@ -101,15 +87,14 @@ const UePage: React.FC = () => {
         )
 
         console.log("jjjjjjj", selectedUe)
-          
-            if (selectedUe) {
-                const rowDataInfo = extractNeededInfo(selectedUe)
 
-                navigate(`evaluation-details/${selectedUe.evaluationId}`, {
-                    state: { rowDataInfo },
-                })
-            }
-        
+        if (selectedUe) {
+            const rowDataInfo = extractNeededInfo(selectedUe)
+
+            navigate(`evaluation-details/${selectedUe.evaluationId}`, {
+                state: { rowDataInfo },
+            })
+        }
     }
 
     const handleCreate = (rowData: any) => {
@@ -146,30 +131,23 @@ const UePage: React.FC = () => {
         }
     }
 
-        console.log("eee",ueList)
-        const myData = ueList.map(extractNeededInfo)
-    
+    console.log("eee", ueList)
+    const myData = ueList.map(extractNeededInfo)
 
-    
+    function extractNomFormation(item: { nomFormation: any }) {
+        return item.nomFormation
+    }
 
-    
+    const formation = ueList.map(extractNomFormation)
+    console.log("formation", formation)
 
-function extractNomFormation(item: { nomFormation: any }) {
-    return item.nomFormation;
-}
-
-const formation = ueList.map(extractNomFormation)
-console.log("formation", formation)
-
-
-  
     return (
         <div>
-             <SideBarEnseignant />
-        <Header />
+            <SideBarEnseignant />
+            <Header />
 
             <h1>{myData.some((item) => item.detailsValue)}</h1>
-            
+
             <ListComponent
                 title={"Liste des Unités d'enseignements"}
                 columns={UE_COLUMNS}
