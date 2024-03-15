@@ -4,28 +4,48 @@ import ButtonComponent from "../common/Button"
 import { StepContext } from "../context/stepperContext"
 import { RubriqueEvaluation } from "../types/EvaluationTypes"
 import { ReponseEvaluation } from "../types"
+import { EvaluationEtudiantContext } from "../context/evaluationEtudiantContext"
+import { useNavigate } from "react-router-dom"
 
 interface ReponseProps {
     rubrique: RubriqueEvaluation[]
 }
 const RecapitulatifReponses: FC<ReponseProps> = ({ rubrique }) => {
+    const navigate = useNavigate()
     const { handleReset } = useContext(StepContext)
     const handleModifier = () => {
         handleReset()
     }
-    const [reponse, setReponse] = useState<any>()
+    const { soumettreReponseEtudiant } = useContext(EvaluationEtudiantContext)
+    const [reponse, setReponse] = useState<ReponseEvaluation>({
+        idEvaluation: {
+            id: 0,
+        },
+        commentaire: "",
+        nom: "",
+        prenom: "",
+        reponseQuestions: [],
+    })
+
     useEffect(() => {
-        const rep = localStorage.getItem("reponseEvaluation") || "0"
-        setReponse(JSON.parse(rep))
+        const rep = localStorage.getItem("reponseEvaluation")
+
+        if (rep) setReponse(JSON.parse(rep))
     }, [])
     const trouverPositionnementParId = (
         reponse: ReponseEvaluation,
         id: number
-    ): number | undefined => {
+    ): number => {
         const reponseQuestion = reponse.reponseQuestions.find(
             (question) => question.idQuestionEvaluation.id === id
         )
-        return reponseQuestion?.positionnement
+        if (!reponseQuestion) return 0
+        return reponseQuestion.positionnement
+    }
+    const handleReponse = async () => {
+        console.log("eee", reponse)
+        await soumettreReponseEtudiant(reponse)
+        navigate("/dashboard/etudiant")
     }
     return (
         <div>
@@ -98,6 +118,7 @@ const RecapitulatifReponses: FC<ReponseProps> = ({ rubrique }) => {
                                                     reponse,
                                                     questionItem.id
                                                 )}
+                                                //label={"2"}
                                                 color="primary"
                                                 size="medium"
                                             />
@@ -134,7 +155,7 @@ const RecapitulatifReponses: FC<ReponseProps> = ({ rubrique }) => {
                         text="Réinitialiser"
                         onClick={handleModifier}
                     />
-                    <ButtonComponent text="Soumettre" />
+                    <ButtonComponent text="Soumettre" onClick={handleReponse} />
                 </div>
             </Paper>
         </div>

@@ -271,3 +271,7 @@ export interface ReponseEvaluation {
     prenom: string
     reponseQuestions: reponseQuestions[]
 }
+
+export interface DefaultValue {
+    [id: number]: number // Déclare un objet avec des clés de type number et des valeurs de type number
+}

@@ -111,24 +111,13 @@ const CommentaireEvaluation: React.FC<CommentaireProps> = ({
                                         <FormControl>
                                             <TextField
                                                 // margin="normal"
-                                                required
+
                                                 id="nom"
                                                 label="Nom"
                                                 autoComplete="nom"
                                                 error={!!errors.nom}
                                                 //   defaultValue={"nom"}
-                                                {...register("nom", {
-                                                    required:
-                                                        "Le nom est obligatoire..",
-                                                    validate: (value) =>
-                                                        value.trim() !== "" ||
-                                                        "Le nom ne peut pas être vide",
-                                                    maxLength: {
-                                                        value: 50,
-                                                        message:
-                                                            "Le nom ne doit pas excéder 50 caractères...!",
-                                                    },
-                                                })}
+                                                {...register("nom")}
                                             />
                                             {typeof errors.nom?.message ===
                                                 "string" && (
@@ -141,25 +130,12 @@ const CommentaireEvaluation: React.FC<CommentaireProps> = ({
                                     <Grid item xs={12} sm={12}>
                                         <FormControl>
                                             <TextField
-                                                //margin="normal"
-                                                required
                                                 id="prenom"
                                                 label="Prénom "
                                                 autoComplete="prenom"
                                                 error={!!errors.prenom}
                                                 //defaultValue={defaultValues.profession}
-                                                {...register("prenom", {
-                                                    required:
-                                                        "Le prenom est obligatoire..",
-                                                    validate: (value) =>
-                                                        value.trim() !== "" ||
-                                                        "Le prenom ne peut pas être vide",
-                                                    maxLength: {
-                                                        value: 50,
-                                                        message:
-                                                            "Le prenom ne doit pas excéder 50 caractères...!",
-                                                    },
-                                                })}
+                                                {...register("prenom")}
                                             />
                                             {typeof errors.prenom?.message ===
                                                 "string" && (
@@ -172,8 +148,6 @@ const CommentaireEvaluation: React.FC<CommentaireProps> = ({
                                     <Grid item xs={12} sm={12}>
                                         <FormControl>
                                             <TextField
-                                                //margin="normal"
-                                                required
                                                 multiline
                                                 minRows={3}
                                                 id="commentaire"
@@ -181,18 +155,7 @@ const CommentaireEvaluation: React.FC<CommentaireProps> = ({
                                                 autoComplete="commentaire"
                                                 error={!!errors.prenom}
                                                 //defaultValue={defaultValues.profession}
-                                                {...register("commentaire", {
-                                                    required:
-                                                        "Le commentaire est obligatoire..",
-                                                    validate: (value) =>
-                                                        value.trim() !== "" ||
-                                                        "Le commentaire ne peut pas être vide",
-                                                    maxLength: {
-                                                        value: 50,
-                                                        message:
-                                                            "Le commentaire ne doit pas excéder 50 caractères...!",
-                                                    },
-                                                })}
+                                                {...register("commentaire")}
                                             />
                                             {typeof errors.commentaire
                                                 ?.message === "string" && (
@@ -203,15 +166,6 @@ const CommentaireEvaluation: React.FC<CommentaireProps> = ({
                                         </FormControl>
                                     </Grid>
                                 </Grid>
-                                {/* <div>
-                                <ButtonComponent
-                                    type="submit"
-                                    variant="contained"
-                                    text="Continuer"
-
-                                    //  disabled={isSubmiting}
-                                />
-                            </div> */}
                             </Box>
                         </Grid>
                     </Grid>

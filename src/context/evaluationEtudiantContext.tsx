@@ -10,8 +10,8 @@ import React, {
 import { Evaluation } from "../types/EvaluationType"
 import { Evaluation as EvaluationDetails } from "../types/EvaluationTypes"
 import { NotificationContext } from "./notificationContext"
-import { ApiResponse } from "../types"
-import { getRequest } from "../api/axios"
+import { ApiResponse, ReponseEvaluation } from "../types"
+import { getRequest, postRequest } from "../api/axios"
 
 interface EvaluationContextProviderProps {
     children: ReactNode
@@ -113,6 +113,21 @@ export const EvaluationEtudiantContextProvider: React.FC<
         },
         [showNotification]
     )
+
+    const soumettreReponseEtudiant = useCallback(
+        async (reponse: ReponseEvaluation) => {
+            const response: ApiResponse = await postRequest(
+                `etudiant/reponduEvaluation`,
+                reponse
+            )
+            if (!response.success) {
+                showNotification("Erreur", response.message, "error")
+                return
+            }
+            showNotification("Génial !", response.message, "success")
+        },
+        [showNotification]
+    )
     return (
         <EvaluationEtudiantContext.Provider
             value={{
@@ -120,6 +135,7 @@ export const EvaluationEtudiantContextProvider: React.FC<
                 evaluationList,
                 getEvaluationDetails,
                 evaluationDetails,
+                soumettreReponseEtudiant,
             }}
         >
             {children}
