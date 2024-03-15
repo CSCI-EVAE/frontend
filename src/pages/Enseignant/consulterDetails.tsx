@@ -59,7 +59,7 @@ const DetailsEvaluationPage: React.FC = () => {
 
         <DetailsEvaluationComponent
                 evaluation={evaluationDetails}
-                urlRetour="/dashboard/enseignant/Promotion"
+                urlRetour="/dashboard/enseignant/unitésEnseignement"
             />
            
 

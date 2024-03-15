@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import ListComponent from "../../common/List/list"
+import ListComponent from "../../common/List"
 import { UE_COLUMNS_LISTEtudiant } from "../../constants/index"
 import { EtudiantDTO } from "../../types"
 
@@ -24,12 +24,12 @@ const ListEtudiantPage: React.FC<PromotionProps> = ({listEtudiant}:PromotionProp
     return (
      <div>       
             <ListComponent
-                    title={"Liste des etudiants"}
+                    title={""}
                     columns={UE_COLUMNS_LISTEtudiant}
                     data={data}
                     actions={false}
                    // details={true}
-                   noBoutonAjouter={true}
+                 
                     filter={true}
                 />
      </div>  

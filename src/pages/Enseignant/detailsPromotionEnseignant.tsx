@@ -36,11 +36,21 @@ const anneeUniversitaire = useParams().anneeUniversitaire
         getList(anneeUniversitaire, codeFormation);
 
     }, [getList,anneeUniversitaire,codeFormation]);
+ 
+   
+    const nombreEtudiants = (liste: any[] | null): number => {
+            if (liste) {
+                return liste.length;
+            } else {
+                return 0;
+            }
+        };
 
     return (
         <>
             <Header />
             <DetailsPromotionComponent
+                effectifReel= {nombreEtudiants(etudiantList)}
                 promotion={promotion}
                 urlRetour="/dashboard/enseignant/Promotion"
             />
@@ -74,8 +84,26 @@ const anneeUniversitaire = useParams().anneeUniversitaire
                     </AccordionDetails>
                     
                 </Accordion>
-                <ListEtudiantPage listEtudiant={etudiantList} />
-               
+                
+                <Accordion defaultExpanded>
+                    <AccordionSummary
+                        sx={{
+                            marginRight: "150px",
+                            marginLeft: "150px",
+                          
+                        }}
+                        expandIcon={<ArrowDropDown />}
+                    >
+                        <Typography variant="h4" gutterBottom style={textStyle}>
+                            Liste des Etudiants
+                        </Typography>
+                    </AccordionSummary>
+
+                    <AccordionDetails>
+                    <ListEtudiantPage listEtudiant={etudiantList} />
+                    </AccordionDetails>
+                    
+                </Accordion>
             </div>
         </>
     )

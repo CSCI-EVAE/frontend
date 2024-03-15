@@ -2,7 +2,7 @@ import { ReactNode, createContext, useCallback, useContext, useState } from "rea
 // import {ApiResponse, Etudiant} from "../types/index"
 import { NotificationContext } from "./notificationContext";
 import { ApiResponse, EtudiantDTO } from "../types";
-import { getRequest1 } from "../api/axios";
+import { getRequest} from "../api/axios";
 // import { getRequest } from "../api/axios";
 
 interface EtudiantListProps {
@@ -10,41 +10,6 @@ interface EtudiantListProps {
 }
 
 export const EtudiantListContext = createContext<any>(null);
-
-// export function AdjustColumns(etudiantList:EtudiantDTO[]):any[]{
-// if(etudiantList){
-//     return etudiantList.map((etudiant:EtudiantDTO) => {
-//         const{
-//             noEtudiant,
-//             nom,
-//             prenom,
-//             sexe,
-//             datenaissance,
-//             nationalite,
-//             telephone,
-//             email,
-//             ...rest
-//         } = etudiant;
-
-//         return{
-//             noEtudiant,
-//             promotion,
-//             nom,
-//             prenom,
-//             sex,
-//             datenaissance,
-//             nationalite,
-//             telephone,
-//             email,
-//             ...rest
-//         }
-//     });
-// } else {
-//     return [];
-// }
-
-
-// }
 
 export const EtudiantListContextPorvider: React.FC<EtudiantListProps> = ({children}) => {
 
@@ -61,7 +26,7 @@ const updateEtudiantList = useCallback((value: EtudiantDTO[])=> {
 
 const getList = useCallback(async (anneeUniversitaire: number, codeFormation: string) => {
     try {
-        const response: ApiResponse = await getRequest1(`/promotions/${anneeUniversitaire}/${codeFormation}/etudiants`);
+        const response: ApiResponse = await getRequest(`/etudiant/${anneeUniversitaire}/${codeFormation}/etudiants`);
         if (!response.success) {
             showNotification("Erreur", response.message, "error");
             return;
