@@ -23,6 +23,24 @@ const DetailsPromotionComponent: FC<DetailsProps> = ({
     }
     const navigate = useNavigate()
 
+
+    const formatDate = (dateString: string | null): string => {
+        if(dateString){
+        const date = new Date(dateString);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear().toString();
+        return `${day}-${month}-${year}`;
+        }
+        else{
+            return ""
+        }
+      };
+
+
+
+      
+
     return (
         <>
             <div
@@ -132,10 +150,10 @@ const DetailsPromotionComponent: FC<DetailsProps> = ({
                         >
                             <Typography variant="body1">
                                 <strong>Date de Réponse (LP) :</strong>{" "}
-                                {promotion.dateReponseLp}
+                                {formatDate(promotion.dateReponseLp)}
                                 <strong> {"||"}</strong>
                                 <strong> (LALP) : </strong>{" "}
-                                {promotion.dateReponseLalp}
+                                {formatDate(promotion.dateReponseLalp)}
                             </Typography>
                         </Grid>
                         <Grid
@@ -147,7 +165,7 @@ const DetailsPromotionComponent: FC<DetailsProps> = ({
                         >
                             <Typography variant="body1">
                                 <strong>Date de Rentrée :</strong>{" "}
-                                {promotion.dateRentree}
+                                {formatDate(promotion.dateRentree)}
                             </Typography>
                         </Grid>
                         <Grid

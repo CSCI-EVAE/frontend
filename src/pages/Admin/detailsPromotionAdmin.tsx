@@ -44,7 +44,7 @@ const anneeUniversitaire = useParams().anneeUniversitaire
         }
     };
   
-    
+  
 
     return (
         <>
