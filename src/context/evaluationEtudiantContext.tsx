@@ -8,6 +8,7 @@ import React, {
 } from "react"
 
 import { Evaluation } from "../types/EvaluationType"
+import { Evaluation as EvaluationDetails } from "../types/EvaluationTypes"
 import { NotificationContext } from "./notificationContext"
 import { ApiResponse } from "../types"
 import { getRequest } from "../api/axios"
@@ -58,7 +59,8 @@ export function AdjustColumns(evaluationList: Evaluation[]): any[] {
 export const EvaluationEtudiantContextProvider: React.FC<
     EvaluationContextProviderProps
 > = ({ children }) => {
-    const [evaluationDetails, setEvaluationDetails] = useState<any>()
+    const [evaluationDetails, setEvaluationDetails] =
+        useState<EvaluationDetails>()
     const [evaluationList, setEvaluationList] = useState<
         Evaluation[] | undefined
     >()
@@ -105,8 +107,7 @@ export const EvaluationEtudiantContextProvider: React.FC<
                 showNotification("Erreur", response.message, "error")
                 return
             }
-            let list = response.data
-            console.log("🚀 ~ getEvaluationDetails ~ list:", response.data)
+            let list: EvaluationDetails = response.data.data
 
             setEvaluationDetails(list)
         },

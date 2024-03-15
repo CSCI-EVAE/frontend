@@ -1,131 +1,106 @@
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
 import QuestionRating from "../../components/QuestionRating"
 import StepperComponent from "../../common/Stepper"
 import { StepContext } from "../../context/stepperContext"
-import { RubriqueCompose } from "../../types"
+import { ReponseEvaluation as ReponseEvaluationType } from "../../types"
 import RecapitulatifReponses from "../../components/RecapitulatifReponses"
 import Header from "../../Layout/Header"
 import { useParams } from "react-router-dom"
 import { EvaluationEtudiantContext } from "../../context/evaluationEtudiantContext"
-
-const rubriques: RubriqueCompose[] = [
-    {
-        idRubrique: 1,
-        designation: "Rubrique 1",
-        ordre: 1,
-        questions: [
-            {
-                idQuestion: 1,
-                intitule: "Question 1",
-                ordre: 1,
-                idQualificatif: 1,
-                minimal: "Pas du tout",
-                maximal: "Extrêmement",
-            },
-            {
-                idQuestion: 2,
-                intitule: "Question 2",
-                ordre: 2,
-                idQualificatif: 2,
-                minimal: "Très mauvais",
-                maximal: "Excellent",
-            },
-            {
-                idQuestion: 3,
-                intitule: "Question 3",
-                ordre: 3,
-                idQualificatif: 3,
-                minimal: "Très mauvais",
-                maximal: "Excellent",
-            },
-        ],
-    },
-    {
-        idRubrique: 2,
-        designation: "Rubrique 2",
-        ordre: 2,
-        questions: [
-            {
-                idQuestion: 3,
-                intitule: "Question 3",
-                ordre: 1,
-                idQualificatif: 3,
-                minimal: "Pas du tout",
-                maximal: "Extrêmement",
-            },
-            {
-                idQuestion: 4,
-                intitule: "Question 4",
-                ordre: 2,
-                idQualificatif: 4,
-                minimal: "Très mauvais",
-                maximal: "Excellent",
-            },
-        ],
-    },
-    {
-        idRubrique: 3,
-        designation: "Rubrique 3",
-        ordre: 3,
-        questions: [
-            {
-                idQuestion: 3,
-                intitule: "Question 3",
-                ordre: 1,
-                idQualificatif: 3,
-                minimal: "Pas du tout",
-                maximal: "Extrêmement",
-            },
-            {
-                idQuestion: 4,
-                intitule: "Question 4",
-                ordre: 2,
-                idQualificatif: 4,
-                minimal: "Très mauvais",
-                maximal: "Excellent",
-            },
-        ],
-    },
-]
+import { Evaluation } from "../../types/EvaluationTypes"
+import CommentaireEvalution from "../../components/CommentaireEvaluation"
 
 const ReponseEvaluation = () => {
     const idEvaluation = useParams().id
-    console.log("🚀 ~ ReponseEvaluation ~ idEvaluation:", idEvaluation)
     const { getEvaluationDetails, evaluationDetails } = useContext(
         EvaluationEtudiantContext
     )
+    const [list, setList] = useState<Evaluation>()
+
     useEffect(() => {
         const getEvae = async () => await getEvaluationDetails(idEvaluation)
         getEvae()
     }, [getEvaluationDetails, idEvaluation])
-    // getEvaluationDetails(idEvaluation)
+    useEffect(() => {
+        setList(evaluationDetails)
+    }, [evaluationDetails])
 
     const { activeStep, handleComplete } = useContext(StepContext)
-    const handleValidateElement = (
-        rubrique: RubriqueCompose,
-        ratings: any[]
+
+    const [reponse, setReponse] = useState<ReponseEvaluationType>({
+        commentaire: "",
+        idEvaluation: {
+            id: Number(idEvaluation),
+        },
+        nom: "",
+        prenom: "",
+        reponseQuestions: [],
+    })
+    const handleAddChoice = (idQuestion: number, positionnement: number) => {
+        setReponse({
+            ...reponse,
+            reponseQuestions: [
+                ...reponse.reponseQuestions,
+                {
+                    idQuestionEvaluation: {
+                        id: idQuestion,
+                    },
+                    positionnement: positionnement,
+                },
+            ],
+        })
+        console.log("🚀 ~ ReponseEvaluation ~ reponse:", reponse)
+    }
+    const handleNomPrenomCommentaire = (
+        nom: string,
+        prenom: string,
+        commentaire: string
     ) => {
+        setReponse({
+            ...reponse,
+            commentaire: commentaire,
+            nom: nom,
+            prenom: prenom,
+        })
+        console.log("🚀 ~ ReponseEvaluation ~ reponse:", reponse)
+    }
+
+    const handleValidateElement = () => {
         //traitement ajout
         //
-        if (activeStep !== rubriques.length) {
+        if (activeStep !== (list?.rubriqueEvaluations?.length ?? 0) + 2) {
             handleComplete()
+            localStorage.setItem("reponseEvaluation", JSON.stringify(reponse))
         } else {
             //fin du remplissage
             alert("formulaire fini")
         }
     }
-    const stepItems = rubriques.map((r, index) => (
-        <QuestionRating
-            key={index}
-            rubrique={r}
+    const stepItems = list
+        ? list.rubriqueEvaluations.map((r, index) => (
+              <QuestionRating
+                  handleAddChoice={handleAddChoice}
+                  key={index}
+                  rubrique={r}
+                  handleSubmit={handleValidateElement}
+              />
+          ))
+        : []
+    stepItems.push(
+        <CommentaireEvalution
+            handleNomPrenomCommentaire={handleNomPrenomCommentaire}
             handleSubmit={handleValidateElement}
+        />,
+        <RecapitulatifReponses
+            rubrique={list ? list.rubriqueEvaluations : []}
         />
-    ))
-    stepItems.push(<RecapitulatifReponses rubriques={rubriques} />)
+    )
     return (
         <>
             <Header />
-            <StepperComponent stepsCount={rubriques.length + 1}>
+            <StepperComponent
+                stepsCount={list ? list.rubriqueEvaluations.length + 2 : 2}
+            >
                 {stepItems}
             </StepperComponent>
         </>
