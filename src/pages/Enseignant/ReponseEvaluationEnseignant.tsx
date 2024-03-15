@@ -1,7 +1,9 @@
-import React from "react"
+import React, { useContext, useEffect } from "react"
 import ReponsesEvaluationDetails from "../../components/ReponsesEvaluationEnseignantDetails"
 import DetailsEvaluationComponent from "../../components/EvaeReponsesDetails"
 import { Typography } from "@mui/material"
+import { EvaluationContext } from "../../context/evaluationEnseignantContext"
+import { useParams } from "react-router-dom"
 
 export default function ReponseEvaluationEnseignant() {
     const textStyle: React.CSSProperties = {
@@ -10,9 +12,22 @@ export default function ReponseEvaluationEnseignant() {
         marginTop: "20px",
         marginBottom: "50px",
     }
+
+   const {getStatistiques, statistiqueList} = useContext(EvaluationContext);
+      const idEvaluation = useParams().id
+   
+console.log("aaa",statistiqueList)
+   useEffect(()=> {
+    getStatistiques(idEvaluation)
+    console.log("akjhkjk",statistiqueList)
+
+   },[getStatistiques,idEvaluation])
+
+
     return (
         <>
-            <DetailsEvaluationComponent urlRetour="/enseignant/unitésEnseignement" />
+            <DetailsEvaluationComponent urlRetour="/enseignant/unitésEnseignement" evaluation={statistiqueList ?? []} />
+
             <div
                 style={{
                     maxWidth: "90%",
@@ -35,7 +50,7 @@ export default function ReponseEvaluationEnseignant() {
             //     alignItems: "center",
             // }}
             >
-                <ReponsesEvaluationDetails />
+                <ReponsesEvaluationDetails evaluation={statistiqueList ??[]} />
             </div>
         </>
     )

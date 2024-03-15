@@ -6,24 +6,25 @@ import { Box, Grid, Typography } from "@mui/material"
 import { Evaluation } from "../types"
 
 interface DetailsProps {
-    // promotion: Promotion
+    evaluation : Evaluation
     urlRetour: string
 }
 const DetailsEvaluationComponent: FC<DetailsProps> = ({
     //   promotion,
     urlRetour,
+    evaluation
 }) => {
-    const evaluationExample: Evaluation = {
-        id: 1,
-        codeFormation: "INF123",
-        periode: "2024",
-        designation: "Évaluation Finale",
-        codeEC: "EC123",
-        codeUE: "UE456",
-        debutReponse: "2024-03-01",
-        finReponse: "2024-03-15",
-        RubriqueQuestion: [],
-    }
+    // const evaluationExample: Evaluation = {
+    //     id: 1,
+    //     codeFormation: "INF123",
+    //     periode: "2024",
+    //     designation: "Évaluation Finale",
+    //     codeEC: "EC123",
+    //     codeUE: "UE456",
+    //     debutReponse: "2024-03-01",
+    //     finReponse: "2024-03-15",
+    //     RubriqueQuestion: [],
+    // }
     const textStyle: React.CSSProperties = {
         fontFamily: "cursive",
         color: "#e3a12f",
@@ -93,9 +94,9 @@ const DetailsEvaluationComponent: FC<DetailsProps> = ({
                             <Typography variant="body1">
                                 <strong>
                                     {" "}
-                                    {evaluationExample.codeFormation} :
+                                    {evaluation.codeFormation} :
                                 </strong>{" "}
-                                <strong>{evaluationExample.codeUE}</strong>{" "}
+                                <strong>{evaluation.codeUE}</strong>{" "}
                             </Typography>
                         </Grid>
                         <Grid
@@ -107,7 +108,7 @@ const DetailsEvaluationComponent: FC<DetailsProps> = ({
                         >
                             <Typography variant="body1">
                                 <strong>Désignation :</strong>{" "}
-                                {evaluationExample.designation}
+                                {evaluation.designation}
                             </Typography>
                         </Grid>
                         <Grid
@@ -119,7 +120,7 @@ const DetailsEvaluationComponent: FC<DetailsProps> = ({
                         >
                             <Typography variant="body1">
                                 <strong>Période :</strong>{" "}
-                                {evaluationExample.periode}
+                                {evaluation.periode}
                             </Typography>
                         </Grid>
 
@@ -132,7 +133,7 @@ const DetailsEvaluationComponent: FC<DetailsProps> = ({
                         >
                             <Typography variant="body1">
                                 <strong>Date de Début :</strong>{" "}
-                                {evaluationExample.debutReponse}
+                                {evaluation.debutReponse}
                             </Typography>
                         </Grid>
                         <Grid
@@ -143,8 +144,8 @@ const DetailsEvaluationComponent: FC<DetailsProps> = ({
                             sx={{ marginBottom: "10px" }}
                         >
                             <Typography variant="body1">
-                                <strong>Date de Début :</strong>{" "}
-                                {evaluationExample.finReponse}
+                                <strong>Date de fin :</strong>{" "}
+                                {evaluation.finReponse}
                             </Typography>
                         </Grid>
                     </Grid>

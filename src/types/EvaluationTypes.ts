@@ -12,6 +12,7 @@ export interface Question {
     noEnseignant: number | null
     idQualificatif: Qualificatif
     intitule: string
+  
 }
 
 export interface Rubrique {
@@ -22,6 +23,7 @@ export interface Rubrique {
     questionEvaluations: QuestionEvaluation[] | null
 }
 export interface QuestionEvaluation {
+    moyen: any
     id: number
     intitule: string | null
     idQuestion: Question
