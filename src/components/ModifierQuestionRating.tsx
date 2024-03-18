@@ -15,13 +15,12 @@ const createDefaultValue = (
     questionEvaluations: QuestionEvaluation[]
 ): DefaultValue => {
     const defaultValue: DefaultValue = {}
-    console.log(questionEvaluations)
     // Parcourt chaque réponse
     reponseQuestions.forEach((reponse) => {
         // Trouve la question correspondante dans les évaluations de questions
-        const question = questionEvaluations.find(
-            (q) => q.id === reponse.idQuestionEvaluation.id
-        )
+        const question = questionEvaluations.find((q) => {
+            return q.id === reponse.idQuestionEvaluation.id
+        })
 
         // Si la question est trouvée, ajoute l'id de la question avec son positionnement à defaultValue
         if (question) {
@@ -44,7 +43,7 @@ interface QuestionRatingProps {
     handleSubmit: () => void
     handleAddChoice: (idQuestion: number, positionnement: number) => void
 }
-const QuestionRating: FC<QuestionRatingProps> = ({
+const ModifierQuestionRating: FC<QuestionRatingProps> = ({
     rubrique,
     handleSubmit,
     handleAddChoice,
@@ -73,30 +72,42 @@ const QuestionRating: FC<QuestionRatingProps> = ({
         setRatings(new Array(arrayLength).fill(0))
         //handleComplete();
     }
-    const rep = localStorage.getItem("reponseEvaluation")
+    const rep = localStorage.getItem("modifierEvaluation")
+
     const evae: ReponseEvaluation = JSON.parse(rep ?? "{}")
+
     const defaultV = createDefaultValue(
         evae.reponseQuestions ?? [],
         rubrique.questionEvaluations || []
     )
     const [defaultValue, setDefaultValue] = useState<DefaultValue>(defaultV)
     useEffect(() => {
-        const rep = localStorage.getItem("reponseEvaluation")
+        const rep = localStorage.getItem("modifierEvaluation")
 
         if (rep && rubrique.questionEvaluations) {
+            console.log(
+                "🚀 ~ useEffect ~ rubrique:",
+                rubrique.questionEvaluations
+            )
+            console.log("🚀 ~ useEffect ~ rep:", rep)
             const evae: ReponseEvaluation = JSON.parse(rep)
+            console.log("🚀 ~ useEffect ~ evae:", evae.reponseQuestions)
+
             const defaultV = createDefaultValue(
                 evae.reponseQuestions,
                 rubrique.questionEvaluations
             )
+            console.log("🚀 ~ defaultValue:", defaultV)
 
             setDefaultValue(defaultV)
             setRatings(new Array(arrayLength).fill(1))
         }
-    }, [rubrique.questionEvaluations, arrayLength])
+    }, [rep, rubrique.questionEvaluations, arrayLength])
     if (!rubrique) {
         return <>Loading</>
     }
+    console.log("🚀 ~ defaultValue:OUIH", defaultValue)
+    console.log("🚀 ~ defaulkjlkjlkjntValue:OUIH", defaultValue[54])
     return (
         <div
             style={{
@@ -232,4 +243,4 @@ const QuestionRating: FC<QuestionRatingProps> = ({
     )
 }
 
-export default QuestionRating
+export default ModifierQuestionRating

@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom"
 interface ReponseProps {
     rubrique: RubriqueEvaluation[]
 }
-const RecapitulatifReponses: FC<ReponseProps> = ({ rubrique }) => {
+const ModifierRecapitulatifReponses: FC<ReponseProps> = ({ rubrique }) => {
     const navigate = useNavigate()
     const { handleReset } = useContext(StepContext)
     const handleModifier = () => {
@@ -26,7 +26,7 @@ const RecapitulatifReponses: FC<ReponseProps> = ({ rubrique }) => {
     })
 
     useEffect(() => {
-        const rep = localStorage.getItem("reponseEvaluation")
+        const rep = localStorage.getItem("modifierEvaluation")
 
         if (rep) setReponse(JSON.parse(rep))
     }, [])
@@ -43,7 +43,7 @@ const RecapitulatifReponses: FC<ReponseProps> = ({ rubrique }) => {
     const handleReponse = async () => {
         console.log("eee", reponse)
         await soumettreReponseEtudiant(reponse)
-        localStorage.removeItem("reponseEvaluation")
+        localStorage.removeItem("modifierEvaluation")
         handleReset()
         navigate("/dashboard/etudiant")
     }
@@ -161,4 +161,4 @@ const RecapitulatifReponses: FC<ReponseProps> = ({ rubrique }) => {
         </div>
     )
 }
-export default RecapitulatifReponses
+export default ModifierRecapitulatifReponses

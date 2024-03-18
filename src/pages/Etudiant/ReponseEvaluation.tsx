@@ -29,9 +29,7 @@ const ReponseEvaluation = () => {
 
     const [reponse, setReponse] = useState<ReponseEvaluationType>({
         commentaire: "",
-        idEvaluation: {
-            id: Number(idEvaluation),
-        },
+        idEvaluation: Number(idEvaluation),
         nom: "",
         prenom: "",
         reponseQuestions: [],
@@ -49,7 +47,6 @@ const ReponseEvaluation = () => {
                 },
             ],
         })
-        console.log("🚀 ~ ReponseEvaluation ~ reponse:", reponse)
     }
     const handleNomPrenomCommentaire = (
         nom: string,
@@ -62,7 +59,6 @@ const ReponseEvaluation = () => {
             nom: nom,
             prenom: prenom,
         })
-        console.log("🚀 ~ ReponseEvaluation ~ reponse:", reponse)
     }
 
     const handleValidateElement = () => {

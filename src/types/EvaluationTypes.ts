@@ -12,7 +12,6 @@ export interface Question {
     noEnseignant: number | null
     idQualificatif: Qualificatif
     intitule: string
-  
 }
 
 export interface Rubrique {
@@ -28,6 +27,7 @@ export interface QuestionEvaluation {
     intitule: string | null
     idQuestion: Question
     ordre: number
+    positionnement?: number
 }
 
 export interface RubriqueEvaluation {

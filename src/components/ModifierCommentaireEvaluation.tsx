@@ -31,7 +31,7 @@ interface CommentaireProps {
     handleSubmit: () => void
 }
 
-const CommentaireEvaluation: React.FC<CommentaireProps> = ({
+const ModifierCommentaireEvaluation: React.FC<CommentaireProps> = ({
     handleNomPrenomCommentaire,
     handleSubmit,
 }) => {
@@ -50,7 +50,7 @@ const CommentaireEvaluation: React.FC<CommentaireProps> = ({
     const [commentaireDefault, setCommentaireDefault] =
         React.useState<string>("")
     React.useEffect(() => {
-        const rep = localStorage.getItem("reponseEvaluation")
+        const rep = localStorage.getItem("modifierEvaluation")
 
         if (rep) {
             const evae: ReponseEvaluation = JSON.parse(rep)
@@ -216,4 +216,4 @@ const CommentaireEvaluation: React.FC<CommentaireProps> = ({
     )
 }
 
-export default CommentaireEvaluation
+export default ModifierCommentaireEvaluation
