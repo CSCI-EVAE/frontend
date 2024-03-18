@@ -21,6 +21,14 @@ const updateEtudiantList = useCallback((value: EtudiantDTO[]) => {
     setEtudiantList(value);
 }, []);
 
+const formatDate = (dateString: string): string => {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear().toString();
+    return `${day}-${month}-${year}`;
+   
+  };
 
 
 
@@ -31,7 +39,11 @@ const getList = useCallback(async (anneeUniversitaire: number, codeFormation: st
             return;
         }
         const { data } = response.data; 
-        updateEtudiantList(data);
+        const newdata = data.map((d:any)=>{
+            return {...d, dateNaissance :formatDate(d.dateNaissance)}
+        })
+
+        updateEtudiantList(newdata);
     } catch (error) {
         console.error("Une erreur s'est produite lors de la récupération de la liste des étudiants :", error);
         showNotification("Erreur", "Une erreur s'est produite lors de la récupération de la liste des étudiants.", "error");
