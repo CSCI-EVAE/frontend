@@ -16,6 +16,7 @@ const EvaluationPage: React.FC = () => {
    const dat = evaluationList ? AdjustColumns(evaluationList) : [];
    const initialFilterReads: { [key: string]: boolean } = {};
    const initialFilterAnswers: { [key: string]: boolean } = {};
+   const evalRepondu: { [key: string]: boolean } = {};
     
    dat.forEach(evaluation => {
        if (evaluation.etat === LIST_Etat_Etudiant.CLO.value) {
@@ -24,17 +25,16 @@ const EvaluationPage: React.FC = () => {
        if (evaluation.etat === LIST_Etat_Etudiant.DIS.value) {
            initialFilterAnswers[evaluation.noEvaluation] = evaluation.answerStatus;
        }
+       evalRepondu[evaluation.noEvaluation] = evaluation.evaRepondu
    });
-   
-//    console.log("The initail eval read " + JSON.stringify(initialFilterReads, null))
-//    console.log("The initail eval answer " + JSON.stringify(initialFilterAnswers, null))
-   
+
+   console.log("This is ",dat)
+
+  
     return (
        
      <div>
-            <Header/>
-          
-
+        <Header/>
 <ListComponent
           title={"Liste des evaluations"}
           columns={Evalution_Etudiant_COLUMNS}
@@ -42,7 +42,8 @@ const EvaluationPage: React.FC = () => {
           actions={true}
           columnsFilter={UE_COLUMNS_FILTER_Etudiant}
            filterreades={initialFilterReads} 
-           filteransweres={initialFilterAnswers}               
+           filteransweres={initialFilterAnswers}  
+           evaRepondu={evalRepondu}
                 />
      </div>
      
