@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import ListComponent from "../../common/List/list"
 import { UE_COLUMNS_LISTEtudiant } from "../../constants/index"
 import { EtudiantDTO } from "../../types"
+import { EtudiantListContext, trouverIdEtudiant } from "../../context/etudiantListContext"
+import { useNavigate, useParams } from "react-router-dom"
+
 
 type PromotionProps = {
     etudiantList : any[]
@@ -9,13 +12,30 @@ type PromotionProps = {
 
 
 const EtudiantListPage: React.FC<PromotionProps> = ({etudiantList}:PromotionProps) => {
+
+
+    const { removeEtudiant } = useContext(EtudiantListContext);
+
     
+    const { codeFormation, anneeUniversitaire } = useParams<{ codeFormation: string, anneeUniversitaire: string }>();
+    const [noEtudiant, setNoEtudiant] = useState<string | null>(null);
 
 
     const handleDelete = (rowData: any) => {
         console.log("Supprimer:", rowData)
-       
-    } 
+        const no_EtudiantSupp = trouverIdEtudiant(rowData, etudiantList)
+        removeEtudiant(no_EtudiantSupp,anneeUniversitaire,codeFormation)
+    }
+
+const navigate = useNavigate();
+
+    const handleEdit = (rowData: any) => {
+        console.log("modifier:", rowData)
+     
+        navigate(`/dashboard/details-promotion/${codeFormation}/${anneeUniversitaire}/modifier-etudiant/${rowData.noEtudiant}`)
+    }
+
+
     
     const [data, setData] = useState<EtudiantDTO[]>([]);
 
@@ -44,8 +64,8 @@ const EtudiantListPage: React.FC<PromotionProps> = ({etudiantList}:PromotionProp
                     filter={true}
                     noBoutonRetour={true}
                     redirectEdit={true}
-                    urlEdit="/dashboard/modifier-etudiant"
-                    urlAdd="/dashboard/creer-etudiant"
+                    modifyHandler={handleEdit}
+                    urlAdd={`/dashboard/details-promotion/${codeFormation}/${anneeUniversitaire}/creer-etudiant`}
                     redirectAdd={true}
                 />
      </div>  
@@ -53,3 +73,4 @@ const EtudiantListPage: React.FC<PromotionProps> = ({etudiantList}:PromotionProp
  }
  
  export default EtudiantListPage;
+

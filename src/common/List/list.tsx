@@ -54,14 +54,14 @@ interface Props {
     detailsElement?: ReactNode
     handleAdd?: (rowData: any) => void
     redirect?: boolean
-    redirectEdit?:boolean
-    redirectAdd?:boolean
+    redirectEdit?: boolean
+    redirectAdd?: boolean
     url?: string
-    urlEdit?:string
-    urlAdd?:string
+    urlEdit?: string
+    urlAdd?: string
     filter?: boolean
-    noBoutonAjouter? : boolean
-    noBoutonRetour ? : boolean
+    noBoutonAjouter?: boolean
+    noBoutonRetour?: boolean
 }
 
 const ListComponent: React.FC<Props> = ({
@@ -90,7 +90,7 @@ const ListComponent: React.FC<Props> = ({
     filter,
     noBoutonAjouter,
     noBoutonRetour
-    
+
 }) => {
     const [filters, setFilters] = useState<{ [key: string]: string }>({})
     const [page, setPage] = useState(0) // État pour la pagination
@@ -165,25 +165,25 @@ const ListComponent: React.FC<Props> = ({
 
     return (
         <>
-        {!noBoutonRetour && 
-            <div
-                style={{
-                    maxWidth: "90%",
-                    marginLeft: "150px",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "flex-start",
-                }}
-            >
-                <ButtonComponent
-                    text="Retour"
-                    variant="contained"
-                    icon={<KeyboardBackspace />}
-                    onClick={() => {
-                        navigate("/dashboard/admin")
+            {!noBoutonRetour &&
+                <div
+                    style={{
+                        maxWidth: "90%",
+                        marginLeft: "150px",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-start",
                     }}
-                />
-            </div>
+                >
+                    <ButtonComponent
+                        text="Retour"
+                        variant="contained"
+                        icon={<KeyboardBackspace />}
+                        onClick={() => {
+                            navigate("/dashboard/admin")
+                        }}
+                    />
+                </div>
             }
             <div
                 style={{
@@ -198,81 +198,81 @@ const ListComponent: React.FC<Props> = ({
                     {title}
                 </Typography>
                 {!noBoutonAjouter &&
-                <ButtonComponent
-                    text="Ajouter"
-                    variant="contained"
-                    icon={<AddCircleOutline />}
-                    onClick={() => {
-                        if (
-                            redirectAdd
-                        ) {
-                            
-                            urlAdd &&
-                                navigate(
-                                    urlAdd
-                                )
-                        } 
-                        setSelectedActions(LIST_ACTIONS.add)
-                        updateModalOpen(true)
-                        updateSelectedRow({})
-                    }}
-                />
-                
-            }
-            <div style={{ height: "20px" }} />
-                    
-                <div style={{ width: "90%" }}>
-                {!filter && (
-                    <div
-                        style={{
-                            border: "3px solid #3c768c",
-                            padding: "10px",
-                            marginBottom: "20px",
-                            width: "100%",
-                            boxSizing: "border-box",
-                            marginTop: "20px",
+                    <ButtonComponent
+                        text="Ajouter"
+                        variant="contained"
+                        icon={<AddCircleOutline />}
+                        onClick={() => {
+                            if (
+                                redirectAdd
+                            ) {
+
+                                urlAdd &&
+                                    navigate(
+                                        urlAdd
+                                    )
+                            }
+                            setSelectedActions(LIST_ACTIONS.add)
+                            updateModalOpen(true)
+                            updateSelectedRow({})
                         }}
-                    >
-                        <>
+                    />
+
+                }
+                <div style={{ height: "20px" }} />
+
+                <div style={{ width: "90%" }}>
+                    {!filter && (
                         <div
                             style={{
-                                maxWidth: "90%",
-                                margin: "auto",
-                                display: "flex",
-                                flexDirection: "column",
-                                alignItems: "center",
+                                border: "3px solid #3c768c",
+                                padding: "10px",
+                                marginBottom: "20px",
+                                width: "100%",
+                                boxSizing: "border-box",
+                                marginTop: "20px",
                             }}
                         >
-                            <Typography variant="h5">Filtre</Typography>
-                        </div>
-                        {columns.map((column) => (
-                            <TextField
-                                key={column.id}
-                                label={` ${column.label}`}
-                                variant="filled"
-                                value={filters[column.id] || ""}
-                                onChange={(e) =>
-                                    handleFilterChange(e, column.id)
-                                }
-                                style={{
-                                    marginRight: "10px",
+                            <>
+                                <div
+                                    style={{
+                                        maxWidth: "90%",
+                                        margin: "auto",
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        alignItems: "center",
+                                    }}
+                                >
+                                    <Typography variant="h5">Filtre</Typography>
+                                </div>
+                                {columns.map((column) => (
+                                    <TextField
+                                        key={column.id}
+                                        label={` ${column.label}`}
+                                        variant="filled"
+                                        value={filters[column.id] || ""}
+                                        onChange={(e) =>
+                                            handleFilterChange(e, column.id)
+                                        }
+                                        style={{
+                                            marginRight: "10px",
 
-                                    width: "20%",
-                                }}
-                            />
-                        ))}
-                        </>
-                    </div>
-                    
+                                            width: "20%",
+                                        }}
+                                    />
+                                ))}
+                            </>
+                        </div>
+
                     )}
-                    
+
                     <TableContainer component={Paper}>
                         <Table>
                             <TableHead>
                                 <TableRow>
                                     {columns.map((column) => (
                                         <TableCell
-                                            style={{ fontWeight: "bold" , color: "white"}}
+                                            style={{ fontWeight: "bold", color: "white" }}
                                             key={column.id}
                                         >
                                             {column.label.toUpperCase()}
@@ -280,7 +280,7 @@ const ListComponent: React.FC<Props> = ({
                                     ))}
                                     {actions && (
                                         <TableCell
-                                            style={{ fontWeight: "bold" , color: "white"}}
+                                            style={{ fontWeight: "bold", color: "white" }}
                                         >
                                             ACTIONS
                                         </TableCell>
@@ -319,7 +319,7 @@ const ListComponent: React.FC<Props> = ({
                                                                         backgroundColor:
                                                                             rowIndex %
                                                                                 2 ===
-                                                                            0
+                                                                                0
                                                                                 ? "#fffff"
                                                                                 : "#f9f9f9",
                                                                     }}
@@ -339,8 +339,8 @@ const ListComponent: React.FC<Props> = ({
                                                                             >
                                                                                 {
                                                                                     row[
-                                                                                        column
-                                                                                            .id
+                                                                                    column
+                                                                                        .id
                                                                                     ]
                                                                                 }
                                                                             </TableCell>
@@ -377,13 +377,13 @@ const ListComponent: React.FC<Props> = ({
                                                                                                     row
                                                                                                 )
                                                                                                 localStorage.setItem("promotion", JSON.stringify(row))
-                                                                                                url &&(
+                                                                                                url && (
                                                                                                     navigate(
-                                                                                                        url+`/${row.codeFormation}/${row.anneeUniversitaire}`
+                                                                                                        url + `/${row.codeFormation}/${row.anneeUniversitaire}`
                                                                                                     )
-                                                                                                    
-                                                                                                    )
-                                                                                                    
+
+                                                                                                )
+
                                                                                             } else {
                                                                                                 setSelectedActions(
                                                                                                     LIST_ACTIONS.read
@@ -416,28 +416,29 @@ const ListComponent: React.FC<Props> = ({
                                                                                                     updateSelectedRow(
                                                                                                         row
                                                                                                     )
-                                                                                                    urlEdit &&
-                                                                                                        navigate(
-                                                                                                            urlEdit
-                                                                                                        )
-                                                                                                } 
-                                                                                                 else{
+                                                                                                  
                                                                                                     modifyHandler &&
-                                                                                                    modifyHandler(
+                                                                                                        modifyHandler(
+                                                                                                            row
+                                                                                                        )
+                                                                                                }
+                                                                                                else {
+                                                                                                    modifyHandler &&
+                                                                                                        modifyHandler(
+                                                                                                            row
+                                                                                                        )
+                                                                                                    setSelectedActions(
+                                                                                                        LIST_ACTIONS.update
+                                                                                                    )
+                                                                                                    updateModalOpen(
+                                                                                                        true
+                                                                                                    )
+                                                                                                    updateSelectedRow(
                                                                                                         row
                                                                                                     )
-                                                                                                setSelectedActions(
-                                                                                                    LIST_ACTIONS.update
-                                                                                                )
-                                                                                                updateModalOpen(
-                                                                                                    true
-                                                                                                )
-                                                                                                updateSelectedRow(
-                                                                                                    row
-                                                                                                )
-                                                                                                 }
+                                                                                                }
 
-                                                                                                
+
                                                                                             }}
                                                                                         >
                                                                                             <Edit />

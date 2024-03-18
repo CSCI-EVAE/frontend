@@ -167,6 +167,8 @@ const RubriqueComposeAdd: React.FC<rubriqueComposeFormProps> = ({ add }) => {
                             sx={{ width: "50%" }} // Ajustez la largeur comme vous le souhaitez
                         />
                     </Box>
+
+                    
                 </>
             ) : (
                 <>
