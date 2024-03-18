@@ -1,16 +1,51 @@
 import { Chip, Divider, Paper, Typography } from "@mui/material"
-import { RubriqueCompose } from "../types"
-import { FC, useContext } from "react"
+import { FC, useContext, useEffect, useState } from "react"
 import ButtonComponent from "../common/Button"
 import { StepContext } from "../context/stepperContext"
+import { RubriqueEvaluation } from "../types/EvaluationTypes"
+import { ReponseEvaluation } from "../types"
+import { EvaluationEtudiantContext } from "../context/evaluationEtudiantContext"
+import { useNavigate } from "react-router-dom"
 
 interface ReponseProps {
-    rubriques: RubriqueCompose[]
+    rubrique: RubriqueEvaluation[]
 }
-const RecapitulatifReponses: FC<ReponseProps> = ({ rubriques }) => {
+const RecapitulatifReponses: FC<ReponseProps> = ({ rubrique }) => {
+    const navigate = useNavigate()
     const { handleReset } = useContext(StepContext)
     const handleModifier = () => {
         handleReset()
+    }
+    const { soumettreReponseEtudiant } = useContext(EvaluationEtudiantContext)
+    const [reponse, setReponse] = useState<ReponseEvaluation>({
+        idEvaluation: {
+            id: 0,
+        },
+        commentaire: "",
+        nom: "",
+        prenom: "",
+        reponseQuestions: [],
+    })
+
+    useEffect(() => {
+        const rep = localStorage.getItem("reponseEvaluation")
+
+        if (rep) setReponse(JSON.parse(rep))
+    }, [])
+    const trouverPositionnementParId = (
+        reponse: ReponseEvaluation,
+        id: number
+    ): number => {
+        const reponseQuestion = reponse.reponseQuestions.find(
+            (question) => question.idQuestionEvaluation.id === id
+        )
+        if (!reponseQuestion) return 0
+        return reponseQuestion.positionnement
+    }
+    const handleReponse = async () => {
+        console.log("eee", reponse)
+        await soumettreReponseEtudiant(reponse)
+        navigate("/dashboard/etudiant")
     }
     return (
         <div>
@@ -21,80 +56,91 @@ const RecapitulatifReponses: FC<ReponseProps> = ({ rubriques }) => {
             >
                 Recapitulatif des réponses
             </Typography>
-
             <Paper elevation={0}>
-                {rubriques.map((rubrique, index) => (
-                    <>
-                        <Paper elevation={3} key={index}>
-                            <Typography
-                                style={{ margin: "32px", textAlign: "center" }}
-                                variant="h5"
-                                gutterBottom
-                            >
-                                {rubrique.designation}
-                            </Typography>
+                {rubrique.map((rub, index) => (
+                    <div key={index}>
+                        <Typography
+                            style={{ margin: "32px", textAlign: "center" }}
+                            variant="h5"
+                            gutterBottom
+                        >
+                            {rub.idRubrique.designation}
+                        </Typography>
 
-                            {rubrique.questions.map((questionItem, index) => (
-                                <div
-                                    key={index}
-                                    style={{ marginBottom: "20px" }}
-                                >
-                                    <Typography variant="body1" gutterBottom>
-                                        <Divider
-                                            style={{
-                                                backgroundColor: "transparent",
-                                            }}
-                                        >
-                                            {" "}
-                                            {questionItem.intitule}{" "}
-                                        </Divider>
-                                    </Typography>
-
+                        {rub.questionEvaluations &&
+                            rub.questionEvaluations.map(
+                                (questionItem, qIndex) => (
                                     <div
-                                        style={{
-                                            width: "100%", // spécifie une largeur pour la div
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            alignItems: "center",
-                                            justifyContent: "center", // pour centrer horizontalement
-                                            marginBottom: "20px",
-                                        }}
+                                        key={qIndex}
+                                        style={{ marginBottom: "20px" }}
                                     >
                                         <Typography
-                                            style={{
-                                                width: "100px",
-                                                textAlign: "right",
-                                                marginRight: "16px",
-                                                fontSize: "14px",
-                                            }}
                                             variant="body1"
+                                            gutterBottom
                                         >
-                                            {questionItem.minimal}
+                                            <Divider
+                                                style={{
+                                                    backgroundColor:
+                                                        "transparent",
+                                                }}
+                                            >
+                                                {questionItem.intitule}
+                                            </Divider>
                                         </Typography>
 
-                                        <Chip
-                                            style={{ fontSize: "24px" }}
-                                            label={"5"}
-                                            color="primary"
-                                            size="medium"
-                                        />
-
-                                        <Typography
+                                        <div
                                             style={{
-                                                width: "100px",
-                                                textAlign: "left",
-                                                marginLeft: "16px",
-                                                fontSize: "14px",
+                                                width: "100%",
+                                                display: "flex",
+                                                flexDirection: "row",
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                                marginBottom: "20px",
                                             }}
-                                            variant="body1"
                                         >
-                                            {questionItem.maximal}
-                                        </Typography>
+                                            <Typography
+                                                style={{
+                                                    width: "100px",
+                                                    textAlign: "right",
+                                                    marginRight: "16px",
+                                                    fontSize: "14px",
+                                                }}
+                                                variant="body1"
+                                            >
+                                                {
+                                                    questionItem.idQuestion
+                                                        .idQualificatif.minimal
+                                                }
+                                            </Typography>
+                                            <Chip
+                                                style={{ fontSize: "24px" }}
+                                                label={trouverPositionnementParId(
+                                                    reponse,
+                                                    questionItem.id
+                                                )}
+                                                //label={"2"}
+                                                color="primary"
+                                                size="medium"
+                                            />
+                                            <Typography
+                                                style={{
+                                                    width: "100px",
+                                                    textAlign: "left",
+                                                    marginLeft: "16px",
+                                                    fontSize: "14px",
+                                                }}
+                                                variant="body1"
+                                            >
+                                                {
+                                                    questionItem.idQuestion
+                                                        .idQualificatif.maximal
+                                                }
+                                            </Typography>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
-                        </Paper>
-                    </>
+                                )
+                            )}
+                    </div>
                 ))}
                 <div
                     style={{
@@ -109,7 +155,7 @@ const RecapitulatifReponses: FC<ReponseProps> = ({ rubriques }) => {
                         text="Réinitialiser"
                         onClick={handleModifier}
                     />
-                    <ButtonComponent text="Soumettre" />
+                    <ButtonComponent text="Soumettre" onClick={handleReponse} />
                 </div>
             </Paper>
         </div>

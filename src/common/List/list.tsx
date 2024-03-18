@@ -272,7 +272,7 @@ const ListComponent: React.FC<Props> = ({
                                 <TableRow>
                                     {columns.map((column) => (
                                         <TableCell
-                                            style={{ fontWeight: "bold" }}
+                                            style={{ fontWeight: "bold" , color: "white"}}
                                             key={column.id}
                                         >
                                             {column.label.toUpperCase()}
@@ -280,7 +280,7 @@ const ListComponent: React.FC<Props> = ({
                                     ))}
                                     {actions && (
                                         <TableCell
-                                            style={{ fontWeight: "bold" }}
+                                            style={{ fontWeight: "bold" , color: "white"}}
                                         >
                                             ACTIONS
                                         </TableCell>

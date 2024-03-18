@@ -18,7 +18,6 @@ export interface AuthResponse {
     success: boolean
 }
 
-
 // export interface Etudiant {
 //     noEtudiant: string
 //     nom: string
@@ -35,7 +34,6 @@ export interface AuthResponse {
 //     ville?:string
 //     promotion?:string
 // }
-
 
 export interface User {
     id: number
@@ -257,4 +255,23 @@ export interface UeToDisplay {
     nbhTd: number
     nbhTp: number
     totaleHeures: number
+}
+export interface reponseQuestions {
+    idQuestionEvaluation: {
+        id: number
+    }
+    positionnement: number
+}
+export interface ReponseEvaluation {
+    idEvaluation: {
+        id: number
+    }
+    commentaire: string
+    nom: string
+    prenom: string
+    reponseQuestions: reponseQuestions[]
+}
+
+export interface DefaultValue {
+    [id: number]: number // Déclare un objet avec des clés de type number et des valeurs de type number
 }

@@ -46,7 +46,6 @@ export const GlobalContextProvider: React.FC<{ children: ReactNode }> = ({
                                 <RubriqueEnseignantContextProvider>
                                     <SoumettreEvaluationContextProvider>
                                     <DetailsEvaluationContextProvider>
-                                        <UEContextProvider>
                                         <EtudiantEnseignantContextProvider>
                                             <StepContextProvider>
                                                 <GlobalContext.Provider value={{}}>
@@ -54,9 +53,7 @@ export const GlobalContextProvider: React.FC<{ children: ReactNode }> = ({
                                                 </GlobalContext.Provider>
                                               
                                             </StepContextProvider>
-                                    
                                             </EtudiantEnseignantContextProvider>
-                                        </UEContextProvider>
                                         </DetailsEvaluationContextProvider>
                                     </SoumettreEvaluationContextProvider>
                                 </RubriqueEnseignantContextProvider>

@@ -37,10 +37,6 @@ export const EvaluationContextProvider: React.FC<EvaluationContextProviderProps>
             }
             ueContext.refreshList()
             showNotification("Génial !", response.message, "success")
-          
-          
-
-
             return
         },
         [showNotification,ueContext]

@@ -10,7 +10,7 @@ const UeListComponent: FC<DetailsProps> = ({ ue }) => {
     return (
         <>
             <ListComponent
-                title={"Liste des UE"}
+                title={""}
                 columns={UE_LIST_COLUMNS}
                 data={ue}
                 actions={false}
