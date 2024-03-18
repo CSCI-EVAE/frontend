@@ -1,9 +1,10 @@
 // evaluationContext.tsx
-import React, { createContext, ReactNode, useCallback, useContext} from "react";
+import React, { createContext, ReactNode, useCallback, useContext, useState} from "react";
 import { ApiResponse, Evaluation} from "../types";
-import { postRequest } from "../api/axios";
+import { getRequest, postRequest } from "../api/axios";
 import { NotificationContext } from "./notificationContext";
 import { UEContext } from "./UeContext";
+import { CreateEvaluation } from "../types/EvaluationTypes";
 
 // Define the type for props of EvaluationContextProvider
 interface EvaluationContextProviderProps {
@@ -17,8 +18,15 @@ export const EvaluationContext = createContext<any>(null); // You can replace 'a
 export const EvaluationContextProvider: React.FC<EvaluationContextProviderProps> = ({ children }) => {
    
     const { showNotification } = useContext(NotificationContext);
+    const [statistiqueList, setStatistiqueList] = useState<CreateEvaluation[] | undefined>();
+    
 
     const ueContext = useContext(UEContext)
+
+    const updateStatistiqueEvaluation = useCallback((value:CreateEvaluation[]) => {
+        setStatistiqueList(value);
+    }, [])
+    
 
     const addNewEvaluation = useCallback(
         async (evaluationBody: Evaluation) => {
@@ -34,10 +42,33 @@ export const EvaluationContextProvider: React.FC<EvaluationContextProviderProps>
         [showNotification,ueContext]
     )
 
+    const getStatistiques = useCallback(async (id:number) => {
+        try {
+            const response: ApiResponse = await getRequest(`/evaluation/statistics/${id}`);
+            if (!response.success) {
+                showNotification("Erreur", response.message, "error");
+                return;
+            }
+            const { data } = response.data; 
+           // console.log("Les statistiques eval  "+JSON.stringify(data));
+    
+            updateStatistiqueEvaluation(data);
+        } catch (error) {
+            console.error("Une erreur s'est produite lors de la récupération des statistiques :", error);
+            showNotification("Erreur", "Une erreur s'est produite lors de la récupération des statistiques.", "error");
+        }
+    }, [showNotification, updateStatistiqueEvaluation]);
+                    
+
 
 
     return (
-        <EvaluationContext.Provider value={{ addNewEvaluation }}>
+        <EvaluationContext.Provider value={{ 
+            addNewEvaluation,
+            statistiqueList,
+            updateStatistiqueEvaluation,
+            getStatistiques
+             }}>
             {children}
         </EvaluationContext.Provider>
     );

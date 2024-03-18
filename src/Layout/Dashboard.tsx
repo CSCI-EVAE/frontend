@@ -153,7 +153,7 @@ const Dashboard: React.FC = () => {
                                     element={<DetailsPromotionEnseignant />}
                                 />
                                  <Route
-                                    path="enseignant/reponse-evaluation"
+                                    path="enseignant/reponse-evaluation/:id"
                                     element={<ReponseEvaluationEnseignant />}
                                 />
                             </>
