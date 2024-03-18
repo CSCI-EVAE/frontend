@@ -6,7 +6,7 @@ import {
     reponseQuestions,
 } from "../../types"
 import Header from "../../Layout/Header"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { EvaluationEtudiantContext } from "../../context/evaluationEtudiantContext"
 import {
     Evaluation,
@@ -16,6 +16,8 @@ import {
 import ModifierQuestionRating from "../../components/ModifierQuestionRating"
 import ModifierRecapitulatifReponses from "../../components/ModifierRecapitulatifReponses"
 import ModifierCommentaireEvaluation from "../../components/ModifierCommentaireEvaluation"
+import ButtonComponent from "../../common/Button"
+import { KeyboardBackspace } from "@mui/icons-material"
 
 const transformQuestionToReponseQuestion = (
     question: QuestionEvaluation
@@ -171,9 +173,29 @@ const ModifierEvaluation = () => {
             rubrique={list ? list.rubriqueEvaluations : []}
         />
     )
+    const navigate = useNavigate()
     return (
         <>
             <Header />
+            <div
+                style={{
+                    maxWidth: "90%",
+                    marginLeft: "150px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-start",
+                    marginBottom: "50px",
+                }}
+            >
+                <ButtonComponent
+                    text="Retour à  la page principale"
+                    variant="contained"
+                    icon={<KeyboardBackspace />}
+                    onClick={() => {
+                        navigate("/dashboard/etudiant")
+                    }}
+                />
+            </div>
             <StepperComponent
                 stepsCount={list ? list.rubriqueEvaluations.length + 2 : 2}
             >

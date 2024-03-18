@@ -5,10 +5,12 @@ import { StepContext } from "../../context/stepperContext"
 import { ReponseEvaluation as ReponseEvaluationType } from "../../types"
 import RecapitulatifReponses from "../../components/RecapitulatifReponses"
 import Header from "../../Layout/Header"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { EvaluationEtudiantContext } from "../../context/evaluationEtudiantContext"
 import { Evaluation } from "../../types/EvaluationTypes"
 import CommentaireEvalution from "../../components/CommentaireEvaluation"
+import ButtonComponent from "../../common/Button"
+import { KeyboardBackspace } from "@mui/icons-material"
 
 const ReponseEvaluation = () => {
     const idEvaluation = useParams().id
@@ -92,9 +94,28 @@ const ReponseEvaluation = () => {
             rubrique={list ? list.rubriqueEvaluations : []}
         />
     )
+    const navigate = useNavigate()
     return (
         <>
             <Header />
+            <div
+                style={{
+                    maxWidth: "90%",
+                    marginLeft: "150px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-start",
+                }}
+            >
+                <ButtonComponent
+                    text="Retour"
+                    variant="contained"
+                    icon={<KeyboardBackspace />}
+                    onClick={() => {
+                        navigate("/dashboard/etudiant")
+                    }}
+                />
+            </div>
             <StepperComponent
                 stepsCount={list ? list.rubriqueEvaluations.length + 2 : 2}
             >
