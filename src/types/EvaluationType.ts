@@ -9,6 +9,7 @@ export interface Evaluation {
     periode?: string
     debutReponse: string
     finReponse: string
+    evaRepondu?:boolean
 }
 
 export interface EvaluationListResponse {

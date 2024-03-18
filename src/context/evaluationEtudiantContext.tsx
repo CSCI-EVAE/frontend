@@ -28,6 +28,7 @@ export function AdjustColumns(evaluationList: Evaluation[]): any[] {
                 noEvaluation,
                 periode,
                 designation,
+                evaRepondu,
                 ...rest
             } = evaluation;
 
@@ -48,6 +49,7 @@ export function AdjustColumns(evaluationList: Evaluation[]): any[] {
                 designation,
                 periode,
                 readStatus,
+                evaRepondu,
                 answerStatus
             };
         });

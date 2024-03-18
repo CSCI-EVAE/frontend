@@ -13,6 +13,8 @@ import {
     InputLabel,
     MenuItem,
     FormControl,
+    Tooltip,
+    
 } from "@mui/material";
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { RemoveRedEye } from "@mui/icons-material";
@@ -20,6 +22,7 @@ import { ListContext } from "../../context/listContext";
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import { LIST_Etat_Etudiant } from "../../constants";
 import { AdjustColumns } from "../../context/evaluationEtudiantContext";
+import BorderColorIcon from '@mui/icons-material/BorderColor';
 
 interface Column {
     id: string;
@@ -42,6 +45,7 @@ interface Props {
     soumettreHandler?: (rowData: any) => void;
     modifyElement?: React.ReactNode;
     addElement?: React.ReactNode;
+    evaRepondu?: { [key: string]: boolean }; 
     handleAdd?: (rowData: any) => void;
 }
 
@@ -51,17 +55,17 @@ const ListComponent: React.FC<Props> = ({
     data,
     actions,
     filterreades,
+    evaRepondu,
     filteransweres,
     createHandler,
     columnsFilter
 }) => {
     const [filters, setFilters] = useState<{ [key: string]: string }>({});
     const { updateSelectedRow } = useContext(ListContext);
-   // const [selectedAction, setSelectedActions] = useState<any | null>(null);
     const [etats, setEtats] = useState('');
     const [filterread, setFilterreads] = useState<{ [key: string]: boolean }>(filterreades || {}); 
     const [filteranswer, setFilteranswers] = useState<{ [key: string]: boolean}>(filteransweres || {}); 
-  //  console.log("The value from etudiant list "+JSON.stringify(filterread,null))
+
     console.log("The value from etudiant list answ "+JSON.stringify(filteransweres,null))
 
     const handleFilterChange = (
@@ -203,19 +207,59 @@ const ListComponent: React.FC<Props> = ({
                                 ))}
                             
                             <TableCell>
-                            {filterread?.[row.noEvaluation] === true && (
-    <IconButton
-        onClick={() => {
-           // setSelectedActions(LIST_ACTIONS_ETUDIANT.read);
-            updateSelectedRow(row);
-            createHandler && createHandler(row);
-            console.log("The result "+filterread[row.noEvaluation] )
-        }}
-    >
-        <RemoveRedEye />
-    </IconButton>
+                          
+{evaRepondu?.[row.noEvaluation] === true ? (
+    <>
+        {filterread?.[row.noEvaluation] === true && (
+            <IconButton
+                onClick={() => {
+                   // setSelectedActions(LIST_ACTIONS_ETUDIANT.read);
+                    updateSelectedRow(row);
+                    createHandler && createHandler(row);
+                    console.log("The result "+filterread[row.noEvaluation] )
+                }}
+            >
+                <Tooltip title="Consulter" arrow>
+                <RemoveRedEye />
+</Tooltip>
+              
+            </IconButton>
+        )}
+        {filteranswer?.[row.noEvaluation] === true && (
+            <>
+                <IconButton
+                    onClick={() => {
+                       // setSelectedActions(LIST_ACTIONS_ETUDIANT.answer);
+                        updateSelectedRow(row);
+                        createHandler && createHandler(row);
+                    }}
+                >
+                    <Tooltip title="Modifier" arrow>
+                    <EditNoteIcon />
+</Tooltip>
+                   
+                </IconButton>
+                <IconButton
+                    onClick={() => {
+                       // setSelectedActions(LIST_ACTIONS_ETUDIANT.answer);
+                        updateSelectedRow(row);
+                        createHandler && createHandler(row);
+                    }}
+                >
+                     <Tooltip title="Consulter" arrow>
+                     <RemoveRedEye />
+</Tooltip>
+                    
+                </IconButton>
+            </>
+        )}
+    </>
+) : (
+    <>
+    {filterread?.[row.noEvaluation] === true && (
+   <div></div>
 )}
-{filteranswer?.[row.noEvaluation] === true && (
+    {filteranswer?.[row.noEvaluation] === true && (
     <IconButton
         onClick={() => {
            // setSelectedActions(LIST_ACTIONS_ETUDIANT.answer);
@@ -224,9 +268,15 @@ const ListComponent: React.FC<Props> = ({
             console.log("The result answer "+filteranswer[row.noEvaluation] )
         }}
     >
-        <EditNoteIcon />
+        <Tooltip title="Répondre" arrow>
+        <BorderColorIcon />
+</Tooltip>
+       
     </IconButton>
 )}
+    </>
+)}
+
 
 </TableCell>
                             </TableRow>

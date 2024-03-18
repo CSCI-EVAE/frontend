@@ -103,23 +103,22 @@ export const UE_LIST_COLUMNS = [
 ]
 
 export const Evalution_Etudiant_COLUMNS = [
-    { id: "anneeUniversitaire", label: "annee Universitaire" },
-    { id: "codeFormation", label: "Nom Formation" },
     { id: "noEvaluation", label: "Evaluation" },
     { id: "designation", label: "designation" },
     { id: "etat", label: "etat" },
-    { id: "periode", label: "periode" },
     { id: "nomEnseignant", label: "nom Enseignant" },
+    { id: "prenomEnseignant", label: "prenom Enseignant" },
     { id: "debutReponse", label: "debut Reponse" },
     { id: "finReponse", label: "fin Reponse" },
 ]
 
+
 export const UE_COLUMNS_FILTER_Etudiant = [
-    { id: "codeFormation", label: "Nom Formation" },
     { id: "noEvaluation", label: "Evaluation" },
     { id: "designation", label: "designation" },
     { id: "periode", label: "periode" },
     { id: "nomEnseignant", label: "nom Enseignant" },
+    { id: "prenomEnseignant", label: "prenom Enseignant" },
 ]
 
 export const TYPE_STANDARD = {

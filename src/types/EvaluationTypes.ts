@@ -47,6 +47,8 @@ export interface Evaluation {
     periode: string | null
     anneUniv: string
     noEvaluation: string
+    nomEnseignant?:string
+    prenomEnseignant?:string
     rubriqueEvaluations: RubriqueEvaluation[]
 }
 
