@@ -16,30 +16,25 @@ const DetailsPromotionComponent: FC<DetailsProps> = ({
     urlRetour,
 }) => {
     const textStyle: React.CSSProperties = {
-        fontFamily: "cursive",
+        fontFamily: "system-ui",
         color: "#e3a12f",
         marginTop: "20px",
         marginBottom: "50px",
+        fontSize: "1.7rem",
     }
     const navigate = useNavigate()
 
-
     const formatDate = (dateString: string | null): string => {
-        if(dateString){
-        const date = new Date(dateString);
-        const day = date.getDate().toString().padStart(2, '0');
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const year = date.getFullYear().toString();
-        return `${day}-${month}-${year}`;
-        }
-        else{
+        if (dateString) {
+            const date = new Date(dateString)
+            const day = date.getDate().toString().padStart(2, "0")
+            const month = (date.getMonth() + 1).toString().padStart(2, "0")
+            const year = date.getFullYear().toString()
+            return `${day}-${month}-${year}`
+        } else {
             return ""
         }
-      };
-
-
-
-      
+    }
 
     return (
         <>
@@ -113,7 +108,8 @@ const DetailsPromotionComponent: FC<DetailsProps> = ({
                         >
                             <Typography variant="body1">
                                 <strong>Enseignant Responsable :</strong>{" "}
-                                {promotion.siglePromotion}
+                                {promotion.prenomResponsable}{" "}
+                                {promotion.nomResponsable}
                             </Typography>
                         </Grid>
                         <Grid
@@ -137,8 +133,7 @@ const DetailsPromotionComponent: FC<DetailsProps> = ({
                         >
                             <Typography variant="body1">
                                 <strong>Nombre d'Étudiants :</strong>{" "}
-                                {effectifReel} /{" "}
-                                {promotion.nbMaxEtudiant}
+                                {effectifReel} / {promotion.nbMaxEtudiant}
                             </Typography>
                         </Grid>
                         <Grid

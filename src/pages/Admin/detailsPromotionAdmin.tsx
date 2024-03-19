@@ -7,48 +7,52 @@ import Header from "../../Layout/Header"
 import EtudiantListPage from "./etudiantList"
 import { EtudiantListContext } from "../../context/etudiantListContext"
 import { useParams } from "react-router-dom"
-import { Accordion, AccordionDetails, AccordionSummary, Typography } from "@mui/material"
+import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
+    Typography,
+} from "@mui/material"
 import { ArrowDropDown } from "@mui/icons-material"
+import Sidebar from "../../Layout/sideBar/SidebarPage"
+import { COLORS } from "../../constants"
 const textStyle: React.CSSProperties = {
-    fontFamily: "cursive",
+    fontFamily: "system-ui",
     color: "#e3a12f",
     margin: "auto",
     textAlign: "center",
+    fontSize: "1.7rem",
 }
-
-
 
 const DetailsPromotionAdmin = () => {
     const { getUeList, ueList } = useContext(PromotionAdminContext)
-const codeFormation  = useParams().codeFormation
-const anneeUniversitaire = useParams().anneeUniversitaire
+    const codeFormation = useParams().codeFormation
+    const anneeUniversitaire = useParams().anneeUniversitaire
     const promotionStorage = localStorage.getItem("promotion")
-     const promotion: Promotion = JSON.parse(promotionStorage || "0")
+    const promotion: Promotion = JSON.parse(promotionStorage || "0")
     useEffect(() => {
         getUeList(codeFormation)
-    }, [getUeList,codeFormation])
-    
-     const {getList,etudiantList} = useContext(EtudiantListContext)
+    }, [getUeList, codeFormation])
 
-     useEffect(() => {
-        getList(anneeUniversitaire, codeFormation);
+    const { getList, etudiantList } = useContext(EtudiantListContext)
 
-    }, [getList,anneeUniversitaire,codeFormation]);
-
+    useEffect(() => {
+        getList(anneeUniversitaire, codeFormation)
+    }, [getList, anneeUniversitaire, codeFormation])
 
     const nombreEtudiants = (liste: any[] | null): number => {
         if (liste) {
-            return liste.length;
+            return liste.length
         } else {
-            return 0;
+            return 0
         }
-    };
-  
-  
+    }
 
     return (
         <>
+            <Sidebar />
             <Header />
+
             <DetailsPromotionComponent
                 effectifReel={nombreEtudiants(etudiantList)}
                 promotion={promotion}
@@ -61,7 +65,13 @@ const anneeUniversitaire = useParams().anneeUniversitaire
                     marginBottom: "64px",
                 }}
             >
-                 <Accordion defaultExpanded>
+                <Accordion
+                    defaultExpanded
+                    style={{
+                        marginBottom: "32px",
+                        background: COLORS.color5,
+                    }}
+                >
                     <AccordionSummary
                         sx={{
                             marginRight: "150px",
@@ -78,10 +88,14 @@ const anneeUniversitaire = useParams().anneeUniversitaire
                     <AccordionDetails>
                         <UeListComponent ue={ueList} />
                     </AccordionDetails>
-                    
                 </Accordion>
 
-                <Accordion defaultExpanded>
+                <Accordion
+                    defaultExpanded
+                    style={{
+                        background: COLORS.color5,
+                    }}
+                >
                     <AccordionSummary
                         sx={{
                             marginRight: "150px",
@@ -96,13 +110,11 @@ const anneeUniversitaire = useParams().anneeUniversitaire
                     </AccordionSummary>
 
                     <AccordionDetails>
-                    <EtudiantListPage etudiantList={etudiantList}  />
+                        <EtudiantListPage etudiantList={etudiantList} />
                     </AccordionDetails>
-                    
                 </Accordion>
-
             </div>
-            </>
+        </>
     )
 }
 

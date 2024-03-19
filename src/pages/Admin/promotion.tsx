@@ -29,6 +29,7 @@ const PromotionPage: React.FC = () => {
                     details={true}
                     redirect={true}
                     url="/dashboard/details-promotion"
+                    noBoutonAjouter={true}
                 />
             </div>
         </>

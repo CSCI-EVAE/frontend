@@ -19,7 +19,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select"
 import { RemoveRedEye } from "@mui/icons-material"
 import { ListContext } from "../../context/listContext"
 import EditNoteIcon from "@mui/icons-material/EditNote"
-import { LIST_Etat_Etudiant } from "../../constants"
+import { COLORS, LIST_Etat_Etudiant } from "../../constants"
 import { AdjustColumns } from "../../context/evaluationEtudiantContext"
 import BorderColorIcon from "@mui/icons-material/BorderColor"
 import { useNavigate } from "react-router-dom"
@@ -124,8 +124,8 @@ const ListComponent: React.FC<Props> = ({
         >
             <h2
                 style={{
-                    fontFamily: "cursive",
-                    color: "#e3a12f",
+                    fontFamily: "system-ui",
+                    color: COLORS.color3,
                     marginTop: "20px",
                     marginBottom: "50px",
                 }}

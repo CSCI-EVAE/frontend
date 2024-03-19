@@ -25,20 +25,23 @@ import Header from "../Layout/Header"
 import { useNavigate, useParams } from "react-router-dom"
 import { useContext } from "react"
 import { EtudiantListContext } from "../context/etudiantListContext"
+import Sidebar from "../Layout/sideBar/SidebarPage"
+import { KeyboardBackspace } from "@mui/icons-material"
 
 const defaultTheme = createTheme()
 
-
 export default function CreerEtudiant() {
-    
-    const { codeFormation, anneeUniversitaire } = useParams<{ codeFormation: string, anneeUniversitaire: string }>();
-    const {addNewEtudiant} = useContext(EtudiantListContext)
+    const navigate = useNavigate()
+    const { codeFormation, anneeUniversitaire } = useParams<{
+        codeFormation: string
+        anneeUniversitaire: string
+    }>()
+    const { addNewEtudiant } = useContext(EtudiantListContext)
     const [universiteError, setUniversiteError] = React.useState("")
 
     const [universite, setUniversite] = React.useState<string>("")
     const [pays, setPays] = React.useState<string>("")
     const [paysError, setPaysError] = React.useState<string>("")
-    const navigate = useNavigate();
 
     const {
         register,
@@ -46,6 +49,7 @@ export default function CreerEtudiant() {
         handleSubmit: handleSubmitForm,
         control,
         formState: { errors },
+        reset,
     } = useForm({
         mode: "all",
     })
@@ -82,12 +86,18 @@ export default function CreerEtudiant() {
             universiteOrigine: universite,
             ville: data.ville,
             CodeFormation: codeFormation,
-            anneeUniversitaire: anneeUniversitaire
+            anneeUniversitaire: anneeUniversitaire,
         }
-        console.log("🚀 ~ onSubmit ~ etudiant:", etudiant)
-        addNewEtudiant(etudiant,anneeUniversitaire, codeFormation)
-        navigate(`/dashboard/details-promotion/${codeFormation}/${anneeUniversitaire}`)
-        
+
+        addNewEtudiant(etudiant, anneeUniversitaire, codeFormation)
+        reset()
+        setUniversite("")
+        setPays("")
+        setUniversiteError("")
+        setPaysError("")
+        // navigate(
+        //     `/dashboard/details-promotion/${codeFormation}/${anneeUniversitaire}`
+        // )
     }
     const validateDateOfBirth = (date: any) => {
         const sixteenYearsAgo = new Date()
@@ -100,7 +110,6 @@ export default function CreerEtudiant() {
         )
     }
 
-
     const textStyle: React.CSSProperties = {
         fontFamily: "cursive",
         color: "#e3a12f",
@@ -111,14 +120,36 @@ export default function CreerEtudiant() {
     const styleInput: React.CSSProperties = {
         width: "70%",
         marginLeft: "60px",
-        marginTop: "10px"
+        marginTop: "10px",
     }
 
     return (
         <>
-
+            <Sidebar />
             <Header />
+
             <ThemeProvider theme={defaultTheme}>
+                <div
+                    style={{
+                        maxWidth: "90%",
+                        marginLeft: "100px",
+                        marginBottom: "48px",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-start",
+                    }}
+                >
+                    <ButtonComponent
+                        text="Retour"
+                        variant="contained"
+                        icon={<KeyboardBackspace />}
+                        onClick={() => {
+                            navigate(
+                                `/dashboard/details-promotion/${codeFormation}/${anneeUniversitaire}`
+                            )
+                        }}
+                    />
+                </div>
                 <Grid
                     container
                     component="main"
@@ -128,8 +159,8 @@ export default function CreerEtudiant() {
                         display: "flex",
                         justifyContent: "center",
 
-                       paddingBottom: "100px"
-                      
+                        paddingBottom: "100px",
+
                         //width: "500px",
                     }}
                 >
@@ -154,8 +185,11 @@ export default function CreerEtudiant() {
                                 alignItems: "center",
                             }}
                         >
-
-                            <Typography component="h1" variant="h4" style={textStyle}>
+                            <Typography
+                                component="h1"
+                                variant="h4"
+                                style={textStyle}
+                            >
                                 Ajouter un nouveau étudiant
                             </Typography>
 
@@ -167,23 +201,19 @@ export default function CreerEtudiant() {
                                     mt: 0,
                                     margin: "auto",
                                     width: "90%",
-                                    marginBottom:"60px"
-
+                                    marginBottom: "60px",
                                 }}
                                 spacing={2}
                             >
-
-<Grid item xs={12} sm={6}>
+                                <Grid item xs={12} sm={6}>
                                     <FormControl style={styleInput}>
                                         <TextField
                                             // margin="normal"
                                             required
-
                                             id="noEtudiant"
                                             label="No étudiant"
                                             autoComplete="noEtudiant"
                                             error={!!errors.noEtudiant}
-                                          
                                             {...register("noEtudiant", {
                                                 required:
                                                     "Le numéro étudiant est obligatoire..",
@@ -199,10 +229,10 @@ export default function CreerEtudiant() {
                                         />
                                         {typeof errors.noEtudiant?.message ===
                                             "string" && (
-                                                <FormHelperText error>
-                                                    {errors.noEtudiant.message}
-                                                </FormHelperText>
-                                            )}
+                                            <FormHelperText error>
+                                                {errors.noEtudiant.message}
+                                            </FormHelperText>
+                                        )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -210,7 +240,6 @@ export default function CreerEtudiant() {
                                         <TextField
                                             // margin="normal"
                                             required
-
                                             id="nom"
                                             label="Nom"
                                             autoComplete="nom"
@@ -231,10 +260,10 @@ export default function CreerEtudiant() {
                                         />
                                         {typeof errors.nom?.message ===
                                             "string" && (
-                                                <FormHelperText error>
-                                                    {errors.nom.message}
-                                                </FormHelperText>
-                                            )}
+                                            <FormHelperText error>
+                                                {errors.nom.message}
+                                            </FormHelperText>
+                                        )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -262,10 +291,10 @@ export default function CreerEtudiant() {
                                         />
                                         {typeof errors.prenom?.message ===
                                             "string" && (
-                                                <FormHelperText error>
-                                                    {errors.prenom.message}
-                                                </FormHelperText>
-                                            )}
+                                            <FormHelperText error>
+                                                {errors.prenom.message}
+                                            </FormHelperText>
+                                        )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -294,10 +323,10 @@ export default function CreerEtudiant() {
                                         />
                                         {typeof errors.mail?.message ===
                                             "string" && (
-                                                <FormHelperText error>
-                                                    {errors.mail.message}
-                                                </FormHelperText>
-                                            )}
+                                            <FormHelperText error>
+                                                {errors.mail.message}
+                                            </FormHelperText>
+                                        )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -310,26 +339,33 @@ export default function CreerEtudiant() {
                                             autoComplete="mailUBO"
                                             error={!!errors.mailUBO}
                                             InputProps={{
-                                                endAdornment: <InputAdornment position="end">@etudiant.univ-brest.fr</InputAdornment>,
+                                                endAdornment: (
+                                                    <InputAdornment position="end">
+                                                        @etudiant.univ-brest.fr
+                                                    </InputAdornment>
+                                                ),
                                             }}
                                             {...register("mailUBO", {
-                                                required: "L'adresse mail UBO est obligatoire...!",
+                                                required:
+                                                    "L'adresse mail UBO est obligatoire...!",
                                                 pattern: {
-                                                      value: /^[^@\s]+$/,
-                                                    message: "L'adresse mail UBO doit être valide...!",
+                                                    value: /^[^@\s]+$/,
+                                                    message:
+                                                        "L'adresse mail UBO doit être valide...!",
                                                 },
                                                 maxLength: {
                                                     value: 255,
-                                                    message: "L'adresse mail UBO ne doit pas excéder 255 caractères...!",
+                                                    message:
+                                                        "L'adresse mail UBO ne doit pas excéder 255 caractères...!",
                                                 },
                                             })}
                                         />
                                         {typeof errors.mailUBO?.message ===
                                             "string" && (
-                                                <FormHelperText error>
-                                                    {errors.mailUBO.message}
-                                                </FormHelperText>
-                                            )}
+                                            <FormHelperText error>
+                                                {errors.mailUBO.message}
+                                            </FormHelperText>
+                                        )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -361,19 +397,19 @@ export default function CreerEtudiant() {
                                                         "Le Numéro de téléphone doit avoir au moins 10 caractères...!",
                                                 },
                                                 maxLength: {
-                                                    value: 20,
+                                                    value: 13,
                                                     message:
-                                                        "Le Numéro de téléphone doit avoir au plus 20 caractères...!",
+                                                        "Le Numéro de téléphone doit avoir au plus 13 caractères...!",
                                                 },
                                             })}
                                             error={!!errors.telephone} // Set error prop based on the presence of errors
                                         />
                                         {typeof errors.telephone?.message ===
                                             "string" && (
-                                                <FormHelperText error>
-                                                    {errors.telephone.message}
-                                                </FormHelperText>
-                                            )}
+                                            <FormHelperText error>
+                                                {errors.telephone.message}
+                                            </FormHelperText>
+                                        )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -405,19 +441,19 @@ export default function CreerEtudiant() {
                                                         "Le Mobile doit avoir au moins 10 caractères...!",
                                                 },
                                                 maxLength: {
-                                                    value: 20,
+                                                    value: 13,
                                                     message:
-                                                        "Le Mobile doit avoir au plus 20 caractères...!",
+                                                        "Le Mobile doit avoir au plus 13 caractères...!",
                                                 },
                                             })}
                                             error={!!errors.mobile} // Set error prop based on the presence of errors
                                         />
                                         {typeof errors.mobile?.message ===
                                             "string" && (
-                                                <FormHelperText error>
-                                                    {errors.mobile.message}
-                                                </FormHelperText>
-                                            )}
+                                            <FormHelperText error>
+                                                {errors.mobile.message}
+                                            </FormHelperText>
+                                        )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -445,10 +481,10 @@ export default function CreerEtudiant() {
                                         />
                                         {typeof errors.lieu?.message ===
                                             "string" && (
-                                                <FormHelperText error>
-                                                    {errors.lieu.message}
-                                                </FormHelperText>
-                                            )}
+                                            <FormHelperText error>
+                                                {errors.lieu.message}
+                                            </FormHelperText>
+                                        )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -476,10 +512,10 @@ export default function CreerEtudiant() {
                                         />
                                         {typeof errors.nationalite?.message ===
                                             "string" && (
-                                                <FormHelperText error>
-                                                    {errors.nationalite.message}
-                                                </FormHelperText>
-                                            )}
+                                            <FormHelperText error>
+                                                {errors.nationalite.message}
+                                            </FormHelperText>
+                                        )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -507,10 +543,10 @@ export default function CreerEtudiant() {
                                         />
                                         {typeof errors.adresse?.message ===
                                             "string" && (
-                                                <FormHelperText error>
-                                                    {errors.adresse.message}
-                                                </FormHelperText>
-                                            )}
+                                            <FormHelperText error>
+                                                {errors.adresse.message}
+                                            </FormHelperText>
+                                        )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -535,23 +571,23 @@ export default function CreerEtudiant() {
                                                         "Le code Postal doit contenir uniquement des chiffres",
                                                 },
                                                 maxLength: {
-                                                    value: 10,
+                                                    value: 5,
                                                     message:
-                                                        "Le code Postal ne doit pas excéder 10 caractères...!",
+                                                        "Le code Postal ne doit pas excéder 5 caractères...!",
                                                 },
                                                 minLength: {
-                                                    value: 3,
+                                                    value: 5,
                                                     message:
-                                                        "Le code Postal doit avoir au moins 3 caractère...!",
+                                                        "Le code Postal doit avoir au moins 5 caractère...!",
                                                 },
                                             })}
                                         />
                                         {typeof errors.code?.message ===
                                             "string" && (
-                                                <FormHelperText error>
-                                                    {errors.code.message}
-                                                </FormHelperText>
-                                            )}
+                                            <FormHelperText error>
+                                                {errors.code.message}
+                                            </FormHelperText>
+                                        )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -579,14 +615,15 @@ export default function CreerEtudiant() {
                                         />
                                         {typeof errors.ville?.message ===
                                             "string" && (
-                                                <FormHelperText error>
-                                                    {errors.ville.message}
-                                                </FormHelperText>
-                                            )}
+                                            <FormHelperText error>
+                                                {errors.ville.message}
+                                            </FormHelperText>
+                                        )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <FormControl  style={styleInput}
+                                    <FormControl
+                                        style={styleInput}
                                         error={!!errors.sexe}
                                         component="fieldset"
                                     >
@@ -631,17 +668,17 @@ export default function CreerEtudiant() {
                                         />
                                         {typeof errors.sexe?.message ===
                                             "string" && (
-                                                <FormHelperText error>
-                                                    {errors.sexe.message}
-                                                </FormHelperText>
-                                            )}
+                                            <FormHelperText error>
+                                                {errors.sexe.message}
+                                            </FormHelperText>
+                                        )}
                                     </FormControl>
                                 </Grid>
 
                                 <Grid item xs={12} sm={6}>
-                                    <FormControl style={styleInput}
+                                    <FormControl
+                                        style={styleInput}
                                         required
-                                      
                                         error={!!universite}
                                     >
                                         <SelectComponent
@@ -674,7 +711,7 @@ export default function CreerEtudiant() {
                                             }}
                                             placeholder="Pays"
                                             name="pays"
-                                            label="Pays d'origine"
+                                            label="Pays d'origine *"
                                             options={PAYS_OPTIONS}
                                         />
                                         {paysError !== "" && (
@@ -706,10 +743,10 @@ export default function CreerEtudiant() {
                                         />
                                         {typeof errors.date?.message ===
                                             "string" && (
-                                                <FormHelperText error>
-                                                    {errors.date.message}
-                                                </FormHelperText>
-                                            )}
+                                            <FormHelperText error>
+                                                {errors.date.message}
+                                            </FormHelperText>
+                                        )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -739,10 +776,10 @@ export default function CreerEtudiant() {
                                         />
                                         {typeof errors.groupeTP?.message ===
                                             "string" && (
-                                                <FormHelperText error>
-                                                    {errors.groupeTP.message}
-                                                </FormHelperText>
-                                            )}
+                                            <FormHelperText error>
+                                                {errors.groupeTP.message}
+                                            </FormHelperText>
+                                        )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -772,21 +809,20 @@ export default function CreerEtudiant() {
                                         />
                                         {typeof errors.groupeAnglais
                                             ?.message === "string" && (
-                                                <FormHelperText error>
-                                                    {errors.groupeAnglais.message}
-                                                </FormHelperText>
-                                            )}
+                                            <FormHelperText error>
+                                                {errors.groupeAnglais.message}
+                                            </FormHelperText>
+                                        )}
                                     </FormControl>
                                 </Grid>
                             </Grid>
-                            <div style={{marginBottom:"40px"}}>
+                            <div style={{ marginBottom: "40px" }}>
                                 <ButtonComponent
-                                   
                                     type="submit"
                                     variant="contained"
                                     text="Creer"
 
-                                //  disabled={isSubmiting}
+                                    //  disabled={isSubmiting}
                                 />
                             </div>
                         </Box>

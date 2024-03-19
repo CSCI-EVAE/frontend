@@ -233,6 +233,9 @@ export interface Promotion {
     lieuRentree: string | null
     processusStage: string | null
     commentaire: string | null
+    nomResponsable: string | null
+
+    prenomResponsable: string | null
 }
 
 export interface Evaluation {

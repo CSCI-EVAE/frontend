@@ -53,7 +53,7 @@ const RubriquePage: React.FC = () => {
                 <ListComponent
                     title={"Liste des Rubriques"}
                     columns={RUBRIQUE_COLUMNS}
-                    data={dat ? dat.reverse() : []}
+                    data={dat ? dat : []}
                     actions={true}
                     remove={true}
                     deleteHandler={handleDelete}

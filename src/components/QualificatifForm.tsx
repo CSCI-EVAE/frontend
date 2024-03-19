@@ -30,13 +30,17 @@ const QualificatifForm: React.FC<qualificatifFormProps> = ({ add }) => {
                 minimal: trimmedQualificatifMinimal,
                 maximal: trimmedQualificatifMaximal,
             })
+            updateQualificatifMinimal("")
+            updateQualificatifMaximal("")
         } else {
             const id = trouverIdQualificatif(selectedRow, qualificatifList)
-            console.log("mod2", id)
+
             modifyQualificatif(id, {
                 minimal: trimmedQualificatifMinimal,
                 maximal: trimmedQualificatifMaximal,
             })
+            updateQualificatifMinimal("")
+            updateQualificatifMaximal("")
         }
 
         updateModalOpen(false)

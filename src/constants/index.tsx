@@ -13,6 +13,15 @@ export const ROLE = {
     enseigannt: "ENS",
     etudiant: "ETU",
 }
+export const COLORS = {
+    color6: "#ceddde",
+    color1: "#9cd2d5",
+    color2: "#82cfd8",
+    color3: "#007fa9",
+    color4: "#00334a",
+    color5: "#fafafc",
+    color7: "#c3defa",
+}
 
 export const UE_COLUMNS_LISTEtudiant = [
     { id: "noEtudiant", label: "numero Etudiant" },
@@ -136,38 +145,38 @@ interface Dashboard {
 export const ADMIN_DASHBOARD: Dashboard[] = [
     {
         id: 1,
-        icon: <WidgetsIcon />,
+        icon: <WidgetsIcon sx={{ color: COLORS.color4 }} />,
         title: "Menu",
         link: "/dashboard/admin",
     },
     {
         id: 2,
-        icon: <LiveHelpIcon />,
+        icon: <LiveHelpIcon sx={{ color: COLORS.color4 }} />,
         title: "Questions",
         link: "/dashboard/questions",
     },
     {
         id: 3,
-        icon: <AltRouteIcon />,
+        icon: <AltRouteIcon sx={{ color: COLORS.color4 }} />,
         title: "Qualificatifs",
         link: "/dashboard/qualificatif",
     },
     {
         id: 4,
-        icon: <AllOutIcon />,
+        icon: <AllOutIcon sx={{ color: COLORS.color4 }} />,
         title: "Rubriques",
         link: "/dashboard/rubrique",
     },
     {
         id: 5,
-        icon: <AccountTreeIcon />,
+        icon: <AccountTreeIcon sx={{ color: "#a0ccfa" }} />,
         title: "Rubriques Composées",
         link: "/dashboard/rubriquecompose",
     },
 
     {
         id: 6,
-        icon: <List />,
+        icon: <List sx={{ color: "#a0ccfa" }} />,
         title: "Promotions",
         link: "/dashboard/promotions",
     },
@@ -176,19 +185,19 @@ export const ADMIN_DASHBOARD: Dashboard[] = [
 export const ENSEIGNANT_DASHBOARD: Dashboard[] = [
     {
         id: 1,
-        icon: <WidgetsIcon />,
+        icon: <WidgetsIcon sx={{ color: "#a0ccfa" }} />,
         title: "Menu",
         link: "/dashboard/enseignant",
     },
     {
         id: 2,
-        icon: <FormatListBulleted />,
+        icon: <FormatListBulleted sx={{ color: "#a0ccfa" }} />,
         title: "Unités d'enseignement",
         link: "/dashboard/enseignant/unitésEnseignement",
     },
     {
         id: 3,
-        icon: <AltRouteIcon />,
+        icon: <AltRouteIcon sx={{ color: "#a0ccfa" }} />,
         title: "Promotions",
         link: "/dashboard/enseignant/Promotion",
     },
@@ -268,12 +277,3 @@ export const PAYS_OPTIONS = [
 
     // Ajoutez d'autres options pertinentes
 ]
-
-export const COLORS = {
-    color6: "#ceddde",
-    color1: "#9cd2d5",
-    color2: "#82cfd8",
-    color3: "#007fa9",
-    color4: "#00334a",
-    color5: "#fafafc",
-}

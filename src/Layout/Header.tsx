@@ -25,12 +25,10 @@ const Header: React.FC = () => {
 
     const isAuth = isAuthenticated()
 
-
     const [prenom, setPrenom] = useState("")
 
     useEffect(() => {
         if (isAuth) {
-           
             setPrenom(userInfos().prenom)
         }
     }, [isAuth])
@@ -58,7 +56,7 @@ const Header: React.FC = () => {
         <>
             <AppBar
                 position="fixed"
-                sx={{ backgroundColor: COLORS.color6, zIndex: 9999 }}
+                sx={{ backgroundColor: COLORS.color7, zIndex: 9999 }}
             >
                 <Toolbar>
                     <Box mb={2}>
