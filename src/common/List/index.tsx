@@ -355,11 +355,17 @@ const ListComponent: React.FC<Props> = ({
                                                                     updateSelectedRow(
                                                                         row
                                                                     )
-                                                                    localStorage.setItem("promotion", JSON.stringify(row))
-                                                                    url &&
-                                                                    navigate(
-                                                                        url+`/${row.codeFormation}/${row.anneeUniversitaire}`
+                                                                    localStorage.setItem(
+                                                                        "promotion",
+                                                                        JSON.stringify(
+                                                                            row
+                                                                        )
                                                                     )
+                                                                    url &&
+                                                                        navigate(
+                                                                            url +
+                                                                                `/${row.codeFormation}/${row.anneeUniversitaire}`
+                                                                        )
                                                                 } else {
                                                                     setSelectedActions(
                                                                         LIST_ACTIONS.read
@@ -375,12 +381,6 @@ const ListComponent: React.FC<Props> = ({
                                                                         true
                                                                     )
                                                                 }
-                                                                // setSelectedActions(
-                                                                //     LIST_ACTIONS.read
-                                                                // )
-                                                                // updateSelectedRow(row)
-                                                                // detailsHandler &&
-                                                                //     detailsHandler(row)
                                                             }}
                                                         >
                                                             <Visibility />

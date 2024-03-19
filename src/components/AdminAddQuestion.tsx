@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react"
 import { Box, Typography } from "@mui/material"
-import Select from "../common/Select"
 import ButtonComponent from "../common/Button"
 import { QuestionContext } from "../context/questionContext"
 
@@ -10,6 +9,7 @@ import {
     convertirQuestionsInRubriqueEnQuestions,
 } from "../context/rubriqueEnseignantContext"
 import { Question, RubriqueCompose, questionsInRubrique } from "../types"
+import CheckboxComponent from "../common/Checkbox"
 
 interface AddProps {
     handleClose: () => void
@@ -111,16 +111,23 @@ const AdminAddQuestion: React.FC<AddProps> = ({ handleClose }) => {
                 Entrez les informations
             </Typography>
 
-            <Box sx={{ display: "flex", gap: "1rem" }}>
-                <Select
-                    label="Choiissiez les questions"
+            <Box
+                sx={{
+                    display: "flex",
+                    gap: "1rem",
+                    maxHeight: "300px",
+                    overflow: "auto",
+                }}
+            >
+                <CheckboxComponent
+                    label="Choisissez les questions"
                     options={questionsListOptions}
                     value={selectedQuestionInRubriqueCompose}
                     onChange={(value) =>
                         setSelectedQuestionInRubriqueCompose(value as string[])
                     }
-                    required
-                    multiple={true}
+                    //required
+                    //multiple={true}
                     sx={{ width: "50%" }} // Ajustez la largeur comme vous le souhaitez
                 />
             </Box>

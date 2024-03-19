@@ -102,7 +102,6 @@ export const UE_LIST_COLUMNS = [
 ]
 
 export const Evalution_Etudiant_COLUMNS = [
-
     // { id: "anneeUniversitaire", label: "annee Universitaire" },
     { id: "codeFormation", label: "Nom Formation" },
     { id: "noEvaluation", label: "Evaluation" },
@@ -113,7 +112,6 @@ export const Evalution_Etudiant_COLUMNS = [
     { id: "debutReponse", label: "debut Reponse" },
     { id: "finReponse", label: "fin Reponse" },
 ]
-
 
 export const UE_COLUMNS_FILTER_Etudiant = [
     { id: "noEvaluation", label: "Evaluation" },
@@ -270,3 +268,12 @@ export const PAYS_OPTIONS = [
 
     // Ajoutez d'autres options pertinentes
 ]
+
+export const COLORS = {
+    color6: "#ceddde",
+    color1: "#9cd2d5",
+    color2: "#82cfd8",
+    color3: "#007fa9",
+    color4: "#00334a",
+    color5: "#fafafc",
+}

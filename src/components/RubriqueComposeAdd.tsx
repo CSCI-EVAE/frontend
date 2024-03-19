@@ -15,6 +15,7 @@ import {
 import { RubriqueComposeContext } from "../context/rubriqueComposeContext"
 import AjoutQuestionRCompose from "./AjoutQuestionInRubriqueComposeAdmin"
 import { Question } from "../types"
+import CheckboxComponent from "../common/Checkbox"
 interface rubriqueComposeFormProps {
     add: boolean
 }
@@ -152,8 +153,17 @@ const RubriqueComposeAdd: React.FC<rubriqueComposeFormProps> = ({ add }) => {
                             sx={{ width: "50%" }} // Ajustez la largeur comme vous le souhaitez
                         />
                     </Box>
-                    <Box sx={{ display: "flex", gap: "1rem" }}>
-                        <Select
+
+                    <Box
+                        sx={{
+                            display: "flex",
+                            gap: "1rem",
+                            maxHeight: "200px",
+                            overflow: "auto",
+                            marginTop: "32px",
+                        }}
+                    >
+                        {/* <Select
                             label="Choiissiez les questions"
                             options={transformedQuestionListe}
                             value={selectedQuestionInRubriqueCompose}
@@ -164,6 +174,19 @@ const RubriqueComposeAdd: React.FC<rubriqueComposeFormProps> = ({ add }) => {
                             }
                             required
                             multiple={true}
+                            sx={{ width: "50%" }} // Ajustez la largeur comme vous le souhaitez
+                        /> */}
+                        <CheckboxComponent
+                            label="Choisissez les questions"
+                            options={transformedQuestionListe}
+                            value={selectedQuestionInRubriqueCompose}
+                            onChange={(value) =>
+                                setSelectedQuestionInRubriqueCompose(
+                                    value as string[]
+                                )
+                            }
+                            // required
+                            //  multiple={true}
                             sx={{ width: "50%" }} // Ajustez la largeur comme vous le souhaitez
                         />
                     </Box>

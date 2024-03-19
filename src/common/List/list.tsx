@@ -31,6 +31,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle"
 import { LIST_ACTIONS } from "../../constants"
 import { useNavigate } from "react-router-dom"
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
+import { red, yellow } from "@mui/material/colors"
 
 interface Column {
     id: string
@@ -54,14 +55,14 @@ interface Props {
     detailsElement?: ReactNode
     handleAdd?: (rowData: any) => void
     redirect?: boolean
-    redirectEdit?:boolean
-    redirectAdd?:boolean
+    redirectEdit?: boolean
+    redirectAdd?: boolean
     url?: string
-    urlEdit?:string
-    urlAdd?:string
+    urlEdit?: string
+    urlAdd?: string
     filter?: boolean
-    noBoutonAjouter? : boolean
-    noBoutonRetour ? : boolean
+    noBoutonAjouter?: boolean
+    noBoutonRetour?: boolean
 }
 
 const ListComponent: React.FC<Props> = ({
@@ -89,8 +90,7 @@ const ListComponent: React.FC<Props> = ({
     redirect,
     filter,
     noBoutonAjouter,
-    noBoutonRetour
-    
+    noBoutonRetour,
 }) => {
     const [filters, setFilters] = useState<{ [key: string]: string }>({})
     const [page, setPage] = useState(0) // État pour la pagination
@@ -165,26 +165,26 @@ const ListComponent: React.FC<Props> = ({
 
     return (
         <>
-        {!noBoutonRetour && 
-            <div
-                style={{
-                    maxWidth: "90%",
-                    marginLeft: "150px",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "flex-start",
-                }}
-            >
-                <ButtonComponent
-                    text="Retour"
-                    variant="contained"
-                    icon={<KeyboardBackspace />}
-                    onClick={() => {
-                        navigate("/dashboard/admin")
+            {!noBoutonRetour && (
+                <div
+                    style={{
+                        maxWidth: "90%",
+                        marginLeft: "150px",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-start",
                     }}
-                />
-            </div>
-            }
+                >
+                    <ButtonComponent
+                        text="Retour"
+                        variant="contained"
+                        icon={<KeyboardBackspace />}
+                        onClick={() => {
+                            navigate("/dashboard/admin")
+                        }}
+                    />
+                </div>
+            )}
             <div
                 style={{
                     maxWidth: "90%",
@@ -197,82 +197,77 @@ const ListComponent: React.FC<Props> = ({
                 <Typography variant="h4" style={textStyle}>
                     {title}
                 </Typography>
-                {!noBoutonAjouter &&
-                <ButtonComponent
-                    text="Ajouter"
-                    variant="contained"
-                    icon={<AddCircleOutline />}
-                    onClick={() => {
-                        if (
-                            redirectAdd
-                        ) {
-                            
-                            urlAdd &&
-                                navigate(
-                                    urlAdd
-                                )
-                        } 
-                        setSelectedActions(LIST_ACTIONS.add)
-                        updateModalOpen(true)
-                        updateSelectedRow({})
-                    }}
-                />
-                
-            }
-            <div style={{ height: "20px" }} />
-                    
-                <div style={{ width: "90%" }}>
-                {!filter && (
-                    <div
-                        style={{
-                            border: "3px solid #3c768c",
-                            padding: "10px",
-                            marginBottom: "20px",
-                            width: "100%",
-                            boxSizing: "border-box",
-                            marginTop: "20px",
+                {!noBoutonAjouter && (
+                    <ButtonComponent
+                        text="Ajouter"
+                        variant="contained"
+                        icon={<AddCircleOutline />}
+                        onClick={() => {
+                            if (redirectAdd) {
+                                urlAdd && navigate(urlAdd)
+                            }
+                            setSelectedActions(LIST_ACTIONS.add)
+                            updateModalOpen(true)
+                            updateSelectedRow({})
                         }}
-                    >
-                        <>
+                    />
+                )}
+                <div style={{ height: "20px" }} />
+
+                <div style={{ width: "90%" }}>
+                    {!filter && (
                         <div
                             style={{
-                                maxWidth: "90%",
-                                margin: "auto",
-                                display: "flex",
-                                flexDirection: "column",
-                                alignItems: "center",
+                                border: "3px solid #3c768c",
+                                padding: "10px",
+                                marginBottom: "20px",
+                                width: "100%",
+                                boxSizing: "border-box",
+                                marginTop: "20px",
                             }}
                         >
-                            <Typography variant="h5">Filtre</Typography>
-                        </div>
-                        {columns.map((column) => (
-                            <TextField
-                                key={column.id}
-                                label={` ${column.label}`}
-                                variant="filled"
-                                value={filters[column.id] || ""}
-                                onChange={(e) =>
-                                    handleFilterChange(e, column.id)
-                                }
-                                style={{
-                                    marginRight: "10px",
+                            <>
+                                <div
+                                    style={{
+                                        maxWidth: "90%",
+                                        margin: "auto",
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        alignItems: "center",
+                                    }}
+                                >
+                                    <Typography variant="h5">Filtre</Typography>
+                                </div>
+                                {columns.map((column) => (
+                                    <TextField
+                                        key={column.id}
+                                        label={` ${column.label}`}
+                                        variant="filled"
+                                        value={filters[column.id] || ""}
+                                        onChange={(e) =>
+                                            handleFilterChange(e, column.id)
+                                        }
+                                        style={{
+                                            marginRight: "10px",
 
-                                    width: "20%",
-                                }}
-                            />
-                        ))}
-                        </>
-                    </div>
-                    
+                                            width: "20%",
+                                        }}
+                                    />
+                                ))}
+                            </>
+                        </div>
                     )}
-                    
+
                     <TableContainer component={Paper}>
                         <Table>
                             <TableHead>
                                 <TableRow>
                                     {columns.map((column) => (
                                         <TableCell
-                                            style={{ fontWeight: "bold" , color: "white"}}
+                                            style={{
+                                                fontWeight: "bold",
+                                                color: "white",
+                                            }}
                                             key={column.id}
                                         >
                                             {column.label.toUpperCase()}
@@ -280,7 +275,10 @@ const ListComponent: React.FC<Props> = ({
                                     ))}
                                     {actions && (
                                         <TableCell
-                                            style={{ fontWeight: "bold" , color: "white"}}
+                                            style={{
+                                                fontWeight: "bold",
+                                                color: "white",
+                                            }}
                                         >
                                             ACTIONS
                                         </TableCell>
@@ -376,14 +374,17 @@ const ListComponent: React.FC<Props> = ({
                                                                                                 updateSelectedRow(
                                                                                                     row
                                                                                                 )
-                                                                                                localStorage.setItem("promotion", JSON.stringify(row))
-                                                                                                url &&(
+                                                                                                localStorage.setItem(
+                                                                                                    "promotion",
+                                                                                                    JSON.stringify(
+                                                                                                        row
+                                                                                                    )
+                                                                                                )
+                                                                                                url &&
                                                                                                     navigate(
-                                                                                                        url+`/${row.codeFormation}/${row.anneeUniversitaire}`
+                                                                                                        url +
+                                                                                                            `/${row.codeFormation}/${row.anneeUniversitaire}`
                                                                                                     )
-                                                                                                    
-                                                                                                    )
-                                                                                                    
                                                                                             } else {
                                                                                                 setSelectedActions(
                                                                                                     LIST_ACTIONS.read
@@ -420,27 +421,28 @@ const ListComponent: React.FC<Props> = ({
                                                                                                         navigate(
                                                                                                             urlEdit
                                                                                                         )
-                                                                                                } 
-                                                                                                 else{
+                                                                                                } else {
                                                                                                     modifyHandler &&
-                                                                                                    modifyHandler(
+                                                                                                        modifyHandler(
+                                                                                                            row
+                                                                                                        )
+                                                                                                    setSelectedActions(
+                                                                                                        LIST_ACTIONS.update
+                                                                                                    )
+                                                                                                    updateModalOpen(
+                                                                                                        true
+                                                                                                    )
+                                                                                                    updateSelectedRow(
                                                                                                         row
                                                                                                     )
-                                                                                                setSelectedActions(
-                                                                                                    LIST_ACTIONS.update
-                                                                                                )
-                                                                                                updateModalOpen(
-                                                                                                    true
-                                                                                                )
-                                                                                                updateSelectedRow(
-                                                                                                    row
-                                                                                                )
-                                                                                                 }
-
-                                                                                                
+                                                                                                }
                                                                                             }}
                                                                                         >
-                                                                                            <Edit />
+                                                                                            <Edit
+                                                                                                sx={{
+                                                                                                    color: yellow[700],
+                                                                                                }}
+                                                                                            />
                                                                                         </IconButton>
                                                                                     </Tooltip>
                                                                                 </>
@@ -460,7 +462,11 @@ const ListComponent: React.FC<Props> = ({
                                                                                             )
                                                                                         }}
                                                                                     >
-                                                                                        <Delete />
+                                                                                        <Delete
+                                                                                            sx={{
+                                                                                                color: red[700],
+                                                                                            }}
+                                                                                        />
                                                                                     </IconButton>
                                                                                 </Tooltip>
                                                                             )}

@@ -17,6 +17,7 @@ import LogoutIcon from "@mui/icons-material/Logout"
 import BtnComponent from "../common/Button/btn"
 import logo from "../images/echoSim.png"
 import PersonIcon from "@mui/icons-material/Person"
+import { COLORS } from "../constants"
 const Header: React.FC = () => {
     let navigate = useNavigate()
 
@@ -55,7 +56,7 @@ const Header: React.FC = () => {
         <>
             <AppBar
                 position="fixed"
-                sx={{ backgroundColor: "#bec3d4", zIndex: 9999 }}
+                sx={{ backgroundColor: COLORS.color6, zIndex: 9999 }}
             >
                 <Toolbar>
                     <Box mb={2}>

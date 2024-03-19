@@ -87,67 +87,71 @@ const AjoutQuestionRCompose: React.FC<TableQuestionProps> = ({
                     text="Ajouter une question"
                 />
             </div>
-            <DragDropContext onDragEnd={onDragEnd}>
-                <Droppable droppableId="questItems">
-                    {(provided: any) => (
-                        <List
-                            {...provided.droppableProps}
-                            ref={provided.innerRef}
-                            style={{
-                                maxWidth: "90%",
-                                margin: "auto",
-                                display: "flex",
-                                flexDirection: "column",
-                                alignItems: "flex-start",
-                            }}
-                        >
-                            <>
-                                {dataset.map((row, index: number) => (
-                                    <Draggable
-                                        key={row.idQuestion}
-                                        draggableId={String(row.idQuestion)}
-                                        index={index}
-                                    >
-                                        {(provided: any) => (
-                                            <ListItem
-                                                ref={provided.innerRef}
-                                                {...provided.draggableProps}
-                                                {...provided.dragHandleProps}
-                                            >
-                                                <TableCell
-                                                    style={{ width: "90%" }}
+            <div style={{ maxHeight: "250px", overflow: "auto" }}>
+                <DragDropContext onDragEnd={onDragEnd}>
+                    <Droppable droppableId="questItems">
+                        {(provided: any) => (
+                            <List
+                                {...provided.droppableProps}
+                                ref={provided.innerRef}
+                                style={{
+                                    maxWidth: "90%",
+                                    margin: "auto",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    alignItems: "flex-start",
+                                }}
+                            >
+                                <>
+                                    {dataset.map((row, index: number) => (
+                                        <Draggable
+                                            key={row.idQuestion}
+                                            draggableId={String(row.idQuestion)}
+                                            index={index}
+                                        >
+                                            {(provided: any) => (
+                                                <ListItem
+                                                    ref={provided.innerRef}
+                                                    {...provided.draggableProps}
+                                                    {...provided.dragHandleProps}
                                                 >
-                                                    {row.intitule}
-                                                </TableCell>
-                                                {/* <ListItemText style={{width:'90%'}}>{row.intitule}</ListItemText> */}
+                                                    <TableCell
+                                                        style={{ width: "90%" }}
+                                                    >
+                                                        {row.intitule}
+                                                    </TableCell>
+                                                    {/* <ListItemText style={{width:'90%'}}>{row.intitule}</ListItemText> */}
 
-                                                <ListItemButton
-                                                    onClick={() =>
-                                                        deleteQuestionHandler(
-                                                            row,
-                                                            rubriqueParent
-                                                        )
-                                                    }
-                                                    sx={{
-                                                        display: "flex",
-                                                        flexDirection: "column",
-                                                        alignItems: "flex-end",
-                                                    }}
-                                                >
-                                                    <ListItemIcon>
-                                                        <DeleteSweepIcon />
-                                                    </ListItemIcon>
-                                                </ListItemButton>
-                                            </ListItem>
-                                        )}
-                                    </Draggable>
-                                ))}
-                                {provided.placeholder}
-                            </>
-                        </List>
-                    )}
-                </Droppable>
-            </DragDropContext>
+                                                    <ListItemButton
+                                                        onClick={() =>
+                                                            deleteQuestionHandler(
+                                                                row,
+                                                                rubriqueParent
+                                                            )
+                                                        }
+                                                        sx={{
+                                                            display: "flex",
+                                                            flexDirection:
+                                                                "column",
+                                                            alignItems:
+                                                                "flex-end",
+                                                        }}
+                                                    >
+                                                        <ListItemIcon>
+                                                            <DeleteSweepIcon />
+                                                        </ListItemIcon>
+                                                    </ListItemButton>
+                                                </ListItem>
+                                            )}
+                                        </Draggable>
+                                    ))}
+                                    {provided.placeholder}
+                                </>
+                            </List>
+                        )}
+                    </Droppable>
+                </DragDropContext>
+            </div>
             <Modal
                 open={open}
                 onClose={handleClose}

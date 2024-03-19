@@ -6,6 +6,7 @@ import {
     // InputLabel,
     SelectChangeEvent,
     FormControlProps,
+    Typography,
 } from "@mui/material"
 
 interface SelectOption {
@@ -51,7 +52,11 @@ const SelectComponent: React.FC<Props> = ({
 
     return (
         <div>
-            {label && <div style={{ display: "block" }}>{label}</div>}
+            {label && (
+                <div style={{ display: "block" }}>
+                    <Typography variant="h6">{label}</Typography>
+                </div>
+            )}
             <FormControl
                 sx={{
                     minWidth:
