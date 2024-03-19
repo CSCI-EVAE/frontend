@@ -2,7 +2,7 @@ import React from "react"
 import ListComponent from "../../common/List/list"
 import RubriqueForm from "../../components/RubriqueForm"
 import { useContext } from "react"
-import { RubriqueContext, trierParOrdre } from "../../context/rubriqueContext"
+import { RubriqueContext } from "../../context/rubriqueContext"
 import { RUBRIQUE_COLUMNS } from "../../constants"
 import {
     supprimerColonnesId,
@@ -23,7 +23,7 @@ const RubriquePage: React.FC = () => {
 
     const getR = () => {
         if (rubriqueList) {
-            const dat = supprimerColonnesId(trierParOrdre(rubriqueList))
+            const dat = supprimerColonnesId(rubriqueList)
             return dat
         }
         return null

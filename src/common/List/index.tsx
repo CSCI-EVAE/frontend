@@ -330,6 +330,7 @@ const ListComponent: React.FC<Props> = ({
                                         {actions && (
                                             <TableCell>
                                                 {row.createValue && (
+                                                     <Tooltip title="Créer une évaluation">
                                                     <IconButton
                                                         onClick={() => {
                                                             setSelectedActions(
@@ -346,6 +347,7 @@ const ListComponent: React.FC<Props> = ({
                                                     >
                                                         <AddCircleIcon />
                                                     </IconButton>
+                                                    </Tooltip>
                                                 )}
                                                 {row.detailsValue && (
                                                     <Tooltip title="Consulter le détails d'une évaluation">

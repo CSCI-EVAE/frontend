@@ -24,10 +24,11 @@ const RubriqueForm: React.FC<rubriqueFormProps> = ({ add }) => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-
+        const trimmedDesignation = rubrique.designation.trim();
         if (add === true) {
             addNewRubrique({
                 ...rubrique,
+                designation: trimmedDesignation,
                 type: TYPE_STANDARD.rubrique_standard,
                 ordre: getMaxOrdre(rubriqueList) + 1,
                 noEnseignant: null,
@@ -37,6 +38,7 @@ const RubriqueForm: React.FC<rubriqueFormProps> = ({ add }) => {
 
             modifyRubrique(rubriqueModify?.id, {
                 ...rubrique,
+                designation: trimmedDesignation,
                 id: rubriqueModify?.id,
                 type: rubriqueModify?.type,
                 noEnseignant: rubriqueModify?.noEnseignant,

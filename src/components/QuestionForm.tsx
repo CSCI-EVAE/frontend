@@ -66,7 +66,7 @@ const QuestionForm: React.FC<questionFormProps> = ({ add }) => {
             })
         } else {
             const id = trouverIdQuestion(selectedRow, questionListe)
-            //  const intitul = trouverIntitule(selectedRow, questionListe);
+
             const trimmedIntitule = questionintitule.trim()
             const selectedQualificatifObj = transformedQuestionListe.find(
                 (item: { value: string | number }) =>
