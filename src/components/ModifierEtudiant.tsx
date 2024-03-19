@@ -21,46 +21,51 @@ import SelectComponent from "../common/Select/newSelect"
 import { GENDERS, PAYS_OPTIONS, UNIVERSITE_ORIGINE_OPTIONS } from "../constants"
 import { EtudiantDTO } from "../types"
 import Header from "../Layout/Header"
+import { useNavigate, useParams } from "react-router-dom"
+import { EtudiantListContext } from "../context/etudiantListContext"
 
 const defaultTheme = createTheme()
 
 export default function ModifierEtudiant() {
-    const etudiant: EtudiantDTO = {
-        noEtudiant: "2022001",
-        nom: "Dupont",
-        prenom: "Jean",
-        sexe: "H",
-        dateNaissance: "2024-03-01",
-        lieuNaissance: "Paris",
-        nationalite: "Française",
-        telephone: "0123456789",
-        mobile: "0612345678",
-        email: "jean.dupont@example.com",
-        emailUbo: "jean.dupont@etu.ubo.fr",
-        adresse: "123 Rue de la Liberté",
-        codePostal: "75000",
-        ville: "Paris",
-        paysOrigine: "FR",
-        universiteOrigine: "UCAM",
-        groupeTp: 1,
-        groupeAnglais: 2,
-        CodeFormation: "INF123",
-        anneeUniversitaire: "2022-2023",
-    }
-    const formatDate = (date: string) => {
-        const d = new Date(date)
-        const isoDate = d.toISOString().split("T")[0]
-        return isoDate
-    }
+ 
+    const etudiantContext = React.useContext(EtudiantListContext)
+    const { noEtudiant = "" } = useParams<{ noEtudiant?: string }>();
+    const [universiteError, setUniversiteError] = React.useState("");
+    const [universite, setUniversite] = React.useState<string>("");
+    const [pays, setPays] = React.useState<string>("");
+    const [paysError, setPaysError] = React.useState<string>("");
+    const [etudiant, setEtudiant] = React.useState<EtudiantDTO>();
+    const { codeFormation, anneeUniversitaire } = useParams<{ codeFormation: string, anneeUniversitaire: string }>();
+    const navigate = useNavigate();
 
-    const [universiteError, setUniversiteError] = React.useState("")
 
-    const [universite, setUniversite] = React.useState<string>(
-        etudiant.universiteOrigine
-    )
-    const [pays, setPays] = React.useState<string>(etudiant.paysOrigine)
-    const [paysError, setPaysError] = React.useState<string>("")
+    const [isLoading, setIsLoading] = React.useState(true);
 
+React.useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const etud = await etudiantContext.getEtudiant(noEtudiant);
+            console.log(etud);
+            setUniversite(etud.universiteOrigine);
+            setPays(etud.paysOrigine);
+            setEtudiant(etud);
+            setIsLoading(false); // Data fetching is completed
+        } catch (error) {
+            console.error("Erreur lors de la récupération des données de l'étudiant:", error);
+            setIsLoading(false); // Handle errors and set isLoading to false
+        }
+    };
+
+    fetchData();
+
+}, [noEtudiant,etudiantContext]);
+
+
+
+
+    React.useEffect(() => {
+        console.log(etudiant);
+    }, [etudiant]);
     const {
         register,
 
@@ -70,6 +75,9 @@ export default function ModifierEtudiant() {
     } = useForm({
         mode: "all",
     })
+
+
+
     const validateOtherElements = (data: any) => {
         if (universite === "") {
             setUniversiteError("l'université est obligatoire")
@@ -95,7 +103,6 @@ export default function ModifierEtudiant() {
             lieuNaissance: data.lieu,
             mobile: data.mobile,
             nationalite: data.nationalite,
-            noEtudiant: "",
             nom: data.nom,
             paysOrigine: pays,
             prenom: data.prenom,
@@ -103,13 +110,27 @@ export default function ModifierEtudiant() {
             telephone: data.telephone,
             universiteOrigine: universite,
             ville: data.ville,
+            anneeUniversitaire: anneeUniversitaire,
+            CodeFormation: codeFormation,
+            noEtudiant: noEtudiant
         }
         console.log("🚀 ~ onSubmit ~ etudiant:", etudiant)
+        etudiantContext.modifyEtudiant(noEtudiant,etudiant,anneeUniversitaire, codeFormation)
+        navigate(`/dashboard/details-promotion/${codeFormation}/${anneeUniversitaire}`)
     }
+
+            // Conditional rendering based on isLoading
+if (isLoading) {
+    return <div>Loading...</div>;
+}
+
     const validateDateOfBirth = (date: any) => {
         const eighteenYearsAgo = new Date()
         eighteenYearsAgo.setFullYear(eighteenYearsAgo.getFullYear())
         const inputDate = new Date(date)
+
+
+
 
         return (
             inputDate <= eighteenYearsAgo ||
@@ -131,6 +152,7 @@ export default function ModifierEtudiant() {
     }
 
 
+   
 
     return (
         <>
@@ -195,7 +217,7 @@ export default function ModifierEtudiant() {
                                             label="Nom"
                                             autoComplete="nom"
                                             error={!!errors.nom}
-                                            defaultValue={etudiant.nom}
+                                            defaultValue={ etudiant ? etudiant.nom : ""}
                                             {...register("nom", {
                                                 required:
                                                     "Le nom est obligatoire..",
@@ -226,7 +248,7 @@ export default function ModifierEtudiant() {
                                             label="Prénom "
                                             autoComplete="prenom"
                                             error={!!errors.prenom}
-                                            defaultValue={etudiant.prenom}
+                                            defaultValue={ etudiant ? etudiant.prenom : ""}
                                             {...register("prenom", {
                                                 required:
                                                     "Le prenom est obligatoire..",
@@ -257,7 +279,7 @@ export default function ModifierEtudiant() {
                                             label="Adresse mail"
                                             autoComplete="mail"
                                             error={!!errors.mail}
-                                            defaultValue={etudiant.email}
+                                            defaultValue={ etudiant ? etudiant.email :""}
                                             {...register("mail", {
                                                 required:
                                                     "L'adresse mail est obligatoire...!",
@@ -284,7 +306,7 @@ export default function ModifierEtudiant() {
                                             id="mailUBO"
                                             label="Adresse mail UBO"
                                             autoComplete="mailUBO"
-                                            defaultValue={etudiant.emailUbo}
+                                            defaultValue={ etudiant ? etudiant.emailUbo : ""}
                                             error={!!errors.mailUBO}
                                             {...register("mailUBO", {
                                                 required:
@@ -313,7 +335,7 @@ export default function ModifierEtudiant() {
                                             id="telephone"
                                             label="Numéro de téléphone"
                                             autoComplete="telephone"
-                                            defaultValue={etudiant.telephone}
+                                            defaultValue={ etudiant ? etudiant.telephone : ""}
                                             // autoFocus
                                             {...register("telephone", {
                                                 required:
@@ -357,7 +379,7 @@ export default function ModifierEtudiant() {
                                             id="mobile"
                                             label="Mobile"
                                             autoComplete="mobile"
-                                            defaultValue={etudiant.mobile}
+                                            defaultValue={ etudiant ? etudiant.mobile : ""}
                                             // autoFocus
                                             {...register("mobile", {
                                                 required:
@@ -402,7 +424,7 @@ export default function ModifierEtudiant() {
                                             autoComplete="lieu"
                                             error={!!errors.lieu}
                                             defaultValue={
-                                                etudiant.lieuNaissance
+                                                etudiant ? etudiant.lieuNaissance : ""
                                             }
                                             {...register("lieu", {
                                                 required:
@@ -434,7 +456,7 @@ export default function ModifierEtudiant() {
                                             label="Nationalité"
                                             autoComplete="nationalité"
                                             error={!!errors.nationalité}
-                                            defaultValue={etudiant.nationalite}
+                                            defaultValue={ etudiant ? etudiant.nationalite : ""}
                                             {...register("nationalite", {
                                                 required:
                                                     "La nationalité est obligatoire..",
@@ -465,7 +487,7 @@ export default function ModifierEtudiant() {
                                             label="Adresse"
                                             autoComplete="adresse"
                                             error={!!errors.adresse}
-                                            defaultValue={etudiant.adresse}
+                                            defaultValue={ etudiant ? etudiant.adresse : ""}
                                             {...register("adresse", {
                                                 required:
                                                     "L'adresse est obligatoire..",
@@ -496,7 +518,7 @@ export default function ModifierEtudiant() {
                                             label="Code Postal"
                                             autoComplete="code"
                                             error={!!errors.code}
-                                            defaultValue={etudiant.codePostal}
+                                            defaultValue={ etudiant ? etudiant.codePostal : ""}
                                             {...register("code", {
                                                 required:
                                                     "Le code Postal est obligatoire..",
@@ -538,7 +560,7 @@ export default function ModifierEtudiant() {
                                             label="Ville"
                                             autoComplete="ville"
                                             error={!!errors.ville}
-                                            defaultValue={etudiant.ville}
+                                            defaultValue={  etudiant ? etudiant.ville : ""}
                                             {...register("ville", {
                                                 required:
                                                     "La ville est obligatoire..",
@@ -580,12 +602,12 @@ export default function ModifierEtudiant() {
                                                     return true
                                                 },
                                             })}
-                                            //defaultValue={etudiant.sexe}
+                                         
                                             render={({ field }) => (
                                                 <RadioGroup
                                                     {...field}
-                                                    //   defaultValue={etudiant.sexe}
                                                     row
+                                                    defaultValue={etudiant?.sexe}
                                                 >
                                                     <FormControlLabel
                                                         value={
@@ -624,9 +646,7 @@ export default function ModifierEtudiant() {
                                         error={!!universite}
                                     >
                                         <SelectComponent
-                                            defaultValue={
-                                                etudiant.universiteOrigine
-                                            }
+                                            defaultValue={etudiant?.universiteOrigine}
                                             onChange={(selectedValue) => {
                                                 setUniversite(
                                                     selectedValue as string
@@ -651,10 +671,11 @@ export default function ModifierEtudiant() {
                                         error={!!pays}
                                     >
                                         <SelectComponent
-                                            defaultValue={etudiant.paysOrigine}
+                                            defaultValue={etudiant?.paysOrigine}
                                             onChange={(selectedValue) => {
                                                 setPays(selectedValue as string)
                                             }}
+                                       
                                             placeholder="Pays"
                                             name="pays"
                                             label="Pays d'origine"
@@ -676,9 +697,9 @@ export default function ModifierEtudiant() {
                                             id="date"
                                             label="Date de Naissance"
                                             autoComplete="date"
-                                            defaultValue={formatDate(
-                                                etudiant.dateNaissance
-                                            )}
+                                            defaultValue={
+                                                etudiant ? etudiant.dateNaissance : ""
+                                            }
                                             InputLabelProps={{
                                                 shrink: true,
                                             }}
@@ -706,7 +727,7 @@ export default function ModifierEtudiant() {
                                             id="groupeTP"
                                             label="Groupe de TP"
                                             autoComplete="groupeTP"
-                                            defaultValue={etudiant.groupeTp}
+                                            defaultValue={ etudiant ? etudiant.groupeTp : ""}
                                             //  autoFocus
                                             {...register("groupeTP", {
                                                 required:
@@ -740,7 +761,7 @@ export default function ModifierEtudiant() {
                                             label="Groupe d'Anglais"
                                             autoComplete="groupeAnglais"
                                             defaultValue={
-                                                etudiant.groupeAnglais
+                                                etudiant ? etudiant.groupeAnglais : ""
                                             }
                                             //  autoFocus
                                             {...register("groupeAnglais", {

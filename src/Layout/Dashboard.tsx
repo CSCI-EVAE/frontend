@@ -75,11 +75,11 @@ const Dashboard: React.FC = () => {
                                     element={<DetailsPromotionAdmin />}
                                 />
                                 <Route
-                                    path="/creer-etudiant"
+                                    path="/details-promotion/:codeFormation/:anneeUniversitaire/creer-etudiant"
                                     element={<CreerEtudiant />}
                                 />
                                 <Route
-                                    path="/modifier-etudiant"
+                                    path="/details-promotion/:codeFormation/:anneeUniversitaire/modifier-etudiant/:noEtudiant"
                                     element={<ModifierEtudiant />}
                                 />
                                 <Route path="/admin" element={<Admin />} />

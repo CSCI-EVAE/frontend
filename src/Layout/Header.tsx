@@ -24,11 +24,13 @@ const Header: React.FC = () => {
 
     const isAuth = isAuthenticated()
 
-    const [role, setRole] = useState("")
+
+    const [prenom, setPrenom] = useState("")
 
     useEffect(() => {
         if (isAuth) {
-            setRole(userInfos().role)
+           
+            setPrenom(userInfos().prenom)
         }
     }, [isAuth])
 
@@ -78,7 +80,7 @@ const Header: React.FC = () => {
                             <BtnComponent
                                 variant="text"
                                 icon={<PersonIcon />}
-                                text={role}
+                                text={prenom}
                             />
                         </Typography>
                     ) : (

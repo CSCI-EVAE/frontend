@@ -22,17 +22,23 @@ import SelectComponent from "../common/Select/newSelect"
 import { GENDERS, PAYS_OPTIONS, UNIVERSITE_ORIGINE_OPTIONS } from "../constants"
 import { EtudiantDTO } from "../types"
 import Header from "../Layout/Header"
+import { useNavigate, useParams } from "react-router-dom"
+import { useContext } from "react"
+import { EtudiantListContext } from "../context/etudiantListContext"
 
 const defaultTheme = createTheme()
 
+
 export default function CreerEtudiant() {
-    const generateRandomStudentNumber = (length: number) =>
-        Array.from({ length }, () => Math.floor(Math.random() * 10)).join("")
+    
+    const { codeFormation, anneeUniversitaire } = useParams<{ codeFormation: string, anneeUniversitaire: string }>();
+    const {addNewEtudiant} = useContext(EtudiantListContext)
     const [universiteError, setUniversiteError] = React.useState("")
 
     const [universite, setUniversite] = React.useState<string>("")
     const [pays, setPays] = React.useState<string>("")
     const [paysError, setPaysError] = React.useState<string>("")
+    const navigate = useNavigate();
 
     const {
         register,
@@ -61,13 +67,13 @@ export default function CreerEtudiant() {
             codePostal: data.code,
             dateNaissance: data.date,
             email: data.mail,
-            emailUbo: data.mailUBO,
+            emailUbo: data.mailUBO + "@etudiant.univ-brest.fr",
             groupeAnglais: data.groupeAnglais,
             groupeTp: data.groupeTP,
             lieuNaissance: data.lieu,
             mobile: data.mobile,
             nationalite: data.nationalite,
-            noEtudiant: generateRandomStudentNumber(8),
+            noEtudiant: data.noEtudiant,
             nom: data.nom,
             paysOrigine: pays,
             prenom: data.prenom,
@@ -75,17 +81,22 @@ export default function CreerEtudiant() {
             telephone: data.telephone,
             universiteOrigine: universite,
             ville: data.ville,
+            CodeFormation: codeFormation,
+            anneeUniversitaire: anneeUniversitaire
         }
         console.log("🚀 ~ onSubmit ~ etudiant:", etudiant)
+        addNewEtudiant(etudiant,anneeUniversitaire, codeFormation)
+        navigate(`/dashboard/details-promotion/${codeFormation}/${anneeUniversitaire}`)
+        
     }
     const validateDateOfBirth = (date: any) => {
-        const eighteenYearsAgo = new Date()
-        eighteenYearsAgo.setFullYear(eighteenYearsAgo.getFullYear())
+        const sixteenYearsAgo = new Date()
+        sixteenYearsAgo.setFullYear(sixteenYearsAgo.getFullYear() - 16)
         const inputDate = new Date(date)
 
         return (
-            inputDate <= eighteenYearsAgo ||
-            "La date ne peut pas etre inférieure à la date actuelle."
+            inputDate <= sixteenYearsAgo ||
+            "L'étudiant doit avoir au moins 16 ans pour s'inscrire à l'UBO"
         )
     }
 
@@ -161,6 +172,39 @@ export default function CreerEtudiant() {
                                 }}
                                 spacing={2}
                             >
+
+<Grid item xs={12} sm={6}>
+                                    <FormControl style={styleInput}>
+                                        <TextField
+                                            // margin="normal"
+                                            required
+
+                                            id="noEtudiant"
+                                            label="No étudiant"
+                                            autoComplete="noEtudiant"
+                                            error={!!errors.noEtudiant}
+                                          
+                                            {...register("noEtudiant", {
+                                                required:
+                                                    "Le numéro étudiant est obligatoire..",
+                                                validate: (value) =>
+                                                    value.trim() !== "" ||
+                                                    "Le numéro étudiant pas être vide",
+                                                maxLength: {
+                                                    value: 50,
+                                                    message:
+                                                        "Le numéro étudiant ne doit pas excéder 50 caractères...!",
+                                                },
+                                            })}
+                                        />
+                                        {typeof errors.noEtudiant?.message ===
+                                            "string" && (
+                                                <FormHelperText error>
+                                                    {errors.noEtudiant.message}
+                                                </FormHelperText>
+                                            )}
+                                    </FormControl>
+                                </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <FormControl style={styleInput}>
                                         <TextField
