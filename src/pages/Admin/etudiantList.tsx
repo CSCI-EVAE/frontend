@@ -18,7 +18,6 @@ const EtudiantListPage: React.FC<PromotionProps> = ({etudiantList}:PromotionProp
 
     
     const { codeFormation, anneeUniversitaire } = useParams<{ codeFormation: string, anneeUniversitaire: string }>();
-    const [noEtudiant, setNoEtudiant] = useState<string | null>(null);
 
 
     const handleDelete = (rowData: any) => {
