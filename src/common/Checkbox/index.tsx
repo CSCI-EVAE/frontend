@@ -5,6 +5,7 @@ import {
     FormControlLabel,
     FormGroup,
     FormGroupProps,
+    Typography,
 } from "@mui/material"
 
 interface CheckboxOption {
@@ -42,7 +43,11 @@ const CheckboxComponent: React.FC<Props> = ({
 
     return (
         <FormControl>
-            {label && <div style={{ display: "block" }}>{label}</div>}
+            {label && (
+                <div style={{ display: "block", marginBottom: "12px" }}>
+                    <Typography variant="h6">{label}</Typography>
+                </div>
+            )}
             <FormGroup>
                 {options.map((option, index) => (
                     <FormControlLabel

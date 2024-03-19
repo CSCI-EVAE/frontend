@@ -1,22 +1,50 @@
 import { useContext, useEffect, useState } from "react"
-import QuestionRating from "../../components/QuestionRating"
 import StepperComponent from "../../common/Stepper"
 import { StepContext } from "../../context/stepperContext"
-import { ReponseEvaluation as ReponseEvaluationType } from "../../types"
-import RecapitulatifReponses from "../../components/RecapitulatifReponses"
+import {
+    ReponseEvaluation as ReponseEvaluationType,
+    reponseQuestions,
+} from "../../types"
 import Header from "../../Layout/Header"
 import { useNavigate, useParams } from "react-router-dom"
 import { EvaluationEtudiantContext } from "../../context/evaluationEtudiantContext"
-import { Evaluation } from "../../types/EvaluationTypes"
-import CommentaireEvalution from "../../components/CommentaireEvaluation"
+import {
+    Evaluation,
+    QuestionEvaluation,
+    RubriqueEvaluation,
+} from "../../types/EvaluationTypes"
+import ModifierQuestionRating from "../../components/ModifierQuestionRating"
+import ModifierRecapitulatifReponses from "../../components/ModifierRecapitulatifReponses"
+import ModifierCommentaireEvaluation from "../../components/ModifierCommentaireEvaluation"
 import ButtonComponent from "../../common/Button"
 import { KeyboardBackspace } from "@mui/icons-material"
 
-const ReponseEvaluation = () => {
+const transformQuestionToReponseQuestion = (
+    question: QuestionEvaluation
+): reponseQuestions => {
+    return {
+        id: question.id,
+        idQuestionEvaluation: {
+            id: question.id,
+            intitule: question.intitule || "",
+            idQualificatif: question.idQuestion.idQualificatif,
+        },
+        positionnement: Number(question.positionnement),
+    }
+}
+const transformQuestionsToReponseQuestions = (
+    questions: QuestionEvaluation[]
+): reponseQuestions[] => {
+    return questions.map(transformQuestionToReponseQuestion)
+}
+const ModifierEvaluation = () => {
     const idEvaluation = useParams().id
-    const { getEvaluationDetails, evaluationDetails } = useContext(
-        EvaluationEtudiantContext
-    )
+    const {
+        getEvaluationDetails,
+        evaluationDetails,
+        getEvaluationReponse,
+        consulterReponse,
+    } = useContext(EvaluationEtudiantContext)
     const [list, setList] = useState<Evaluation>()
 
     useEffect(() => {
@@ -26,16 +54,67 @@ const ReponseEvaluation = () => {
     useEffect(() => {
         setList(evaluationDetails)
     }, [evaluationDetails])
+    useEffect(() => {
+        getEvaluationReponse(idEvaluation)
+    }, [idEvaluation, getEvaluationReponse])
+
+    const [oldReponse, setOldReponse] =
+        useState<RubriqueEvaluation[]>(consulterReponse)
+    useEffect(() => {
+        setOldReponse(consulterReponse)
+    }, [consulterReponse])
 
     const { activeStep, handleComplete } = useContext(StepContext)
+
+    const def: reponseQuestions[] = oldReponse
+        .map((reponse) => {
+            if (reponse.questionEvaluations) {
+                // Transformez les questionEvaluations en reponseQuestions
+                return transformQuestionsToReponseQuestions(
+                    reponse.questionEvaluations
+                )
+            } else {
+                // Si questionEvaluations est null ou undefined, retournez un tableau vide
+                return []
+            }
+        })
+        .flat()
 
     const [reponse, setReponse] = useState<ReponseEvaluationType>({
         commentaire: "",
         idEvaluation: Number(idEvaluation),
         nom: "",
         prenom: "",
-        reponseQuestions: [],
+        reponseQuestions: def,
     })
+    useEffect(() => {
+        //  console.log("repokjkjkjkjkkj", reponse)
+        localStorage.setItem(
+            "modifierEvaluation",
+            JSON.stringify({
+                commentaire: reponse.commentaire,
+                idEvaluation: {
+                    id: Number(idEvaluation),
+                },
+                nom: reponse.nom,
+                prenom: reponse.prenom,
+                reponseQuestions: def,
+            })
+        )
+    }, [reponse, oldReponse, def, idEvaluation])
+
+    localStorage.setItem(
+        "modifierEvaluation",
+        JSON.stringify({
+            commentaire: reponse.commentaire,
+            idEvaluation: {
+                id: Number(idEvaluation),
+            },
+            nom: reponse.nom,
+            prenom: reponse.prenom,
+            reponseQuestions: def,
+        })
+    )
     const handleAddChoice = (idQuestion: number, positionnement: number) => {
         setReponse({
             ...reponse,
@@ -68,7 +147,7 @@ const ReponseEvaluation = () => {
         //
         if (activeStep !== (list?.rubriqueEvaluations?.length ?? 0) + 2) {
             handleComplete()
-            localStorage.setItem("reponseEvaluation", JSON.stringify(reponse))
+            localStorage.setItem("modifierEvaluation", JSON.stringify(reponse))
         } else {
             console.log("🚀 ~ ReponseEvaluation ~ reponseNESKLJDLJKL:", reponse)
             //fin du remplissage
@@ -77,7 +156,7 @@ const ReponseEvaluation = () => {
     }
     const stepItems = list
         ? list.rubriqueEvaluations.map((r, index) => (
-              <QuestionRating
+              <ModifierQuestionRating
                   handleAddChoice={handleAddChoice}
                   key={index}
                   rubrique={r}
@@ -86,11 +165,11 @@ const ReponseEvaluation = () => {
           ))
         : []
     stepItems.push(
-        <CommentaireEvalution
+        <ModifierCommentaireEvaluation
             handleNomPrenomCommentaire={handleNomPrenomCommentaire}
             handleSubmit={handleValidateElement}
         />,
-        <RecapitulatifReponses
+        <ModifierRecapitulatifReponses
             rubrique={list ? list.rubriqueEvaluations : []}
         />
     )
@@ -105,10 +184,11 @@ const ReponseEvaluation = () => {
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "flex-start",
+                    marginBottom: "50px",
                 }}
             >
                 <ButtonComponent
-                    text="Retour"
+                    text="Retour à  la page principale"
                     variant="contained"
                     icon={<KeyboardBackspace />}
                     onClick={() => {
@@ -124,4 +204,4 @@ const ReponseEvaluation = () => {
         </>
     )
 }
-export default ReponseEvaluation
+export default ModifierEvaluation

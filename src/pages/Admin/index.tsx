@@ -9,7 +9,7 @@ import Sidebar from "../../Layout/sideBar/SidebarPage"
 function BigMenu() {
     const navigate = useNavigate()
     const textStyle: React.CSSProperties = {
-        fontFamily: "cursive",
+        fontFamily: "system-ui",
         color: "#e3a12f",
         marginTop: "20px",
         marginBottom: "50px",
@@ -38,7 +38,12 @@ function BigMenu() {
                 >
                     Menu Administrateur
                 </Typography>
-                <Grid container spacing={10} justifyContent="center">
+                <Grid
+                    container
+                    spacing={10}
+                    justifyContent="center"
+                    style={{ marginBottom: "64px" }}
+                >
                     {ADMIN_DASHBOARD.slice(1).map((menuItem, index) => (
                         <Grid key={index} item xs={6}>
                             <Paper

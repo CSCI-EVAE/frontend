@@ -23,49 +23,51 @@ import { EtudiantDTO } from "../types"
 import Header from "../Layout/Header"
 import { useNavigate, useParams } from "react-router-dom"
 import { EtudiantListContext } from "../context/etudiantListContext"
+import Sidebar from "../Layout/sideBar/SidebarPage"
+import { KeyboardBackspace } from "@mui/icons-material"
 
 const defaultTheme = createTheme()
 
 export default function ModifierEtudiant() {
- 
     const etudiantContext = React.useContext(EtudiantListContext)
-    const { noEtudiant = "" } = useParams<{ noEtudiant?: string }>();
-    const [universiteError, setUniversiteError] = React.useState("");
-    const [universite, setUniversite] = React.useState<string>("");
-    const [pays, setPays] = React.useState<string>("");
-    const [paysError, setPaysError] = React.useState<string>("");
-    const [etudiant, setEtudiant] = React.useState<EtudiantDTO>();
-    const { codeFormation, anneeUniversitaire } = useParams<{ codeFormation: string, anneeUniversitaire: string }>();
-    const navigate = useNavigate();
+    const { noEtudiant = "" } = useParams<{ noEtudiant?: string }>()
+    const [universiteError, setUniversiteError] = React.useState("")
+    const [universite, setUniversite] = React.useState<string>("")
+    const [pays, setPays] = React.useState<string>("")
+    const [paysError, setPaysError] = React.useState<string>("")
+    const [etudiant, setEtudiant] = React.useState<EtudiantDTO>()
+    const { codeFormation, anneeUniversitaire } = useParams<{
+        codeFormation: string
+        anneeUniversitaire: string
+    }>()
+    const navigate = useNavigate()
 
-
-    const [isLoading, setIsLoading] = React.useState(true);
-
-React.useEffect(() => {
-    const fetchData = async () => {
-        try {
-            const etud = await etudiantContext.getEtudiant(noEtudiant);
-            console.log(etud);
-            setUniversite(etud.universiteOrigine);
-            setPays(etud.paysOrigine);
-            setEtudiant(etud);
-            setIsLoading(false); // Data fetching is completed
-        } catch (error) {
-            console.error("Erreur lors de la récupération des données de l'étudiant:", error);
-            setIsLoading(false); // Handle errors and set isLoading to false
-        }
-    };
-
-    fetchData();
-
-}, [noEtudiant,etudiantContext]);
-
-
-
+    const [isLoading, setIsLoading] = React.useState(true)
 
     React.useEffect(() => {
-        console.log(etudiant);
-    }, [etudiant]);
+        const fetchData = async () => {
+            try {
+                const etud = await etudiantContext.getEtudiant(noEtudiant)
+                console.log(etud)
+                setUniversite(etud.universiteOrigine)
+                setPays(etud.paysOrigine)
+                setEtudiant(etud)
+                setIsLoading(false) // Data fetching is completed
+            } catch (error) {
+                console.error(
+                    "Erreur lors de la récupération des données de l'étudiant:",
+                    error
+                )
+                setIsLoading(false) // Handle errors and set isLoading to false
+            }
+        }
+
+        fetchData()
+    }, [noEtudiant, etudiantContext])
+
+    React.useEffect(() => {
+        console.log(etudiant)
+    }, [etudiant])
     const {
         register,
 
@@ -75,8 +77,6 @@ React.useEffect(() => {
     } = useForm({
         mode: "all",
     })
-
-
 
     const validateOtherElements = (data: any) => {
         if (universite === "") {
@@ -112,25 +112,29 @@ React.useEffect(() => {
             ville: data.ville,
             anneeUniversitaire: anneeUniversitaire,
             CodeFormation: codeFormation,
-            noEtudiant: noEtudiant
+            noEtudiant: noEtudiant,
         }
         console.log("🚀 ~ onSubmit ~ etudiant:", etudiant)
-        etudiantContext.modifyEtudiant(noEtudiant,etudiant,anneeUniversitaire, codeFormation)
-        navigate(`/dashboard/details-promotion/${codeFormation}/${anneeUniversitaire}`)
+        etudiantContext.modifyEtudiant(
+            noEtudiant,
+            etudiant,
+            anneeUniversitaire,
+            codeFormation
+        )
+        navigate(
+            `/dashboard/details-promotion/${codeFormation}/${anneeUniversitaire}`
+        )
     }
 
-            // Conditional rendering based on isLoading
-if (isLoading) {
-    return <div>Loading...</div>;
-}
+    // Conditional rendering based on isLoading
+    if (isLoading) {
+        return <div>Loading...</div>
+    }
 
     const validateDateOfBirth = (date: any) => {
         const eighteenYearsAgo = new Date()
         eighteenYearsAgo.setFullYear(eighteenYearsAgo.getFullYear())
         const inputDate = new Date(date)
-
-
-
 
         return (
             inputDate <= eighteenYearsAgo ||
@@ -141,7 +145,7 @@ if (isLoading) {
     const styleInput: React.CSSProperties = {
         width: "70%",
         marginLeft: "60px",
-        marginTop: "10px"
+        marginTop: "10px",
     }
 
     const textStyle: React.CSSProperties = {
@@ -151,13 +155,32 @@ if (isLoading) {
         marginBottom: "50px",
     }
 
-
-   
-
     return (
         <>
+            <Sidebar />
             <Header />
             <ThemeProvider theme={defaultTheme}>
+                <div
+                    style={{
+                        maxWidth: "90%",
+                        marginLeft: "100px",
+                        marginBottom: "48px",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-start",
+                    }}
+                >
+                    <ButtonComponent
+                        text="Retour"
+                        variant="contained"
+                        icon={<KeyboardBackspace />}
+                        onClick={() => {
+                            navigate(
+                                `/dashboard/details-promotion/${codeFormation}/${anneeUniversitaire}`
+                            )
+                        }}
+                    />
+                </div>
                 <Grid
                     container
                     component="main"
@@ -167,7 +190,7 @@ if (isLoading) {
                         display: "flex",
                         justifyContent: "center",
                         //width: "500px",
-                        paddingBottom: "100px"
+                        paddingBottom: "100px",
                     }}
                 >
                     <CssBaseline />
@@ -193,8 +216,11 @@ if (isLoading) {
                                 alignItems: "center",
                             }}
                         >
-                       
-                            <Typography component="h1" variant="h4" style={textStyle}>
+                            <Typography
+                                component="h1"
+                                variant="h4"
+                                style={textStyle}
+                            >
                                 Modifier un étudiant
                             </Typography>
 
@@ -204,7 +230,7 @@ if (isLoading) {
                                     mt: 0,
                                     margin: "auto",
                                     width: "90%",
-                                    marginBottom:"60px"
+                                    marginBottom: "60px",
                                 }}
                                 spacing={2}
                             >
@@ -217,7 +243,9 @@ if (isLoading) {
                                             label="Nom"
                                             autoComplete="nom"
                                             error={!!errors.nom}
-                                            defaultValue={ etudiant ? etudiant.nom : ""}
+                                            defaultValue={
+                                                etudiant ? etudiant.nom : ""
+                                            }
                                             {...register("nom", {
                                                 required:
                                                     "Le nom est obligatoire..",
@@ -248,7 +276,9 @@ if (isLoading) {
                                             label="Prénom "
                                             autoComplete="prenom"
                                             error={!!errors.prenom}
-                                            defaultValue={ etudiant ? etudiant.prenom : ""}
+                                            defaultValue={
+                                                etudiant ? etudiant.prenom : ""
+                                            }
                                             {...register("prenom", {
                                                 required:
                                                     "Le prenom est obligatoire..",
@@ -279,7 +309,9 @@ if (isLoading) {
                                             label="Adresse mail"
                                             autoComplete="mail"
                                             error={!!errors.mail}
-                                            defaultValue={ etudiant ? etudiant.email :""}
+                                            defaultValue={
+                                                etudiant ? etudiant.email : ""
+                                            }
                                             {...register("mail", {
                                                 required:
                                                     "L'adresse mail est obligatoire...!",
@@ -306,7 +338,11 @@ if (isLoading) {
                                             id="mailUBO"
                                             label="Adresse mail UBO"
                                             autoComplete="mailUBO"
-                                            defaultValue={ etudiant ? etudiant.emailUbo : ""}
+                                            defaultValue={
+                                                etudiant
+                                                    ? etudiant.emailUbo
+                                                    : ""
+                                            }
                                             error={!!errors.mailUBO}
                                             {...register("mailUBO", {
                                                 required:
@@ -335,7 +371,11 @@ if (isLoading) {
                                             id="telephone"
                                             label="Numéro de téléphone"
                                             autoComplete="telephone"
-                                            defaultValue={ etudiant ? etudiant.telephone : ""}
+                                            defaultValue={
+                                                etudiant
+                                                    ? etudiant.telephone
+                                                    : ""
+                                            }
                                             // autoFocus
                                             {...register("telephone", {
                                                 required:
@@ -355,9 +395,9 @@ if (isLoading) {
                                                         "Le Numéro de téléphone doit avoir au moins 8 caractères...!",
                                                 },
                                                 maxLength: {
-                                                    value: 15,
+                                                    value: 13,
                                                     message:
-                                                        "Le Numéro de téléphone doit avoir au plus 15 caractères...!",
+                                                        "Le Numéro de téléphone doit avoir au plus 13 caractères...!",
                                                 },
                                             })}
                                             error={!!errors.telephone} // Set error prop based on the presence of errors
@@ -379,7 +419,9 @@ if (isLoading) {
                                             id="mobile"
                                             label="Mobile"
                                             autoComplete="mobile"
-                                            defaultValue={ etudiant ? etudiant.mobile : ""}
+                                            defaultValue={
+                                                etudiant ? etudiant.mobile : ""
+                                            }
                                             // autoFocus
                                             {...register("mobile", {
                                                 required:
@@ -399,9 +441,9 @@ if (isLoading) {
                                                         "Le Mobile doit avoir au moins 8 caractères...!",
                                                 },
                                                 maxLength: {
-                                                    value: 15,
+                                                    value: 13,
                                                     message:
-                                                        "Le Mobile doit avoir au plus 15 caractères...!",
+                                                        "Le Mobile doit avoir au plus 13 caractères...!",
                                                 },
                                             })}
                                             error={!!errors.mobile} // Set error prop based on the presence of errors
@@ -424,7 +466,9 @@ if (isLoading) {
                                             autoComplete="lieu"
                                             error={!!errors.lieu}
                                             defaultValue={
-                                                etudiant ? etudiant.lieuNaissance : ""
+                                                etudiant
+                                                    ? etudiant.lieuNaissance
+                                                    : ""
                                             }
                                             {...register("lieu", {
                                                 required:
@@ -456,7 +500,11 @@ if (isLoading) {
                                             label="Nationalité"
                                             autoComplete="nationalité"
                                             error={!!errors.nationalité}
-                                            defaultValue={ etudiant ? etudiant.nationalite : ""}
+                                            defaultValue={
+                                                etudiant
+                                                    ? etudiant.nationalite
+                                                    : ""
+                                            }
                                             {...register("nationalite", {
                                                 required:
                                                     "La nationalité est obligatoire..",
@@ -487,7 +535,9 @@ if (isLoading) {
                                             label="Adresse"
                                             autoComplete="adresse"
                                             error={!!errors.adresse}
-                                            defaultValue={ etudiant ? etudiant.adresse : ""}
+                                            defaultValue={
+                                                etudiant ? etudiant.adresse : ""
+                                            }
                                             {...register("adresse", {
                                                 required:
                                                     "L'adresse est obligatoire..",
@@ -518,7 +568,11 @@ if (isLoading) {
                                             label="Code Postal"
                                             autoComplete="code"
                                             error={!!errors.code}
-                                            defaultValue={ etudiant ? etudiant.codePostal : ""}
+                                            defaultValue={
+                                                etudiant
+                                                    ? etudiant.codePostal
+                                                    : ""
+                                            }
                                             {...register("code", {
                                                 required:
                                                     "Le code Postal est obligatoire..",
@@ -526,9 +580,9 @@ if (isLoading) {
                                                     value.trim() !== "" ||
                                                     "Le code Postal ne peut pas être vide",
                                                 maxLength: {
-                                                    value: 10,
+                                                    value: 5,
                                                     message:
-                                                        "Le code Postal ne doit pas excéder 10 caractères...!",
+                                                        "Le code Postal ne doit pas excéder 5 caractères...!",
                                                 },
                                                 pattern: {
                                                     value: /^[0-9]*$/, // Expression régulière pour vérifier que le numéro contient uniquement des chiffres
@@ -537,9 +591,9 @@ if (isLoading) {
                                                 },
 
                                                 minLength: {
-                                                    value: 1,
+                                                    value: 5,
                                                     message:
-                                                        "Le code Postal doit avoir au moins 1 caractère...!",
+                                                        "Le code Postal doit avoir au moins 5 caractère...!",
                                                 },
                                             })}
                                         />
@@ -560,7 +614,9 @@ if (isLoading) {
                                             label="Ville"
                                             autoComplete="ville"
                                             error={!!errors.ville}
-                                            defaultValue={  etudiant ? etudiant.ville : ""}
+                                            defaultValue={
+                                                etudiant ? etudiant.ville : ""
+                                            }
                                             {...register("ville", {
                                                 required:
                                                     "La ville est obligatoire..",
@@ -583,7 +639,8 @@ if (isLoading) {
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <FormControl style={styleInput}
+                                    <FormControl
+                                        style={styleInput}
                                         error={!!errors.sexe}
                                         component="fieldset"
                                     >
@@ -602,12 +659,13 @@ if (isLoading) {
                                                     return true
                                                 },
                                             })}
-                                         
                                             render={({ field }) => (
                                                 <RadioGroup
                                                     {...field}
                                                     row
-                                                    defaultValue={etudiant?.sexe}
+                                                    defaultValue={
+                                                        etudiant?.sexe
+                                                    }
                                                 >
                                                     <FormControlLabel
                                                         value={
@@ -646,7 +704,9 @@ if (isLoading) {
                                         error={!!universite}
                                     >
                                         <SelectComponent
-                                            defaultValue={etudiant?.universiteOrigine}
+                                            defaultValue={
+                                                etudiant?.universiteOrigine
+                                            }
                                             onChange={(selectedValue) => {
                                                 setUniversite(
                                                     selectedValue as string
@@ -675,7 +735,6 @@ if (isLoading) {
                                             onChange={(selectedValue) => {
                                                 setPays(selectedValue as string)
                                             }}
-                                       
                                             placeholder="Pays"
                                             name="pays"
                                             label="Pays d'origine"
@@ -698,7 +757,9 @@ if (isLoading) {
                                             label="Date de Naissance"
                                             autoComplete="date"
                                             defaultValue={
-                                                etudiant ? etudiant.dateNaissance : ""
+                                                etudiant
+                                                    ? etudiant.dateNaissance
+                                                    : ""
                                             }
                                             InputLabelProps={{
                                                 shrink: true,
@@ -727,7 +788,11 @@ if (isLoading) {
                                             id="groupeTP"
                                             label="Groupe de TP"
                                             autoComplete="groupeTP"
-                                            defaultValue={ etudiant ? etudiant.groupeTp : ""}
+                                            defaultValue={
+                                                etudiant
+                                                    ? etudiant.groupeTp
+                                                    : ""
+                                            }
                                             //  autoFocus
                                             {...register("groupeTP", {
                                                 required:
@@ -761,7 +826,9 @@ if (isLoading) {
                                             label="Groupe d'Anglais"
                                             autoComplete="groupeAnglais"
                                             defaultValue={
-                                                etudiant ? etudiant.groupeAnglais : ""
+                                                etudiant
+                                                    ? etudiant.groupeAnglais
+                                                    : ""
                                             }
                                             //  autoFocus
                                             {...register("groupeAnglais", {
@@ -787,7 +854,7 @@ if (isLoading) {
                                     </FormControl>
                                 </Grid>
                             </Grid>
-                            <div style={{marginBottom:"40px"}}> 
+                            <div style={{ marginBottom: "40px" }}>
                                 <ButtonComponent
                                     type="submit"
                                     variant="contained"

@@ -28,9 +28,10 @@ import {
 import { ListContext } from "../../context/listContext"
 import ButtonComponent from "../Button"
 import AddCircleIcon from "@mui/icons-material/AddCircle"
-import { LIST_ACTIONS } from "../../constants"
+import { COLORS, LIST_ACTIONS } from "../../constants"
 import { useNavigate } from "react-router-dom"
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
+import { red, yellow } from "@mui/material/colors"
 
 interface Column {
     id: string
@@ -89,8 +90,7 @@ const ListComponent: React.FC<Props> = ({
     redirect,
     filter,
     noBoutonAjouter,
-    noBoutonRetour
-
+    noBoutonRetour,
 }) => {
     const [filters, setFilters] = useState<{ [key: string]: string }>({})
     const [page, setPage] = useState(0) // État pour la pagination
@@ -117,8 +117,8 @@ const ListComponent: React.FC<Props> = ({
     const endIndex = startIndex + rowsPerPage
 
     const textStyle: React.CSSProperties = {
-        fontFamily: "cursive",
-        color: "#e3a12f",
+        fontFamily: "system-ui",
+        color: COLORS.color3,
         marginTop: "20px",
         marginBottom: "50px",
     }
@@ -165,7 +165,7 @@ const ListComponent: React.FC<Props> = ({
 
     return (
         <>
-            {!noBoutonRetour &&
+            {!noBoutonRetour && (
                 <div
                     style={{
                         maxWidth: "90%",
@@ -184,7 +184,7 @@ const ListComponent: React.FC<Props> = ({
                         }}
                     />
                 </div>
-            }
+            )}
             <div
                 style={{
                     maxWidth: "90%",
@@ -197,36 +197,29 @@ const ListComponent: React.FC<Props> = ({
                 <Typography variant="h4" style={textStyle}>
                     {title}
                 </Typography>
-                {!noBoutonAjouter &&
+                {!noBoutonAjouter && (
                     <ButtonComponent
                         text="Ajouter"
                         variant="contained"
                         icon={<AddCircleOutline />}
                         onClick={() => {
-                            if (
-                                redirectAdd
-                            ) {
-
-                                urlAdd &&
-                                    navigate(
-                                        urlAdd
-                                    )
+                            if (redirectAdd) {
+                                urlAdd && navigate(urlAdd)
                             }
                             setSelectedActions(LIST_ACTIONS.add)
                             updateModalOpen(true)
                             updateSelectedRow({})
                         }}
                     />
-
-                }
+                )}
                 <div style={{ height: "20px" }} />
 
                 <div style={{ width: "90%" }}>
                     {!filter && (
                         <div
                             style={{
-                                border: "3px solid #3c768c",
-                                padding: "10px",
+                                // border: "3px solid #3c768c",
+                                padding: "5px",
                                 marginBottom: "20px",
                                 width: "100%",
                                 boxSizing: "border-box",
@@ -241,29 +234,40 @@ const ListComponent: React.FC<Props> = ({
                                         display: "flex",
                                         flexDirection: "column",
                                         alignItems: "center",
+                                        marginBottom: "10px",
                                     }}
                                 >
                                     <Typography variant="h5">Filtre</Typography>
                                 </div>
-                                {columns.map((column) => (
-                                    <TextField
-                                        key={column.id}
-                                        label={` ${column.label}`}
-                                        variant="filled"
-                                        value={filters[column.id] || ""}
-                                        onChange={(e) =>
-                                            handleFilterChange(e, column.id)
-                                        }
-                                        style={{
-                                            marginRight: "10px",
-
-                                            width: "20%",
-                                        }}
-                                    />
-                                ))}
+                                <div
+                                    style={{
+                                        maxWidth: "90%",
+                                        margin: "auto",
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                    }}
+                                >
+                                    {columns.map((column) => (
+                                        <TextField
+                                            key={column.id}
+                                            label={` ${column.label}`}
+                                            variant="outlined"
+                                            value={filters[column.id] || ""}
+                                            onChange={(e) =>
+                                                handleFilterChange(e, column.id)
+                                            }
+                                            style={{
+                                                marginRight: "10px",
+                                                //paddingLeft: "5px",
+                                                width: "15%",
+                                            }}
+                                        />
+                                    ))}
+                                </div>
                             </>
                         </div>
-
                     )}
 
                     <TableContainer component={Paper}>
@@ -272,7 +276,10 @@ const ListComponent: React.FC<Props> = ({
                                 <TableRow>
                                     {columns.map((column) => (
                                         <TableCell
-                                            style={{ fontWeight: "bold", color: "white" }}
+                                            style={{
+                                                fontWeight: "bold",
+                                                background: COLORS.color7,
+                                            }}
                                             key={column.id}
                                         >
                                             {column.label.toUpperCase()}
@@ -280,7 +287,10 @@ const ListComponent: React.FC<Props> = ({
                                     ))}
                                     {actions && (
                                         <TableCell
-                                            style={{ fontWeight: "bold", color: "white" }}
+                                            style={{
+                                                fontWeight: "bold",
+                                                background: COLORS.color7,
+                                            }}
                                         >
                                             ACTIONS
                                         </TableCell>
@@ -307,6 +317,10 @@ const ListComponent: React.FC<Props> = ({
                                                                 rowIndex
                                                             )}
                                                             index={rowIndex}
+                                                            style={{
+                                                                backgroundColor:
+                                                                    COLORS.color4,
+                                                            }}
                                                         >
                                                             {(
                                                                 provided: any
@@ -319,7 +333,7 @@ const ListComponent: React.FC<Props> = ({
                                                                         backgroundColor:
                                                                             rowIndex %
                                                                                 2 ===
-                                                                                0
+                                                                            0
                                                                                 ? "#fffff"
                                                                                 : "#f9f9f9",
                                                                     }}
@@ -339,8 +353,8 @@ const ListComponent: React.FC<Props> = ({
                                                                             >
                                                                                 {
                                                                                     row[
-                                                                                    column
-                                                                                        .id
+                                                                                        column
+                                                                                            .id
                                                                                     ]
                                                                                 }
                                                                             </TableCell>
@@ -376,14 +390,17 @@ const ListComponent: React.FC<Props> = ({
                                                                                                 updateSelectedRow(
                                                                                                     row
                                                                                                 )
-                                                                                                localStorage.setItem("promotion", JSON.stringify(row))
-                                                                                                url && (
-                                                                                                    navigate(
-                                                                                                        url + `/${row.codeFormation}/${row.anneeUniversitaire}`
+                                                                                                localStorage.setItem(
+                                                                                                    "promotion",
+                                                                                                    JSON.stringify(
+                                                                                                        row
                                                                                                     )
-
                                                                                                 )
-
+                                                                                                url &&
+                                                                                                    navigate(
+                                                                                                        url +
+                                                                                                            `/${row.codeFormation}/${row.anneeUniversitaire}`
+                                                                                                    )
                                                                                             } else {
                                                                                                 setSelectedActions(
                                                                                                     LIST_ACTIONS.read
@@ -401,7 +418,11 @@ const ListComponent: React.FC<Props> = ({
                                                                                             }
                                                                                         }}
                                                                                     >
-                                                                                        <Visibility />
+                                                                                        <Visibility
+                                                                                            sx={{
+                                                                                                color: COLORS.color4,
+                                                                                            }}
+                                                                                        />
                                                                                     </IconButton>
                                                                                 </Tooltip>
                                                                             )}
@@ -416,13 +437,11 @@ const ListComponent: React.FC<Props> = ({
                                                                                                     updateSelectedRow(
                                                                                                         row
                                                                                                     )
-                                                                                                  
                                                                                                     modifyHandler &&
                                                                                                         modifyHandler(
                                                                                                             row
                                                                                                         )
-                                                                                                }
-                                                                                                else {
+                                                                                                } else {
                                                                                                     modifyHandler &&
                                                                                                         modifyHandler(
                                                                                                             row
@@ -437,11 +456,13 @@ const ListComponent: React.FC<Props> = ({
                                                                                                         row
                                                                                                     )
                                                                                                 }
-
-
                                                                                             }}
                                                                                         >
-                                                                                            <Edit />
+                                                                                            <Edit
+                                                                                                sx={{
+                                                                                                    color: yellow[700],
+                                                                                                }}
+                                                                                            />
                                                                                         </IconButton>
                                                                                     </Tooltip>
                                                                                 </>
@@ -461,7 +482,11 @@ const ListComponent: React.FC<Props> = ({
                                                                                             )
                                                                                         }}
                                                                                     >
-                                                                                        <Delete />
+                                                                                        <Delete
+                                                                                            sx={{
+                                                                                                color: red[500],
+                                                                                            }}
+                                                                                        />
                                                                                     </IconButton>
                                                                                 </Tooltip>
                                                                             )}
@@ -514,7 +539,7 @@ const ListComponent: React.FC<Props> = ({
                                 minWidth: 400,
                                 border: "1px solid #ccc",
                                 borderRadius: 8,
-                                backgroundColor: "rgba(255, 255, 255, 0.9)",
+                                backgroundColor: "rgba(255, 255, 255, 1)",
                                 overflowY: "auto",
                             },
                         }}

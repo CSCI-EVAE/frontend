@@ -233,6 +233,9 @@ export interface Promotion {
     lieuRentree: string | null
     processusStage: string | null
     commentaire: string | null
+    nomResponsable: string | null
+
+    prenomResponsable: string | null
 }
 
 export interface Evaluation {
@@ -257,15 +260,22 @@ export interface UeToDisplay {
     totaleHeures: number
 }
 export interface reponseQuestions {
+    id?: number
     idQuestionEvaluation: {
         id: number
+        idQualificatif?: {
+            id: number
+            minimal: string
+            maximal: string
+        }
+        intitule?: string
     }
     positionnement: number
 }
+
 export interface ReponseEvaluation {
-    idEvaluation: {
-        id: number
-    }
+    idEvaluation: number
+
     commentaire: string
     nom: string
     prenom: string
@@ -274,4 +284,15 @@ export interface ReponseEvaluation {
 
 export interface DefaultValue {
     [id: number]: number // Déclare un objet avec des clés de type number et des valeurs de type number
+}
+
+export interface ConsulterReponse {
+    rubrique: {
+        designation: string
+        question: {
+            intitule: string
+            minimal: string
+            maximal: string
+        }[]
+    }
 }

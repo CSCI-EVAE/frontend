@@ -76,6 +76,7 @@ const Sidebar: React.FC = () => {
             margin-right: 1rem;
             font-size: 1.5rem;
             height: 100%; 
+            
           }
           
 
@@ -200,18 +201,6 @@ const Sidebar: React.FC = () => {
             >
                 <SidebarWrapper>
                     <SidebarLogoWrapper displaySidebar={displaySidebar}>
-                        {/* <span className="app-brand-logo demo" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}> */}
-                        {/* <AppBrandLogo>
-      <img src="./echoSim.png" alt="Brand logo" />
-    </AppBrandLogo>  </span> */}
-                        {/* <SidebarBrand
-    displaySidebar={displaySidebar}
-    className="app__brand__text"
-  >  EchoSim
-  </SidebarBrand> */}
-
-                        {/* Logo wrapper ends */}
-                        {/* Toggle button */}
                         <SidebarToggler
                             displaySidebar={displaySidebar}
                             onClick={() =>
@@ -239,7 +228,7 @@ const Sidebar: React.FC = () => {
                                     <SidebarListItem className="sidebar-item">
                                         <span
                                             className="sidebar-icon"
-                                            style={{ color: "#3c768c" }}
+                                            // style={{ color: "#3c768c" }}
                                         >
                                             {element.icon}
                                         </span>

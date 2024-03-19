@@ -18,23 +18,6 @@ interface SidebarLogoWrapperProps {
     displaySidebar: boolean
 }
 
-// export const AppBrandLogo = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   max-width: 100%;
-
-//   img {
-//     width: 100%; /* Ajustez la taille de l'image */
-//     height: auto;
-//     transition: all 0.3s ease; /* Ajoutez une transition pour une animation fluide */
-//   }
-
-//   &:hover img {
-//     width: 90%; /* Ajustez la taille de l'image au survol */
-//   }
-// `;
-
 export const SidebarLink = styled.a`
     text-decoration: none;
     color: inherit;
@@ -159,7 +142,7 @@ export const SidebarContainer = styled.div<SidebarContainerProps>`
     width: ${({ displaySidebar }) => (displaySidebar ? "15rem" : "5rem")};
     height: 100vh;
     padding: 0.75rem;
-    background: #f3f4f4;
+    background: #fafafc;
     transition: width 350ms ease;
     border-right: 1imgpx solid #d4d8dd;
     overflow-x: hidden;

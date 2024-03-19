@@ -62,7 +62,7 @@ const RubriquePage: React.FC = () => {
                         </div>
                     }
                     detailsHandler={handleView}
-                    title={"Liste des Rubriques Composes"}
+                    title={"Liste des rubriques composées"}
                     columns={RUBRIQUE_COLUMNS}
                     data={dat ? dat.reverse() : []}
                     actions={true}

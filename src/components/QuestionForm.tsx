@@ -7,6 +7,7 @@ import { ListContext } from "../context/listContext"
 import { QualificatifContext } from "../context/qualificatifContext"
 import { TYPE_STANDARD } from "../constants"
 import { Qualificatif } from "../types"
+import { NotificationContext } from "../context/notificationContext"
 interface questionFormProps {
     add: boolean
 }
@@ -20,7 +21,7 @@ const QuestionForm: React.FC<questionFormProps> = ({ add }) => {
         modifyQuestion,
         coupleQualificatif,
     } = useContext(QuestionContext)
-
+    const { showNotification } = useContext(NotificationContext)
     const { qualificatifList } = useContext(QualificatifContext)
 
     const [selectedQualificatif, setSelectedQualificatif] =
@@ -43,12 +44,20 @@ const QuestionForm: React.FC<questionFormProps> = ({ add }) => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-        const trimmedIntitule = questionintitule.trim();
+        const trimmedIntitule = questionintitule.trim()
         if (add === true) {
             const selectedQualificatifObj = transformedQuestionListe.find(
                 (item: { value: string | number }) =>
                     item.value === selectedQualificatif
             )
+            if (!selectedQualificatif) {
+                showNotification(
+                    "Erreur",
+                    "Veuillez choisir un qualificatif",
+                    "error"
+                )
+                return
+            }
             addNewQuestion({
                 idQualificatif: { id: selectedQualificatifObj.idValue },
                 noEnseignant: null,
@@ -57,8 +66,8 @@ const QuestionForm: React.FC<questionFormProps> = ({ add }) => {
             })
         } else {
             const id = trouverIdQuestion(selectedRow, questionListe)
-          
-            const trimmedIntitule = questionintitule.trim();
+
+            const trimmedIntitule = questionintitule.trim()
             const selectedQualificatifObj = transformedQuestionListe.find(
                 (item: { value: string | number }) =>
                     item.value === selectedQualificatif

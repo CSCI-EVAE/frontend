@@ -2,15 +2,14 @@ import React from "react"
 import { Container, Grid, Paper, Typography } from "@mui/material"
 import { useNavigate } from "react-router-dom"
 import { Icon } from "@mui/material"
-import {ENSEIGNANT_DASHBOARD } from "../../constants"
+import { ENSEIGNANT_DASHBOARD } from "../../constants"
 import Header from "../../Layout/Header"
 import SideBarEnseignant from "../../Layout/sideBar/SideBarEnseignant"
-
 
 function BigMenu() {
     const navigate = useNavigate()
     const textStyle: React.CSSProperties = {
-        fontFamily: "cursive",
+        fontFamily: "system-ui",
         color: "#e3a12f",
         marginTop: "20px",
         marginBottom: "50px",

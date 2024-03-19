@@ -42,7 +42,7 @@ import { Edit, Delete, Visibility, Send } from "@mui/icons-material"
 import { ListContext } from "../../context/listContext"
 import ButtonComponent from "../Button"
 import AddCircleIcon from "@mui/icons-material/AddCircle"
-import { LIST_ACTIONS, LIST_Etat } from "../../constants"
+import { COLORS, LIST_ACTIONS, LIST_Etat } from "../../constants"
 import { useNavigate } from "react-router-dom"
 
 interface Column {
@@ -151,8 +151,8 @@ const ListComponent: React.FC<Props> = ({
     })
 
     const textStyle: React.CSSProperties = {
-        fontFamily: "cursive",
-        color: "#e3a12f",
+        fontFamily: "system-ui",
+        color: COLORS.color3,
         marginTop: "20px",
         marginBottom: "50px",
     }
@@ -175,11 +175,11 @@ const ListComponent: React.FC<Props> = ({
                 {!filter && (
                     <div
                         style={{
-                            border: "1px solid #ccc",
-                            padding: "10px",
-                            marginBottom: "10px",
+                            padding: "5px",
+                            marginBottom: "20px",
                             width: "100%",
                             boxSizing: "border-box",
+                            marginTop: "20px",
                         }}
                     >
                         <div
@@ -189,12 +189,22 @@ const ListComponent: React.FC<Props> = ({
                                 display: "flex",
                                 flexDirection: "column",
                                 alignItems: "center",
+                                marginBottom: "10px",
                             }}
                         >
                             <Typography variant="h5">Filtre</Typography>
                         </div>
 
-                        <>
+                        <div
+                            style={{
+                                maxWidth: "90%",
+                                margin: "auto",
+                                display: "flex",
+                                flexDirection: "row",
+                                alignItems: "center",
+                                justifyContent: "center",
+                            }}
+                        >
                             {afficherEtat && afficherEtat === true ? (
                                 <>
                                     {columnsFilter &&
@@ -263,7 +273,7 @@ const ListComponent: React.FC<Props> = ({
                                     ))}
                                 </>
                             )}
-                        </>
+                        </div>
                     </div>
                 )}
                 <TableContainer component={Paper}>
@@ -274,7 +284,8 @@ const ListComponent: React.FC<Props> = ({
                                     <TableCell
                                         style={{
                                             fontWeight: "bold",
-                                            color: "white",
+                                            // color: "white",
+                                            background: COLORS.color7,
                                         }}
                                         key={column.id}
                                     >
@@ -286,7 +297,8 @@ const ListComponent: React.FC<Props> = ({
                                     <TableCell
                                         style={{
                                             fontWeight: "bold",
-                                            color: "white",
+                                            //color: "white",
+                                            background: COLORS.color7,
                                         }}
                                     >
                                         ACTIONS
@@ -330,23 +342,27 @@ const ListComponent: React.FC<Props> = ({
                                         {actions && (
                                             <TableCell>
                                                 {row.createValue && (
-                                                     <Tooltip title="Créer une évaluation">
-                                                    <IconButton
-                                                        onClick={() => {
-                                                            setSelectedActions(
-                                                                LIST_ACTIONS.create
-                                                            )
-                                                            updateSelectedRow(
-                                                                row
-                                                            )
-                                                            createHandler &&
-                                                                createHandler(
+                                                    <Tooltip title="Créer une évaluation">
+                                                        <IconButton
+                                                            onClick={() => {
+                                                                setSelectedActions(
+                                                                    LIST_ACTIONS.create
+                                                                )
+                                                                updateSelectedRow(
                                                                     row
                                                                 )
-                                                        }}
-                                                    >
-                                                        <AddCircleIcon />
-                                                    </IconButton>
+                                                                createHandler &&
+                                                                    createHandler(
+                                                                        row
+                                                                    )
+                                                            }}
+                                                        >
+                                                            <AddCircleIcon
+                                                                sx={{
+                                                                    color: COLORS.color3,
+                                                                }}
+                                                            />
+                                                        </IconButton>
                                                     </Tooltip>
                                                 )}
                                                 {row.detailsValue && (
@@ -357,11 +373,17 @@ const ListComponent: React.FC<Props> = ({
                                                                     updateSelectedRow(
                                                                         row
                                                                     )
-                                                                    localStorage.setItem("promotion", JSON.stringify(row))
-                                                                    url &&
-                                                                    navigate(
-                                                                        url+`/${row.codeFormation}/${row.anneeUniversitaire}`
+                                                                    localStorage.setItem(
+                                                                        "promotion",
+                                                                        JSON.stringify(
+                                                                            row
+                                                                        )
                                                                     )
+                                                                    url &&
+                                                                        navigate(
+                                                                            url +
+                                                                                `/${row.codeFormation}/${row.anneeUniversitaire}`
+                                                                        )
                                                                 } else {
                                                                     setSelectedActions(
                                                                         LIST_ACTIONS.read
@@ -377,15 +399,13 @@ const ListComponent: React.FC<Props> = ({
                                                                         true
                                                                     )
                                                                 }
-                                                                // setSelectedActions(
-                                                                //     LIST_ACTIONS.read
-                                                                // )
-                                                                // updateSelectedRow(row)
-                                                                // detailsHandler &&
-                                                                //     detailsHandler(row)
                                                             }}
                                                         >
-                                                            <Visibility />
+                                                            <Visibility
+                                                                sx={{
+                                                                    color: COLORS.color4,
+                                                                }}
+                                                            />
                                                         </IconButton>
                                                     </Tooltip>
                                                 )}
@@ -494,7 +514,7 @@ const ListComponent: React.FC<Props> = ({
                             width: 500, // Largeur fixe du modal
                             border: "1px solid #ccc", // Bordure
                             borderRadius: 8, // Bord arrondi
-                            backgroundColor: "rgba(255, 255, 255, 0.9)", // Transparence
+                            backgroundColor: "rgba(255, 255, 255, 1)", // Transparence
                             overflowY: "auto", // Scrollable en cas de contenu trop long
                         },
                     }}

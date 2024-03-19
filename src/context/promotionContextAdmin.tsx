@@ -59,12 +59,12 @@ export const PromotionContextProvider: React.FC<PromotionAdminContextProps> = ({
             return {
                 codeUe: ue.id.codeUe,
                 nomEnseignant:
-                    ue.noEnseignant.nom + " " + ue.noEnseignant.prenom,
+                    ue.noEnseignant.prenom + " " + ue.noEnseignant.nom,
                 designation: ue.designation,
                 nbhCm: ue.nbhCm,
                 nbhTd: ue.nbhTd,
                 nbhTp: ue.nbhTp,
-                totaleHeures: 50,
+                totaleHeures: ue.totaleHeures,
             }
         })
         console.log(

@@ -8,7 +8,10 @@ import React, {
 } from "react"
 
 import { Evaluation } from "../types/EvaluationType"
-import { Evaluation as EvaluationDetails } from "../types/EvaluationTypes"
+import {
+    Evaluation as EvaluationDetails,
+    RubriqueEvaluation,
+} from "../types/EvaluationTypes"
 import { NotificationContext } from "./notificationContext"
 import { ApiResponse, ReponseEvaluation } from "../types"
 import { getRequest, postRequest } from "../api/axios"
@@ -67,6 +70,9 @@ export const EvaluationEtudiantContextProvider: React.FC<
     const [evaluationList, setEvaluationList] = useState<
         Evaluation[] | undefined
     >()
+    const [consulterReponse, setConsulterReponse] = useState<
+        RubriqueEvaluation[]
+    >([])
     const { showNotification } = useContext(NotificationContext)
 
     const updateEvaluationList = useCallback((value: Evaluation[]) => {
@@ -111,6 +117,7 @@ export const EvaluationEtudiantContextProvider: React.FC<
                 return
             }
             let list: EvaluationDetails = response.data.data
+            console.log("🚀 ~ list:", list)
 
             setEvaluationDetails(list)
         },
@@ -131,6 +138,22 @@ export const EvaluationEtudiantContextProvider: React.FC<
         },
         [showNotification]
     )
+
+    const getEvaluationReponse = useCallback(
+        async (id: number) => {
+            const response: ApiResponse = await getRequest(
+                `/etudiant/getReponses/${id}`
+            )
+            if (!response.success) {
+                showNotification("Erreur", response.message, "error")
+                return
+            }
+            let list: EvaluationDetails = response.data.data
+            setConsulterReponse(list.rubriqueEvaluations)
+            // console.log("🚀 ~ list:", list)
+        },
+        [showNotification]
+    )
     return (
         <EvaluationEtudiantContext.Provider
             value={{
@@ -139,6 +162,8 @@ export const EvaluationEtudiantContextProvider: React.FC<
                 getEvaluationDetails,
                 evaluationDetails,
                 soumettreReponseEtudiant,
+                getEvaluationReponse,
+                consulterReponse,
             }}
         >
             {children}

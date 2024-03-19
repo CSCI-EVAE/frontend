@@ -1,5 +1,6 @@
 import React, { FC } from "react"
 import Button from "@mui/material/Button"
+import { COLORS } from "../../constants"
 
 interface Props {
     size?: "small" | "medium" | "large"
@@ -48,6 +49,7 @@ const BtnComponent: FC<Props> = ({
 
     return (
         <Button
+            sx={{ color: COLORS.color4 }}
             size={size}
             variant={variant}
             tabIndex={tabIndex}

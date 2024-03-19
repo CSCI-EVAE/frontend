@@ -1,5 +1,6 @@
 import React, { FC } from "react"
 import Button from "@mui/material/Button"
+import { COLORS } from "../../constants"
 
 interface Props {
     size?: "small" | "medium" | "large"
@@ -48,6 +49,13 @@ const ButtonComponent: FC<Props> = ({
 
     return (
         <Button
+            sx={{
+                background: COLORS.color3,
+                "&:hover": {
+                    background: COLORS.color7,
+                    color: COLORS.color4, // Définissez votre couleur de survol ici
+                },
+            }}
             size={size}
             variant={variant}
             tabIndex={tabIndex}
