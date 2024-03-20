@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react"
 import QuestionRating from "../../components/QuestionRating"
 import StepperComponent from "../../common/Stepper"
 import { StepContext } from "../../context/stepperContext"
-import { ReponseEvaluation as ReponseEvaluationType } from "../../types"
 import RecapitulatifReponses from "../../components/RecapitulatifReponses"
 import Header from "../../Layout/Header"
 import { useNavigate, useParams } from "react-router-dom"
@@ -29,48 +28,12 @@ const ReponseEvaluation = () => {
 
     const { activeStep, handleComplete } = useContext(StepContext)
 
-    const [reponse, setReponse] = useState<ReponseEvaluationType>({
-        commentaire: "",
-        idEvaluation: Number(idEvaluation),
-        nom: "",
-        prenom: "",
-        reponseQuestions: [],
-    })
-    const handleAddChoice = (idQuestion: number, positionnement: number) => {
-        setReponse({
-            ...reponse,
-            reponseQuestions: [
-                ...reponse.reponseQuestions,
-                {
-                    idQuestionEvaluation: {
-                        id: idQuestion,
-                    },
-                    positionnement: positionnement,
-                },
-            ],
-        })
-    }
-    const handleNomPrenomCommentaire = (
-        nom: string,
-        prenom: string,
-        commentaire: string
-    ) => {
-        setReponse({
-            ...reponse,
-            commentaire: commentaire,
-            nom: nom,
-            prenom: prenom,
-        })
-    }
-
     const handleValidateElement = () => {
         //traitement ajout
         //
         if (activeStep !== (list?.rubriqueEvaluations?.length ?? 0) + 2) {
             handleComplete()
-            localStorage.setItem("reponseEvaluation", JSON.stringify(reponse))
         } else {
-            console.log("🚀 ~ ReponseEvaluation ~ reponseNESKLJDLJKL:", reponse)
             //fin du remplissage
             alert("formulaire fini")
         }
@@ -78,7 +41,6 @@ const ReponseEvaluation = () => {
     const stepItems = list
         ? list.rubriqueEvaluations.map((r, index) => (
               <QuestionRating
-                  handleAddChoice={handleAddChoice}
                   key={index}
                   rubrique={r}
                   handleSubmit={handleValidateElement}
@@ -87,10 +49,11 @@ const ReponseEvaluation = () => {
         : []
     stepItems.push(
         <CommentaireEvalution
-            handleNomPrenomCommentaire={handleNomPrenomCommentaire}
+            key={"20"}
             handleSubmit={handleValidateElement}
         />,
         <RecapitulatifReponses
+            key={"200"}
             rubrique={list ? list.rubriqueEvaluations : []}
         />
     )
@@ -101,14 +64,15 @@ const ReponseEvaluation = () => {
             <div
                 style={{
                     maxWidth: "90%",
-                    marginLeft: "150px",
+                    marginLeft: "75px",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "flex-start",
+                    marginBottom: "50px",
                 }}
             >
                 <ButtonComponent
-                    text="Retour"
+                    text="Retour à  la page principale"
                     variant="contained"
                     icon={<KeyboardBackspace />}
                     onClick={() => {

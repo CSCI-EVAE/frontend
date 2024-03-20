@@ -5,6 +5,8 @@ import { EvaluationEtudiantContext } from "../../context/evaluationEtudiantConte
 import { useNavigate, useParams } from "react-router-dom"
 import { RubriqueEvaluation } from "../../types/EvaluationTypes"
 import { KeyboardBackspace } from "@mui/icons-material"
+import { COLORS } from "../../constants"
+import Header from "../../Layout/Header"
 
 const ConsulterReponseEtudiant = () => {
     const navigate = useNavigate()
@@ -27,6 +29,7 @@ const ConsulterReponseEtudiant = () => {
 
     return (
         <>
+            <Header />
             <div
                 style={{
                     maxWidth: "90%",
@@ -38,7 +41,7 @@ const ConsulterReponseEtudiant = () => {
                 }}
             >
                 <ButtonComponent
-                    text="Retour à  la page principale"
+                    text="Retour "
                     variant="contained"
                     icon={<KeyboardBackspace />}
                     onClick={() => {
@@ -48,7 +51,7 @@ const ConsulterReponseEtudiant = () => {
             </div>
             <div
                 style={{
-                    maxWidth: "80%",
+                    maxWidth: "70%",
                     margin: "auto",
                     display: "flex",
                     flexDirection: "column",
@@ -56,141 +59,158 @@ const ConsulterReponseEtudiant = () => {
                 }}
             >
                 <Typography
-                    style={{ margin: "32px", textAlign: "center" }}
-                    variant="h5"
+                    style={{
+                        margin: "32px",
+                        textAlign: "center",
+                        fontFamily: "system-ui",
+                        color: COLORS.color3,
+                        marginTop: "20px",
+                        marginBottom: "50px",
+                    }}
+                    variant="h4"
                     gutterBottom
                 >
                     Vos réponses
                 </Typography>
-                <Paper elevation={0}>
-                    {reponse &&
-                        reponse.map((rep, index) => (
-                            <Paper elevation={4} key={index}>
-                                <div>
-                                    <Typography
+
+                {reponse &&
+                    reponse.map((rep, index) => (
+                        <Paper
+                            elevation={4}
+                            key={index}
+                            sx={{
+                                marginBottom: "24px",
+                                background: COLORS.color7,
+                            }}
+                        >
+                            <div>
+                                <Typography
+                                    style={{
+                                        margin: "24px",
+                                        textAlign: "center",
+                                    }}
+                                    variant="h5"
+                                    gutterBottom
+                                >
+                                    Rubrique :{" "}
+                                    <span
                                         style={{
-                                            margin: "32px",
-                                            textAlign: "center",
+                                            color: COLORS.color4,
+                                            fontWeight: "bold",
                                         }}
-                                        variant="h5"
-                                        gutterBottom
                                     >
                                         {rep.idRubrique.designation}
-                                    </Typography>
+                                    </span>
+                                </Typography>
 
-                                    {rep.questionEvaluations &&
-                                        rep.questionEvaluations.map(
-                                            (questionItem, qIndex) => (
+                                {rep.questionEvaluations &&
+                                    rep.questionEvaluations.map(
+                                        (questionItem, qIndex) => (
+                                            <div
+                                                key={qIndex}
+                                                style={{
+                                                    backgroundColor:
+                                                        qIndex % 2 === 0
+                                                            ? "#fff"
+                                                            : "#f9f9f9",
+                                                }}
+                                            >
+                                                <Divider />
                                                 <div
-                                                    key={qIndex}
                                                     style={{
-                                                        marginBottom: "20px",
+                                                        display: "flex",
+                                                        flexDirection: "row",
+                                                        justifyContent:
+                                                            "space-between",
+                                                        width: "80%",
+                                                        margin: "auto",
                                                     }}
                                                 >
-                                                    <Typography
-                                                        variant="body1"
-                                                        gutterBottom
+                                                    {/* Premier contenu aligné à gauche */}
+                                                    <div
+                                                        style={{
+                                                            margin: "16px",
+                                                        }}
                                                     >
-                                                        <Divider
-                                                            style={{
-                                                                backgroundColor:
-                                                                    "transparent",
-                                                            }}
-                                                        >
+                                                        <Typography>
                                                             {
                                                                 questionItem
                                                                     .idQuestion
                                                                     .intitule
                                                             }
-                                                        </Divider>
-                                                    </Typography>
+                                                        </Typography>
+                                                    </div>
 
+                                                    {/* Deuxième contenu aligné à droite */}
                                                     <div
                                                         style={{
-                                                            width: "100%",
                                                             display: "flex",
                                                             flexDirection:
                                                                 "row",
-                                                            alignItems:
-                                                                "center",
-                                                            justifyContent:
-                                                                "center",
-                                                            marginBottom:
-                                                                "20px",
+                                                            margin: "16px",
                                                         }}
                                                     >
-                                                        <Typography
+                                                        {/* Typographie pour la valeur minimale */}
+                                                        <div
                                                             style={{
                                                                 width: "100px",
-                                                                textAlign:
-                                                                    "right",
-                                                                marginRight:
-                                                                    "16px",
-                                                                fontSize:
-                                                                    "14px",
                                                             }}
-                                                            variant="body1"
                                                         >
-                                                            {
-                                                                questionItem
-                                                                    .idQuestion
-                                                                    .idQualificatif
-                                                                    .minimal
-                                                            }
-                                                        </Typography>
-                                                        <Chip
-                                                            style={{
-                                                                fontSize:
-                                                                    "24px",
-                                                            }}
-                                                            label={
-                                                                questionItem.positionnement
-                                                            }
-                                                            //label={"2"}
-                                                            color="primary"
-                                                            size="medium"
-                                                        />
-                                                        <Typography
+                                                            <Typography variant="body1">
+                                                                {
+                                                                    questionItem
+                                                                        .idQuestion
+                                                                        .idQualificatif
+                                                                        .minimal
+                                                                }
+                                                            </Typography>
+                                                        </div>
+
+                                                        {/* Chip avec une largeur fixe */}
+                                                        <div
                                                             style={{
                                                                 width: "100px",
-                                                                textAlign:
-                                                                    "left",
-                                                                marginLeft:
-                                                                    "16px",
-                                                                fontSize:
-                                                                    "14px",
                                                             }}
-                                                            variant="body1"
                                                         >
-                                                            {
-                                                                questionItem
-                                                                    .idQuestion
-                                                                    .idQualificatif
-                                                                    .maximal
-                                                            }
-                                                        </Typography>
+                                                            <Chip
+                                                                style={{
+                                                                    fontSize:
+                                                                        "24px",
+                                                                    width: "50px",
+                                                                    color: COLORS.color7,
+                                                                    background:
+                                                                        COLORS.color3,
+                                                                }}
+                                                                label={
+                                                                    questionItem.positionnement
+                                                                }
+                                                                size="medium"
+                                                            />
+                                                        </div>
+
+                                                        {/* Typographie pour la valeur maximale */}
+                                                        <div
+                                                            style={{
+                                                                width: "100px",
+                                                            }}
+                                                        >
+                                                            <Typography variant="body1">
+                                                                {
+                                                                    questionItem
+                                                                        .idQuestion
+                                                                        .idQualificatif
+                                                                        .maximal
+                                                                }
+                                                            </Typography>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            )
-                                        )}
-                                </div>
-                            </Paper>
-                        ))}
-                    {/* <div
-                    style={{
-                        margin: "auto",
-                        display: "flex",
-                        flexDirection: "row-reverse",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                    }}
-                >
-                    <ButtonComponent
-                        text="Modifier les réponses"
-                        onClick={handleModifier}
-                    />
-                </div> */}
-                </Paper>
+                                            </div>
+                                        )
+                                    )}
+                            </div>
+                        </Paper>
+                    ))}
             </div>
         </>
     )

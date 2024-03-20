@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form"
 import {
     Grid,
     Typography,
-    Avatar,
     Paper,
     Box,
     CssBaseline,
@@ -12,30 +11,28 @@ import {
     FormControl,
     FormHelperText,
 } from "@mui/material"
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined"
 import ButtonComponent from "../common/Button"
 import { ThemeProvider, createTheme } from "@mui/material/styles"
 
 import Header from "../Layout/Header"
 import { StepContext } from "../context/stepperContext"
 import { ReponseEvaluation } from "../types"
+import { COLORS } from "../constants"
+import { EvaluationEtudiantContext } from "../context/evaluationEtudiantContext"
 
 const defaultTheme = createTheme()
 
 interface CommentaireProps {
-    handleNomPrenomCommentaire: (
-        nom: string,
-        prenom: string,
-        commentaire: string
-    ) => void
     handleSubmit: () => void
 }
 
 const ModifierCommentaireEvaluation: React.FC<CommentaireProps> = ({
-    handleNomPrenomCommentaire,
     handleSubmit,
 }) => {
     const { activeStep, handleBack } = React.useContext(StepContext)
+    const { updateNomPrenomCommentaireModifier } = React.useContext(
+        EvaluationEtudiantContext
+    )
     const {
         register,
 
@@ -61,7 +58,11 @@ const ModifierCommentaireEvaluation: React.FC<CommentaireProps> = ({
         }
     }, [])
     const onSubmit = (data: any) => {
-        handleNomPrenomCommentaire(data.nom, data.prenom, data.commentaire)
+        updateNomPrenomCommentaireModifier(
+            data.nom,
+            data.prenom,
+            data.commentaire
+        )
         handleSubmit()
     }
 
@@ -75,10 +76,9 @@ const ModifierCommentaireEvaluation: React.FC<CommentaireProps> = ({
                         component="main"
                         sx={{
                             mt: "-5",
-                            //height: "100vh",
+
                             display: "flex",
                             justifyContent: "center",
-                            //width: "500px",
                         }}
                     >
                         <CssBaseline />
@@ -89,24 +89,26 @@ const ModifierCommentaireEvaluation: React.FC<CommentaireProps> = ({
                             //sm={8}
                             md={8}
                             component={Paper}
-                            elevation={6}
-                            square
+                            elevation={4}
                         >
                             <Box
                                 sx={{
                                     display: "flex",
                                     flexDirection: "column",
                                     alignItems: "center",
-                                    marginBottom: "32px",
+                                    marginBottom: "96px",
+                                    marginTop: "48px",
                                 }}
                             >
-                                <Avatar
-                                    sx={{ m: 1, bgcolor: "secondary.main" }}
+                                <Typography
+                                    style={{
+                                        margin: "16px",
+                                        color: COLORS.color3,
+                                    }}
+                                    component="h1"
+                                    variant="h5"
                                 >
-                                    <LockOutlinedIcon />
-                                </Avatar>
-                                <Typography component="h1" variant="h5">
-                                    Complément d'information
+                                    Complément d'information (OPTIONNEL)
                                 </Typography>
 
                                 <Grid
@@ -118,12 +120,13 @@ const ModifierCommentaireEvaluation: React.FC<CommentaireProps> = ({
                                         margin: "auto",
                                         width: "70%",
                                         display: "flex",
-                                        flexDirection: "column",
+                                        flexDirection: "row",
                                         alignItems: "center",
+                                        justifyContent: "center",
                                     }}
                                     spacing={2}
                                 >
-                                    <Grid item xs={12} sm={12}>
+                                    <Grid item xs={3} sm={3}>
                                         <FormControl>
                                             <TextField
                                                 // margin="normal"
@@ -144,7 +147,7 @@ const ModifierCommentaireEvaluation: React.FC<CommentaireProps> = ({
                                             )}
                                         </FormControl>
                                     </Grid>
-                                    <Grid item xs={12} sm={12}>
+                                    <Grid item xs={3} sm={3}>
                                         <FormControl>
                                             <TextField
                                                 id="prenom"
@@ -163,16 +166,16 @@ const ModifierCommentaireEvaluation: React.FC<CommentaireProps> = ({
                                             )}
                                         </FormControl>
                                     </Grid>
-                                    <Grid item xs={12} sm={12}>
+                                    <Grid item xs={6} sm={6}>
                                         <FormControl>
                                             <TextField
                                                 multiline
-                                                minRows={3}
+                                                // minRows={2}
                                                 defaultValue={
                                                     commentaireDefault
                                                 }
                                                 id="commentaire"
-                                                label="commentaire "
+                                                label="Commentaire "
                                                 autoComplete="commentaire"
                                                 error={!!errors.prenom}
                                                 //defaultValue={defaultValues.profession}

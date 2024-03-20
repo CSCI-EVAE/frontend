@@ -39,9 +39,9 @@ export const StepContextProvider: React.FC<StepContextProviderProps> = ({
         }
 
         // Marquer comme incomplètes les étapes suivantes
-        for (let i = step + 1; i < totalSteps; i++) {
-            updatedCompleted[i] = false
-        }
+        // for (let i = step + 1; i < totalSteps; i++) {
+        //     updatedCompleted[i] = false
+        // }
 
         updateCompletedStep(updatedCompleted)
     }
