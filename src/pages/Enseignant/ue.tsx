@@ -73,6 +73,8 @@ const UePage: React.FC = () => {
                     soumettreValue: true,
                 }
             }
+
+            
         }
 
         return extractedInfo
@@ -109,7 +111,8 @@ const UePage: React.FC = () => {
 
         if (selectedUe) {
             const rowDataInfo = extractNeededInfo(selectedUe)
-
+            const rowDataInfoString = JSON.stringify(rowDataInfo)
+            localStorage.setItem("state",rowDataInfoString)
             navigate(`creation-evaluation`, { state: { rowDataInfo } })
         }
     }
