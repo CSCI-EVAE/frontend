@@ -8,7 +8,7 @@ import {
     Grid,
 } from "@mui/material"
 import ButtonComponent from "../common/Button"
-import { useLocation, useNavigate } from "react-router-dom"
+import {useNavigate } from "react-router-dom"
 import { UEContext } from "../context/UeContext"
 import SelectComponent from "../common/Select/newSelect"
 import { Promotion } from "../types"
@@ -19,8 +19,10 @@ const InfoGenerales: React.FC = () => {
 
 
     const navigate = useNavigate()
-    const { state } = useLocation()
-    const infoGenerale = state?.rowDataInfo
+   
+    const state = localStorage.getItem("state")
+
+    const infoGenerale = JSON.parse(state ?? "{}")
     const [dateDebutError, setDateDebutError] = useState(false);
     const [dateFinError, setDateFinError] = useState(false);
 
@@ -29,7 +31,6 @@ const InfoGenerales: React.FC = () => {
     const [dateDebut, setDateDebut] = useState("")
 
     const [dateFin, setDateFin] = useState("")
-    const [periode, setPeriode] = useState("")
     const [error, setError] = useState("")
     const [anneePro, setAnneePro] = useState<string>('');
 
@@ -78,12 +79,31 @@ const InfoGenerales: React.FC = () => {
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault()
+        const auj = new Date()
 
+        const year = auj.getFullYear();
+        const month = String(auj.getMonth() + 1).padStart(2, '0'); 
+        const day = String(auj.getDate()).padStart(2, '0'); 
+
+        const formattedDate = `${year}-${month}-${day}`;
+
+        console.log(formattedDate);
         if (!designation || !dateDebut || !dateFin || !anneePro) {
             setError("Veuillez remplir les champs obligatoires de date debut et fin et designation.")
             setDesignationError(!designation);
             setDateDebutError(!dateDebut);
             setDateFinError(!dateFin);
+
+            return
+        }
+        console.log("Date d'aujourd'hui :", formattedDate);
+        console.log("Date de début sélectionnée :", dateDebut);
+
+
+        if (dateDebut < formattedDate) {
+            setError(
+                "Sélectionnez une date valide en veillant à ce que la date de début soit antérieure à la date d'aujourd'hui."
+            )
 
             return
         }
@@ -108,7 +128,7 @@ const InfoGenerales: React.FC = () => {
 
         const infoSup = {
             anneePro: anneePro,
-            periode: periode
+
         }
 
         localStorage.setItem("formData", JSON.stringify(infoGenerales))
@@ -173,7 +193,7 @@ const InfoGenerales: React.FC = () => {
                     </Typography>
                 </div>
                 <form onSubmit={handleSubmit} style={formStyle}>
-                    {error && <Alert style={{margin:"15px"}}severity="error">{error}</Alert>}
+                    {error && <Alert style={{ margin: "15px" }} severity="error">{error}</Alert>}
 
                     <Grid container spacing={2}>
                         <Grid item xs={10} sm={10}>
@@ -200,6 +220,8 @@ const InfoGenerales: React.FC = () => {
                             }
                         </Grid>
 
+
+
                         <Grid item xs={10} sm={4}>
 
                             <SelectComponent
@@ -216,28 +238,6 @@ const InfoGenerales: React.FC = () => {
                             />
 
                         </Grid>
-                        <Grid item xs={10} sm={6}>
-                            <TextField
-                                label="Désignation *"
-                                variant="outlined"
-                                fullWidth
-                                value={designation}
-                                onChange={(e) => setDesignation(e.target.value)}
-                                error={designationError}
-                                helperText={designationError ? 'La désignation ne peut pas être vide.' : ''}
-                                style={{
-                                    ...textFieldStyle,
-                                    borderColor: designationError ? 'red' : '',
-                                }}
-
-                                
-
-                            />
-                        </Grid>
-
-
-                        
-
 
 
                         <Grid item xs={10} sm={4}>
@@ -257,6 +257,7 @@ const InfoGenerales: React.FC = () => {
                                     ...textFieldStyle,
                                     borderColor: dateDebutError ? 'red' : '',
                                 }}
+
                             />
                         </Grid>
                         <Grid item xs={10} sm={4}>
@@ -279,22 +280,26 @@ const InfoGenerales: React.FC = () => {
                             />
                         </Grid>
 
-                        <Grid item xs={10} sm={4}>
+                        <Grid item xs={10} sm={12}>
                             <TextField
-                                label="periode"
+                                label="Désignation *"
                                 variant="outlined"
                                 fullWidth
-                                value={periode}
-                                onChange={(e) => setPeriode(e.target.value)}
-
-
-
+                                value={designation}
+                                onChange={(e) => setDesignation(e.target.value)}
+                                error={designationError}
+                                helperText={designationError ? 'La désignation ne peut pas être vide.' : ''}
                                 style={{
                                     ...textFieldStyle,
                                     borderColor: designationError ? 'red' : '',
                                 }}
+
+
+
                             />
                         </Grid>
+
+
                     </Grid>
                     <div style={{ textAlign: "right" }}>
                         <ButtonComponent

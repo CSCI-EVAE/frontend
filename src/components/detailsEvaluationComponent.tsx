@@ -211,17 +211,10 @@ const DetailsEvaluationComponent: FC<DetailsProps> = ({
                                 }}
                             >
                                 <Typography variant="body1">
-                                    {evaluation.periode ? (
-                                        <React.Fragment>
-                                            <strong>Periode : </strong>
-                                            {evaluation.periode}
-                                        </React.Fragment>
-                                    ) : (
-                                        <React.Fragment>
+                                <React.Fragment>
                                             <strong>Periode : </strong>
                                             Du  {evaluation.debutReponse} au {evaluation.finReponse}
                                         </React.Fragment>
-                                    )}
                                 </Typography>
                             </Grid>
                             <Grid
