@@ -17,8 +17,11 @@ const RecapitulatifReponses: FC<ReponseProps> = ({ rubrique }) => {
     const handleModifier = () => {
         handleReset()
     }
-    const { soumettreReponseEtudiant, reponseEvae, evaluationDetails } =
-        useContext(EvaluationEtudiantContext)
+    const {
+        soumettreReponseEtudiant,
+        reponseEvae,
+        // evaluationDetails
+    } = useContext(EvaluationEtudiantContext)
 
     const trouverPositionnementParId = (
         reponse: ReponseEvaluation,
