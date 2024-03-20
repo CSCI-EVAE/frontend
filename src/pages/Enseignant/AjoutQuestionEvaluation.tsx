@@ -9,9 +9,7 @@ import {
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep"
 import { RubriqueEnseignantContext } from "../../context/rubriqueEnseignantContext"
-import Header from "../../Layout/Header"
 import { RubriqueCompose, questionsInRubrique } from "../../types"
-import SideBarEnseignant from "../../Layout/sideBar/SideBarEnseignant"
 
 interface TableQuestionProps {
     rubriqueParent: RubriqueCompose
@@ -20,12 +18,14 @@ interface TableQuestionProps {
         row: questionsInRubrique,
         rubriqueParent: RubriqueCompose
     ) => void
+    updateDataset: (data: any) => void
 }
 
 const AjoutQuestionEvaluation: React.FC<TableQuestionProps> = ({
     rubriqueParent,
     questions,
     deleteQuestionHandler,
+    updateDataset,
 }) => {
     const [dataset, setDataset] = useState<questionsInRubrique[]>(questions)
     const { rubriqueAdded } = useContext(RubriqueEnseignantContext)
@@ -44,9 +44,13 @@ const AjoutQuestionEvaluation: React.FC<TableQuestionProps> = ({
         newItems.forEach((item, index) => {
             item.ordre = index + 1
         })
-        console.log(newItems)
-
+        console.log("🚀 ~ onDragEnd ~ newItems:", newItems)
         setDataset(newItems)
+        const newRubrique = {
+            ...rubriqueParent,
+            questions: newItems,
+        }
+        updateDataset(newRubrique)
     }
 
     return (
@@ -66,8 +70,6 @@ const AjoutQuestionEvaluation: React.FC<TableQuestionProps> = ({
                             }}
                         >
                             <>
-                            <SideBarEnseignant />
-        <Header />
                                 {dataset.map((row, index: number) => (
                                     <Draggable
                                         key={row.idQuestion}

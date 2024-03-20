@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react"
 import {
-    DialogTitle,
+    //DialogTitle,
     DialogActions,
     DialogContent,
     Dialog,
@@ -32,6 +32,7 @@ import SideBarEnseignant from "../../Layout/sideBar/SideBarEnseignant"
 import EnseignantAddRubriqueStandard from "../../components/EnseignantAddRubriqueStandard"
 import { EvaluationContext } from "../../context/evaluationEnseignantContext"
 import { useNavigate } from "react-router"
+import { KeyboardBackspace } from "@mui/icons-material"
 
 const AjoutRubriqueEvaluation = () => {
     const {
@@ -47,6 +48,24 @@ const AjoutRubriqueEvaluation = () => {
     const { addNewEvaluation } = useContext(EvaluationContext)
 
     const [dataset, setDataset] = useState<RubriqueCompose[]>(rubriqueAdded)
+    const updateDataset = (newItem: RubriqueCompose) => {
+        // Recherchez l'index de l'élément existant dans prevState
+        const index = dataset.findIndex(
+            (item) => item.idRubrique === newItem.idRubrique
+        )
+
+        // Si l'élément existe, remplacez-le par le nouvel élément
+        if (index !== -1) {
+            setDataset((prevState) => {
+                const updatedDataset = [...prevState]
+                updatedDataset[index] = newItem
+                return updatedDataset
+            })
+        } else {
+            // Si l'élément n'existe pas, ajoutez simplement le nouvel élément à la fin du tableau
+            setDataset((prevState) => [...prevState, newItem])
+        }
+    }
 
     useEffect(() => {
         setDataset(rubriqueAdded)
@@ -64,6 +83,7 @@ const AjoutRubriqueEvaluation = () => {
 
         setDataset(newItems)
     }
+
     const { openModal, updateModalOpen, updateSelectedRow } =
         useContext(ListContext)
 
@@ -94,7 +114,7 @@ const AjoutRubriqueEvaluation = () => {
                 element.designation !== newRubrique.designation
         )
         NewList.push(newRubrique)
-        console.log(NewList)
+
         updateRubriqueAddedByList(NewList)
     }
 
@@ -113,8 +133,6 @@ const AjoutRubriqueEvaluation = () => {
             }
         }
     )
-
-    console.log(rubriquesToAdd)
 
     const handleSubmit = async () => {
         const formData = localStorage.getItem("formData")
@@ -147,6 +165,27 @@ const AjoutRubriqueEvaluation = () => {
         <>
             <SideBarEnseignant />
             <Header />
+            <div
+                style={{
+                    maxWidth: "90%",
+                    marginLeft: "100px",
+                    marginBottom: "48px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-start",
+                }}
+            >
+                <ButtonComponent
+                    text="Retour"
+                    variant="contained"
+                    icon={<KeyboardBackspace />}
+                    onClick={() => {
+                        navigate(
+                            `/dashboard/enseignant/unitésEnseignement/creation-evaluation`
+                        )
+                    }}
+                />
+            </div>
 
             <div
                 style={{
@@ -288,6 +327,9 @@ const AjoutRubriqueEvaluation = () => {
                                                     </ListItemButton>
                                                     <AccordionDetails>
                                                         <AjoutQuestionEvaluation
+                                                            updateDataset={
+                                                                updateDataset
+                                                            }
                                                             rubriqueParent={row}
                                                             questions={
                                                                 row.questions
@@ -326,7 +368,7 @@ const AjoutRubriqueEvaluation = () => {
                         },
                     }}
                 >
-                    <DialogTitle>{"Ajout"}</DialogTitle>
+                    {/* <DialogTitle>{"Ajout"}</DialogTitle> */}
                     <DialogContent
                         style={{
                             margin: "auto",

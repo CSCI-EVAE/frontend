@@ -133,13 +133,18 @@ export const RubriqueEnseignantContextProvider: React.FC<
     }, [])
     const updateRubriqueAdded = useCallback(
         (value: RubriqueCompose) => {
-            setRubriqueAdded([...rubriqueAdded, value])
+            const sortedDataset = [...rubriqueAdded, value].sort(
+                (a, b) => a.ordre - b.ordre
+            )
+
+            setRubriqueAdded(sortedDataset)
         },
         [rubriqueAdded]
     )
     const updateRubriqueAddedByList = useCallback(
         (value: RubriqueCompose[]) => {
-            setRubriqueAdded(value)
+            const sortedDataset = [...value].sort((a, b) => a.ordre - b.ordre)
+            setRubriqueAdded(sortedDataset)
         },
         []
     )

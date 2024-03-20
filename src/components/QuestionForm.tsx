@@ -80,7 +80,7 @@ const QuestionForm: React.FC<questionFormProps> = ({ add }) => {
                 intitule: trimmedIntitule,
             })
         }
-
+        updateQuestionintitule("")
         updateModalOpen(false)
     }
     const handleReset = () => {
