@@ -11,7 +11,6 @@ import DeleteSweepIcon from "@mui/icons-material/DeleteSweep"
 import { RubriqueEnseignantContext } from "../../context/rubriqueEnseignantContext"
 import { RubriqueCompose, questionsInRubrique } from "../../types"
 
-
 interface TableQuestionProps {
     rubriqueParent: RubriqueCompose
     questions: questionsInRubrique[]
@@ -19,12 +18,14 @@ interface TableQuestionProps {
         row: questionsInRubrique,
         rubriqueParent: RubriqueCompose
     ) => void
+    updateDataset: (data: any) => void
 }
 
 const AjoutQuestionEvaluation: React.FC<TableQuestionProps> = ({
     rubriqueParent,
     questions,
     deleteQuestionHandler,
+    updateDataset,
 }) => {
     const [dataset, setDataset] = useState<questionsInRubrique[]>(questions)
     const { rubriqueAdded } = useContext(RubriqueEnseignantContext)
@@ -43,9 +44,13 @@ const AjoutQuestionEvaluation: React.FC<TableQuestionProps> = ({
         newItems.forEach((item, index) => {
             item.ordre = index + 1
         })
-        console.log(newItems)
-
+        console.log("🚀 ~ onDragEnd ~ newItems:", newItems)
         setDataset(newItems)
+        const newRubrique = {
+            ...rubriqueParent,
+            questions: newItems,
+        }
+        updateDataset(newRubrique)
     }
 
     return (
@@ -65,7 +70,6 @@ const AjoutQuestionEvaluation: React.FC<TableQuestionProps> = ({
                             }}
                         >
                             <>
-    
                                 {dataset.map((row, index: number) => (
                                     <Draggable
                                         key={row.idQuestion}

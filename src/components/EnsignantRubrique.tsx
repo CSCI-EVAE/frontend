@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react"
-import { Box, Typography } from "@mui/material"
+import { Box } from "@mui/material"
 import ButtonComponent from "../common/Button"
 import { QuestionContext } from "../context/questionContext"
 
@@ -159,17 +159,6 @@ const EnseignantRubrique: React.FC<rubriqueComposeFormProps> = ({ add }) => {
                 gap: "2rem",
             }}
         >
-            <Typography
-                variant="h5"
-                sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                }}
-            >
-                {" "}
-                Entrez les informations
-            </Typography>
             {add ? (
                 <Box sx={{ display: "flex", gap: "1rem" }}>
                     <CheckboxComponent
@@ -183,9 +172,16 @@ const EnseignantRubrique: React.FC<rubriqueComposeFormProps> = ({ add }) => {
                     />
                 </Box>
             ) : (
-                <Box sx={{ display: "flex", gap: "1rem" }}>
+                <Box
+                    sx={{
+                        display: "flex",
+                        gap: "1rem",
+                        maxHeight: "400px",
+                        overflow: "auto",
+                    }}
+                >
                     <CheckboxComponent
-                        label="Choiissiez les questions"
+                        label="Choisissez les questions"
                         options={questionsListOptions}
                         value={selectedQuestionInRubriqueCompose}
                         onChange={(value) =>

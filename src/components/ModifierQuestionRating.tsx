@@ -1,7 +1,7 @@
-import React, { FC, useEffect, useState } from "react"
+import React, { FC, useContext, useEffect, useState } from "react"
 import Rating from "@mui/material/Rating"
 import Typography from "@mui/material/Typography"
-import { Card, CardContent, Divider, Paper } from "@mui/material"
+import { Divider, Paper } from "@mui/material"
 import { StepContext } from "../context/stepperContext"
 import ButtonComponent from "../common/Button"
 import {
@@ -9,6 +9,8 @@ import {
     RubriqueEvaluation,
 } from "../types/EvaluationTypes"
 import { DefaultValue, ReponseEvaluation, reponseQuestions } from "../types"
+import { COLORS } from "../constants"
+import { EvaluationEtudiantContext } from "../context/evaluationEtudiantContext"
 
 const createDefaultValue = (
     reponseQuestions: reponseQuestions[],
@@ -41,14 +43,15 @@ const createDefaultValue = (
 interface QuestionRatingProps {
     rubrique: RubriqueEvaluation
     handleSubmit: () => void
-    handleAddChoice: (idQuestion: number, positionnement: number) => void
 }
 const ModifierQuestionRating: FC<QuestionRatingProps> = ({
     rubrique,
     handleSubmit,
-    handleAddChoice,
 }) => {
     const { activeStep, handleBack } = React.useContext(StepContext)
+    const { updateReponseEvaluationModifier } = useContext(
+        EvaluationEtudiantContext
+    )
     const arrayLength = rubrique.questionEvaluations?.length ?? 1
 
     const [ratings, setRatings] = useState(new Array(arrayLength).fill(0))
@@ -58,7 +61,7 @@ const ModifierQuestionRating: FC<QuestionRatingProps> = ({
         value: number,
         idQuestion: number
     ) => {
-        handleAddChoice(idQuestion, value)
+        updateReponseEvaluationModifier(idQuestion, value)
         const newRatings = [...ratings]
 
         newRatings[index] = value
@@ -118,14 +121,31 @@ const ModifierQuestionRating: FC<QuestionRatingProps> = ({
                 //   alignItems: "center",
             }}
         >
-            <Paper elevation={0}>
+            <Paper
+                elevation={4}
+                sx={{
+                    marginBottom: "24px",
+                    background: COLORS.color7,
+                }}
+            >
                 <div>
                     <Typography
-                        style={{ margin: "32px", textAlign: "center" }}
+                        style={{
+                            margin: "24px",
+                            textAlign: "center",
+                        }}
                         variant="h5"
                         gutterBottom
                     >
-                        {rubrique.idRubrique.designation}
+                        Rubrique :{" "}
+                        <span
+                            style={{
+                                color: COLORS.color4,
+                                fontWeight: "bold",
+                            }}
+                        >
+                            {rubrique.idRubrique.designation}
+                        </span>
                     </Typography>
 
                     {rubrique.questionEvaluations &&
@@ -133,84 +153,107 @@ const ModifierQuestionRating: FC<QuestionRatingProps> = ({
                             (questionItem, qIndex) => (
                                 <div
                                     key={qIndex}
-                                    style={{ marginBottom: "20px" }}
+                                    style={{
+                                        backgroundColor:
+                                            qIndex % 2 === 0
+                                                ? "#fff"
+                                                : "#f9f9f9",
+                                    }}
                                 >
-                                    <Card variant="elevation">
-                                        <CardContent
-                                            style={{ textAlign: "center" }}
-                                        >
-                                            <Typography
-                                                variant="body1"
-                                                gutterBottom
-                                            >
-                                                <Divider
-                                                    style={{
-                                                        backgroundColor:
-                                                            "transparent",
-                                                    }}
-                                                >
-                                                    {questionItem.intitule}
-                                                </Divider>
-                                            </Typography>
-                                        </CardContent>
+                                    <Divider />
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            flexDirection: "row",
+                                            justifyContent: "space-between",
+                                            width: "80%",
+                                            margin: "auto",
+                                        }}
+                                    >
+                                        {/* Premier contenu aligné à gauche */}
                                         <div
                                             style={{
-                                                width: "100%",
-                                                display: "flex",
-                                                flexDirection: "row",
-                                                alignItems: "center",
-                                                justifyContent: "center",
-                                                marginBottom: "20px",
+                                                margin: "16px",
                                             }}
                                         >
-                                            <Typography
-                                                style={{
-                                                    width: "100px",
-                                                    textAlign: "right",
-                                                    marginRight: "16px",
-                                                    fontSize: "14px",
-                                                }}
-                                                variant="body1"
-                                            >
+                                            <Typography>
                                                 {
                                                     questionItem.idQuestion
-                                                        .idQualificatif.minimal
-                                                }
-                                            </Typography>
-                                            <Rating
-                                                name={`rating-${qIndex}`}
-                                                //value={ratings[qIndex]}
-                                                defaultValue={
-                                                    defaultValue[
-                                                        questionItem.id
-                                                    ]
-                                                }
-                                                onChange={(event, value) =>
-                                                    handleRatingChange(
-                                                        qIndex,
-                                                        value ?? 0,
-                                                        questionItem.id
-                                                    )
-                                                }
-                                                precision={1}
-                                                style={{ fontSize: "24px" }}
-                                            />
-                                            <Typography
-                                                style={{
-                                                    width: "100px",
-                                                    textAlign: "left",
-                                                    marginLeft: "16px",
-                                                    fontSize: "14px",
-                                                }}
-                                                variant="body1"
-                                            >
-                                                {
-                                                    questionItem.idQuestion
-                                                        .idQualificatif.maximal
+                                                        .intitule
                                                 }
                                             </Typography>
                                         </div>
-                                    </Card>
+
+                                        {/* Deuxième contenu aligné à droite */}
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                flexDirection: "row",
+                                                margin: "16px",
+                                            }}
+                                        >
+                                            {/* Typographie pour la valeur minimale */}
+                                            <div
+                                                style={{
+                                                    width: "100px",
+                                                }}
+                                            >
+                                                <Typography variant="body1">
+                                                    {
+                                                        questionItem.idQuestion
+                                                            .idQualificatif
+                                                            .minimal
+                                                    }
+                                                </Typography>
+                                            </div>
+
+                                            {/* Chip avec une largeur fixe */}
+                                            <div
+                                                style={{
+                                                    width: "100px",
+                                                }}
+                                            >
+                                                <Rating
+                                                    sx={{
+                                                        width: "100px",
+                                                        fontSize: "24px",
+                                                    }}
+                                                    name={`rating-${qIndex}`}
+                                                    //value={ratings[qIndex]}
+                                                    defaultValue={
+                                                        defaultValue[
+                                                            questionItem.id
+                                                        ]
+                                                    }
+                                                    onChange={(event, value) =>
+                                                        handleRatingChange(
+                                                            qIndex,
+                                                            value ?? 0,
+                                                            questionItem.id
+                                                        )
+                                                    }
+                                                    precision={1}
+                                                />
+                                            </div>
+
+                                            {/* Typographie pour la valeur maximale */}
+                                            <div
+                                                style={{
+                                                    width: "100px",
+
+                                                    marginLeft: "32px",
+                                                }}
+                                            >
+                                                <Typography variant="body1">
+                                                    {
+                                                        questionItem.idQuestion
+                                                            .idQualificatif
+                                                            .maximal
+                                                    }
+                                                </Typography>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             )
                         )}

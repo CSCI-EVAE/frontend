@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import { Box, Typography } from "@mui/material"
+import { Box } from "@mui/material"
 import ButtonComponent from "../common/Button"
 
 import { ListContext } from "../context/listContext"
@@ -88,20 +88,15 @@ const EnseignantAddRubriqueStandard = () => {
                 gap: "2rem",
             }}
         >
-            <Typography
-                variant="h5"
-                sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                }}
-            >
-                {" "}
-                Entrez les informations
-            </Typography>
-
             <>
-                <Box sx={{ display: "flex", gap: "1rem" }}>
+                <Box
+                    sx={{
+                        display: "flex",
+                        gap: "1rem",
+                        maxHeight: "300px",
+                        overflow: "auto",
+                    }}
+                >
                     <CheckboxComponent
                         label="Choisissez la Rubrique"
                         options={dataset}

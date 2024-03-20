@@ -37,13 +37,14 @@ import {
     TablePagination,
 } from "@mui/material"
 import Select, { SelectChangeEvent } from "@mui/material/Select"
-import { Edit, Delete, Visibility, Send } from "@mui/icons-material"
+import { Edit, Delete, Visibility, Send, AutoGraph } from "@mui/icons-material"
 
 import { ListContext } from "../../context/listContext"
 import ButtonComponent from "../Button"
 import AddCircleIcon from "@mui/icons-material/AddCircle"
 import { COLORS, LIST_ACTIONS, LIST_Etat } from "../../constants"
 import { useNavigate } from "react-router-dom"
+import { green, yellow } from "@mui/material/colors"
 
 interface Column {
     id: string
@@ -469,7 +470,36 @@ const ListComponent: React.FC<Props> = ({
                                                                 )
                                                             }}
                                                         >
-                                                            <Send />
+                                                            <Send
+                                                                sx={{
+                                                                    color: yellow[700],
+                                                                }}
+                                                            />
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                )}
+                                                {row.statistiques && (
+                                                    <Tooltip title="Consulter les résultats">
+                                                        <IconButton
+                                                            onClick={() => {
+                                                                setSelectedActions(
+                                                                    LIST_ACTIONS.statistiques
+                                                                )
+
+                                                                updateSelectedRow(
+                                                                    row
+                                                                )
+
+                                                                navigate(
+                                                                    `/dashboard/enseignant/reponse-evaluation/${row.idEvaluation}`
+                                                                )
+                                                            }}
+                                                        >
+                                                            <AutoGraph
+                                                                sx={{
+                                                                    color: green[700],
+                                                                }}
+                                                            />
                                                         </IconButton>
                                                     </Tooltip>
                                                 )}

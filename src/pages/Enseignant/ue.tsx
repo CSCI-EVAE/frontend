@@ -40,6 +40,7 @@ const UePage: React.FC = () => {
             detailsValue: false,
             createValue: true,
             soumettreValue: false,
+            statistiques: false,
         }
 
         var newEtat = "En cours d'élaboration"
@@ -56,7 +57,7 @@ const UePage: React.FC = () => {
         if (ue.evaluationId) {
             extractedInfo = {
                 ...extractedInfo,
-
+                //idEvaluation: ue.evaluationId,
                 etat: newEtat,
                 designation: ue.designation,
                 debutReponse: ue.debutReponse,
@@ -65,16 +66,22 @@ const UePage: React.FC = () => {
                 detailsValue: true,
                 createValue: false,
                 soumettreValue: false,
+                statistiques: false,
             }
 
             if (ue.etat === "ELA") {
                 extractedInfo = {
                     ...extractedInfo,
                     soumettreValue: true,
+                    statistiques: false,
                 }
             }
-
-            
+            if (ue.etat === "CLO") {
+                extractedInfo = {
+                    ...extractedInfo,
+                    statistiques: true,
+                }
+            }
         }
 
         return extractedInfo
@@ -87,8 +94,6 @@ const UePage: React.FC = () => {
                 ue.codeUe === rowData.codeUE &&
                 ue.codeEc === rowData.codeEC
         )
-
-        console.log("jjjjjjj", selectedUe)
 
         if (selectedUe) {
             const rowDataInfo = extractNeededInfo(selectedUe)
@@ -112,7 +117,7 @@ const UePage: React.FC = () => {
         if (selectedUe) {
             const rowDataInfo = extractNeededInfo(selectedUe)
             const rowDataInfoString = JSON.stringify(rowDataInfo)
-            localStorage.setItem("state",rowDataInfoString)
+            localStorage.setItem("state", rowDataInfoString)
             navigate(`creation-evaluation`, { state: { rowDataInfo } })
         }
     }

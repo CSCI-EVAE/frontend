@@ -42,6 +42,7 @@ export const LIST_ACTIONS = {
     soumettre: "SOUMETTRE",
     addRubriqueStandard: "ADD_RUBRIQUE_STANDARD",
     redirect: "REDIRECT",
+    statistiques: "STATISTIQUES",
 }
 
 export const LIST_ACTIONS_ETUDIANT = {
@@ -112,22 +113,20 @@ export const UE_LIST_COLUMNS = [
 
 export const Evalution_Etudiant_COLUMNS = [
     // { id: "anneeUniversitaire", label: "annee Universitaire" },
-    { id: "codeFormation", label: "Nom Formation" },
-    { id: "noEvaluation", label: "Evaluation" },
-    { id: "designation", label: "designation" },
-    { id: "etat", label: "etat" },
-    { id: "nomEnseignant", label: "nom Enseignant" },
-    { id: "prenomEnseignant", label: "prenom Enseignant" },
-    { id: "debutReponse", label: "debut Reponse" },
-    { id: "finReponse", label: "fin Reponse" },
+    { id: "codeFormation", label: "Formation" },
+
+    { id: "designation", label: "Désignation" },
+    { id: "newEtat", label: "etat" },
+    { id: "nomPrenomEns", label: "enseignant" },
+
+    { id: "debutReponse", label: "Date de début de réponse" },
+    { id: "finReponse", label: "Date de fin de réponse" },
 ]
 
 export const UE_COLUMNS_FILTER_Etudiant = [
-    { id: "noEvaluation", label: "Evaluation" },
-    { id: "designation", label: "designation" },
-    { id: "periode", label: "periode" },
-    { id: "nomEnseignant", label: "nom Enseignant" },
-    { id: "prenomEnseignant", label: "prenom Enseignant" },
+    { id: "designation", label: "Désignation" },
+    { id: "periode", label: "Période" },
+    { id: "nomPrenomEns", label: "nomPrenomEns" },
 ]
 
 export const TYPE_STANDARD = {

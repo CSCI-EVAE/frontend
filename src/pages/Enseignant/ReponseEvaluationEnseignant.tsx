@@ -13,19 +13,20 @@ export default function ReponseEvaluationEnseignant() {
         marginBottom: "50px",
     }
 
-   const {getStatistiques, statistiqueList} = useContext(EvaluationContext);
-      const idEvaluation = useParams().id
-   
-console.log("aaa",statistiqueList)
-   useEffect(()=> {
-    getStatistiques(idEvaluation)
+    const { getStatistiques, statistiqueList } = useContext(EvaluationContext)
+    const idEvaluation = useParams().id
 
-   },[getStatistiques,idEvaluation])
-
+    console.log("aaa", statistiqueList)
+    useEffect(() => {
+        getStatistiques(idEvaluation)
+    }, [getStatistiques, idEvaluation])
 
     return (
         <>
-            <DetailsEvaluationComponent urlRetour="/enseignant/unitésEnseignement" evaluation={statistiqueList ?? []} />
+            <DetailsEvaluationComponent
+                urlRetour="/dashboard/enseignant/unitésEnseignement"
+                evaluation={statistiqueList ?? []}
+            />
 
             <div
                 style={{
@@ -49,7 +50,7 @@ console.log("aaa",statistiqueList)
             //     alignItems: "center",
             // }}
             >
-                <ReponsesEvaluationDetails evaluation={statistiqueList ??[]} />
+                <ReponsesEvaluationDetails evaluation={statistiqueList ?? []} />
             </div>
         </>
     )

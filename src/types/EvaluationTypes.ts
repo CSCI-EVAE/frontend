@@ -40,6 +40,7 @@ export interface RubriqueEvaluation {
 
 export interface Evaluation {
     id: number
+    idEvaluationId?: number
     designation: string
     debutReponse: string
     finReponse: string
@@ -47,8 +48,8 @@ export interface Evaluation {
     periode: string | null
     anneUniv: string
     noEvaluation: string
-    nomEnseignant?:string
-    prenomEnseignant?:string
+    nomEnseignant?: string
+    prenomEnseignant?: string
     rubriqueEvaluations: RubriqueEvaluation[]
 }
 

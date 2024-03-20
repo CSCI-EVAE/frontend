@@ -70,11 +70,6 @@ const ListComponent: React.FC<Props> = ({
         [key: string]: boolean
     }>(filteransweres || {})
 
-    console.log(
-        "The value from etudiant list answ " +
-            JSON.stringify(filteransweres, null)
-    )
-
     const handleFilterChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
         columnId: string
@@ -109,7 +104,6 @@ const ListComponent: React.FC<Props> = ({
         setFilteranswers(filteredAnswersStatus)
     }, [filteredData])
     const navigate = useNavigate()
-    // console.log("This is value of read "+JSON.stringify(setReads,null))
 
     return (
         <div
@@ -135,11 +129,11 @@ const ListComponent: React.FC<Props> = ({
 
             <div
                 style={{
-                    border: "1px solid #ccc",
-                    padding: "10px",
-                    marginBottom: "10px",
+                    padding: "5px",
+                    marginBottom: "20px",
                     width: "100%",
                     boxSizing: "border-box",
+                    marginTop: "20px",
                 }}
             >
                 <div
@@ -149,38 +143,52 @@ const ListComponent: React.FC<Props> = ({
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
+                        marginBottom: "10px",
                     }}
                 >
                     <Typography variant="h5">Filtre</Typography>
                 </div>
-                {columnsFilter &&
-                    columnsFilter.map((column) => (
-                        <TextField
-                            key={column.id}
-                            label={` ${column.label}`}
-                            variant="outlined"
-                            value={filters[column.id] || ""}
-                            onChange={(e) => handleFilterChange(e, column.id)}
-                            style={{ width: "220px", marginRight: "10px" }}
-                        />
-                    ))}
-                <FormControl style={{ width: "250px" }}>
-                    <InputLabel id="etat">Etat</InputLabel>
-                    <Select
-                        labelId="etat"
-                        id="etat"
-                        label="Etat"
-                        onChange={handleChangeSelect}
-                        value={etats}
-                    >
-                        <MenuItem value={LIST_Etat_Etudiant.CLO.value}>
-                            {LIST_Etat_Etudiant.CLO.label}
-                        </MenuItem>
-                        <MenuItem value={LIST_Etat_Etudiant.DIS.value}>
-                            {LIST_Etat_Etudiant.DIS.label}
-                        </MenuItem>
-                    </Select>
-                </FormControl>
+                <div
+                    style={{
+                        maxWidth: "90%",
+                        margin: "auto",
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}
+                >
+                    {columnsFilter &&
+                        columnsFilter.map((column) => (
+                            <TextField
+                                key={column.id}
+                                label={` ${column.label}`}
+                                variant="outlined"
+                                value={filters[column.id] || ""}
+                                onChange={(e) =>
+                                    handleFilterChange(e, column.id)
+                                }
+                                style={{ width: "15%", marginRight: "10px" }}
+                            />
+                        ))}
+                    <FormControl style={{ width: "15%" }}>
+                        <InputLabel id="etat">Etat</InputLabel>
+                        <Select
+                            labelId="etat"
+                            id="etat"
+                            label="Etat"
+                            onChange={handleChangeSelect}
+                            value={etats}
+                        >
+                            <MenuItem value={LIST_Etat_Etudiant.CLO.value}>
+                                {LIST_Etat_Etudiant.CLO.label}
+                            </MenuItem>
+                            <MenuItem value={LIST_Etat_Etudiant.DIS.value}>
+                                {LIST_Etat_Etudiant.DIS.label}
+                            </MenuItem>
+                        </Select>
+                    </FormControl>
+                </div>
             </div>
             <TableContainer component={Paper}>
                 <Table>
@@ -190,7 +198,8 @@ const ListComponent: React.FC<Props> = ({
                                 <TableCell
                                     style={{
                                         fontWeight: "bold",
-                                        color: "white",
+                                        //color: "white",
+                                        background: COLORS.color7,
                                     }}
                                     key={column.id}
                                 >
@@ -201,7 +210,8 @@ const ListComponent: React.FC<Props> = ({
                                 <TableCell
                                     style={{
                                         fontWeight: "bold",
-                                        color: "white",
+                                        //color: "white",
+                                        background: COLORS.color7,
                                     }}
                                 >
                                     ACTIONS
@@ -239,20 +249,17 @@ const ListComponent: React.FC<Props> = ({
                                                         updateSelectedRow(row)
                                                         createHandler &&
                                                             createHandler(row)
-                                                        console.log(
-                                                            "The result " +
-                                                                filterread[
-                                                                    row
-                                                                        .noEvaluation
-                                                                ]
-                                                        )
                                                     }}
                                                 >
                                                     <Tooltip
-                                                        title="Consulter"
+                                                        title="Consulter  les réponses"
                                                         arrow
                                                     >
-                                                        <RemoveRedEye />
+                                                        <RemoveRedEye
+                                                            sx={{
+                                                                color: COLORS.color4,
+                                                            }}
+                                                        />
                                                     </Tooltip>
                                                 </IconButton>
                                             )}
@@ -260,27 +267,6 @@ const ListComponent: React.FC<Props> = ({
                                                 row.noEvaluation
                                             ] === true && (
                                                 <>
-                                                    <IconButton
-                                                        onClick={() => {
-                                                            navigate(
-                                                                `/dashboard/modifier-reponse/${row.id}`
-                                                            )
-                                                            updateSelectedRow(
-                                                                row
-                                                            )
-                                                            createHandler &&
-                                                                createHandler(
-                                                                    row
-                                                                )
-                                                        }}
-                                                    >
-                                                        <Tooltip
-                                                            title="Modifier"
-                                                            arrow
-                                                        >
-                                                            <EditNoteIcon />
-                                                        </Tooltip>
-                                                    </IconButton>
                                                     <IconButton
                                                         onClick={() => {
                                                             navigate(
@@ -296,10 +282,39 @@ const ListComponent: React.FC<Props> = ({
                                                         }}
                                                     >
                                                         <Tooltip
-                                                            title="Consulter"
+                                                            title="Consulter  les réponses"
                                                             arrow
                                                         >
-                                                            <RemoveRedEye />
+                                                            <RemoveRedEye
+                                                                sx={{
+                                                                    color: COLORS.color4,
+                                                                }}
+                                                            />
+                                                        </Tooltip>
+                                                    </IconButton>
+                                                    <IconButton
+                                                        onClick={() => {
+                                                            navigate(
+                                                                `/dashboard/modifier-reponse/${row.id}`
+                                                            )
+                                                            updateSelectedRow(
+                                                                row
+                                                            )
+                                                            createHandler &&
+                                                                createHandler(
+                                                                    row
+                                                                )
+                                                        }}
+                                                    >
+                                                        <Tooltip
+                                                            title="Modifier les réponses"
+                                                            arrow
+                                                        >
+                                                            <EditNoteIcon
+                                                                sx={{
+                                                                    color: COLORS.color3,
+                                                                }}
+                                                            />
                                                         </Tooltip>
                                                     </IconButton>
                                                 </>
@@ -331,10 +346,14 @@ const ListComponent: React.FC<Props> = ({
                                                     }}
                                                 >
                                                     <Tooltip
-                                                        title="Répondre"
+                                                        title="Répondre à l'évaluation"
                                                         arrow
                                                     >
-                                                        <BorderColorIcon />
+                                                        <BorderColorIcon
+                                                            sx={{
+                                                                color: COLORS.color2,
+                                                            }}
+                                                        />
                                                     </Tooltip>
                                                 </IconButton>
                                             )}
