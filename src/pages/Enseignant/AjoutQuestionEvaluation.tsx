@@ -10,10 +10,6 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep"
 import { RubriqueEnseignantContext } from "../../context/rubriqueEnseignantContext"
 import { RubriqueCompose, questionsInRubrique } from "../../types"
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/main
 
 interface TableQuestionProps {
     rubriqueParent: RubriqueCompose
@@ -74,10 +70,6 @@ const AjoutQuestionEvaluation: React.FC<TableQuestionProps> = ({
                             }}
                         >
                             <>
-<<<<<<< HEAD
-=======
-    
->>>>>>> origin/main
                                 {dataset.map((row, index: number) => (
                                     <Draggable
                                         key={row.idQuestion}

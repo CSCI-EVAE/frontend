@@ -247,6 +247,8 @@ export interface Evaluation {
     codeUE: string
     debutReponse: string
     finReponse: string
+    anneUniv: string | null
+    codeUe: string | null
     RubriqueQuestion: RubriqueEvaluation[]
 }
 

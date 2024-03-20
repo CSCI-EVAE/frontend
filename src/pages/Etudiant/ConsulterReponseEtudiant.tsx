@@ -92,7 +92,6 @@ const ConsulterReponseEtudiant = () => {
                                     variant="h5"
                                     gutterBottom
                                 >
-                                    Rubrique :{" "}
                                     <span
                                         style={{
                                             color: COLORS.color4,

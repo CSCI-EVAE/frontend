@@ -33,7 +33,18 @@ import EnseignantAddRubriqueStandard from "../../components/EnseignantAddRubriqu
 import { EvaluationContext } from "../../context/evaluationEnseignantContext"
 import { useNavigate } from "react-router"
 import { KeyboardBackspace } from "@mui/icons-material"
+import { NotificationContext } from "../../context/notificationContext"
 
+const hasEmptyQuestionIds = (
+    createRubriques: CreateRubriqueCompose[]
+): boolean => {
+    for (const createRubrique of createRubriques) {
+        if (Object.keys(createRubrique.questionIds).length === 0) {
+            return true // Si l'une des questionIds est vide, retourne true
+        }
+    }
+    return false // Si aucune questionIds n'est vide, retourne false
+}
 const AjoutRubriqueEvaluation = () => {
     const {
         rubriqueAdded,
@@ -44,7 +55,7 @@ const AjoutRubriqueEvaluation = () => {
     } = useContext(RubriqueEnseignantContext)
 
     const navigate = useNavigate()
-
+    const { showNotification } = useContext(NotificationContext)
     const { addNewEvaluation } = useContext(EvaluationContext)
 
     const [dataset, setDataset] = useState<RubriqueCompose[]>(rubriqueAdded)
@@ -135,6 +146,14 @@ const AjoutRubriqueEvaluation = () => {
     )
 
     const handleSubmit = async () => {
+        if (hasEmptyQuestionIds(rubriquesToAdd)) {
+            showNotification(
+                "Erreur",
+                "Toutes les rubriques doivent avoir au moins une question",
+                "error"
+            )
+            return
+        }
         const formData = localStorage.getItem("formData")
         const data = localStorage.getItem("data")
         if (formData) {
@@ -157,10 +176,12 @@ const AjoutRubriqueEvaluation = () => {
                 addNewEvaluation(evaluationData)
             }
             updateRubriqueSelected([])
+            localStorage.removeItem("data")
+            localStorage.removeItem("formData")
             navigate("/dashboard/enseignant/unitésEnseignement")
         }
     }
-
+    const { getDefaultValue } = useContext(EvaluationContext)
     return (
         <>
             <SideBarEnseignant />
@@ -180,6 +201,8 @@ const AjoutRubriqueEvaluation = () => {
                     variant="contained"
                     icon={<KeyboardBackspace />}
                     onClick={() => {
+                        getDefaultValue()
+
                         navigate(
                             `/dashboard/enseignant/unitésEnseignement/creation-evaluation`
                         )

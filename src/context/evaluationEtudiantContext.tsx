@@ -21,6 +21,7 @@ import {
     reponseQuestions,
 } from "../types"
 import { getRequest, postRequest } from "../api/axios"
+import { formatDate } from "../components/detailsEvaluationComponent"
 export const transformQuestionToReponseQuestion = (
     question: QuestionEvaluation
 ): reponseQuestions => {
@@ -83,16 +84,24 @@ export function AdjustColumns(evaluationList: Evaluation[]): any[] {
                 periode,
                 designation,
                 evaRepondu,
+                nomEnseignant,
+                prenomEnseignant,
+                debutReponse,
+                finReponse,
+
                 ...rest
             } = evaluation
 
             let readStatus = false
             let answerStatus = false
+            let newEtat = ""
 
             if (etat === "CLO") {
+                newEtat = "Cloturé"
                 readStatus = true
             }
             if (etat === "DIS") {
+                newEtat = "Mise en disposition"
                 answerStatus = true
             }
 
@@ -105,6 +114,12 @@ export function AdjustColumns(evaluationList: Evaluation[]): any[] {
                 readStatus,
                 evaRepondu,
                 answerStatus,
+                nomEnseignant,
+                prenomEnseignant,
+                nomPrenomEns: prenomEnseignant + " " + nomEnseignant,
+                newEtat,
+                debutReponse: formatDate(debutReponse),
+                finReponse: formatDate(finReponse),
             }
         })
     } else {
@@ -145,7 +160,7 @@ export const EvaluationEtudiantContextProvider: React.FC<
 
     const [modifierReponse, setModifierReponse] = useState<ReponseEvaluation>({
         commentaire: "",
-        idEvaluation: evaluationDetails?.id ?? 0,
+        idEvaluation: evaluationDetails?.id ?? 67,
         nom: "",
         prenom: "",
         reponseQuestions: def,
@@ -215,7 +230,7 @@ export const EvaluationEtudiantContextProvider: React.FC<
 
     const evae: ReponseEvaluation = JSON.parse(
         rep ||
-            '{"commentaire":"","idEvaluation":{"id":0},"nom":"","prenom":"","reponseQuestions":[]}'
+            '{"commentaire":"","idEvaluationId":67,"nom":"","prenom":"","reponseQuestions":[]}'
     )
     const [reponseEvae, setReponseEvae] = useState<ReponseEvaluation>(evae)
     const updateReponseEvaluation = useCallback(

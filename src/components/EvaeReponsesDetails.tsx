@@ -4,15 +4,16 @@ import { useNavigate } from "react-router-dom"
 import { FC } from "react"
 import { Box, Grid, Typography } from "@mui/material"
 import { Evaluation } from "../types"
+import { formatDate } from "./detailsEvaluationComponent"
 
 interface DetailsProps {
-    evaluation : Evaluation
+    evaluation: Evaluation
     urlRetour: string
 }
 const DetailsEvaluationComponent: FC<DetailsProps> = ({
     //   promotion,
     urlRetour,
-    evaluation
+    evaluation,
 }) => {
     // const evaluationExample: Evaluation = {
     //     id: 1,
@@ -92,11 +93,24 @@ const DetailsEvaluationComponent: FC<DetailsProps> = ({
                             }}
                         >
                             <Typography variant="body1">
-                                <strong>
-                                    {" "}
-                                    {evaluation.codeFormation} :
-                                </strong>{" "}
-                                <strong>{evaluation.codeUE}</strong>{" "}
+                                <strong> {evaluation.codeFormation} :</strong>{" "}
+                                {evaluation.codeUe}{" "}
+                            </Typography>
+                        </Grid>
+
+                        <Grid
+                            //component={Paper}
+                            //elevation={4}
+                            item
+                            sm={6}
+                            sx={{
+                                marginBottom: "10px",
+                                //    marginLeft: "10px"
+                            }}
+                        >
+                            <Typography variant="body1">
+                                <strong> Année universitaire :</strong>{" "}
+                                {evaluation.anneUniv}{" "}
                             </Typography>
                         </Grid>
                         <Grid
@@ -119,8 +133,7 @@ const DetailsEvaluationComponent: FC<DetailsProps> = ({
                             sx={{ marginBottom: "10px" }}
                         >
                             <Typography variant="body1">
-                                <strong>Période :</strong>{" "}
-                                {evaluation.periode}
+                                <strong>Période :</strong> {evaluation.periode}
                             </Typography>
                         </Grid>
 
@@ -133,7 +146,7 @@ const DetailsEvaluationComponent: FC<DetailsProps> = ({
                         >
                             <Typography variant="body1">
                                 <strong>Date de Début :</strong>{" "}
-                                {evaluation.debutReponse}
+                                {formatDate(evaluation.debutReponse)}
                             </Typography>
                         </Grid>
                         <Grid
@@ -145,7 +158,7 @@ const DetailsEvaluationComponent: FC<DetailsProps> = ({
                         >
                             <Typography variant="body1">
                                 <strong>Date de fin :</strong>{" "}
-                                {evaluation.finReponse}
+                                {formatDate(evaluation.finReponse)}
                             </Typography>
                         </Grid>
                     </Grid>

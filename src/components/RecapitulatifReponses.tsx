@@ -17,9 +17,8 @@ const RecapitulatifReponses: FC<ReponseProps> = ({ rubrique }) => {
     const handleModifier = () => {
         handleReset()
     }
-    const { soumettreReponseEtudiant, reponseEvae } = useContext(
-        EvaluationEtudiantContext
-    )
+    const { soumettreReponseEtudiant, reponseEvae, evaluationDetails } =
+        useContext(EvaluationEtudiantContext)
 
     const trouverPositionnementParId = (
         reponse: ReponseEvaluation,
@@ -32,7 +31,7 @@ const RecapitulatifReponses: FC<ReponseProps> = ({ rubrique }) => {
         return reponseQuestion.positionnement
     }
     const handleReponse = async () => {
-        await soumettreReponseEtudiant(reponseEvae)
+        await soumettreReponseEtudiant({ ...reponseEvae })
         localStorage.removeItem("reponseEvaluation")
         handleReset()
         navigate("/dashboard/etudiant")

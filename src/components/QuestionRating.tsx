@@ -35,6 +35,7 @@ const QuestionRating: FC<QuestionRatingProps> = ({
         const newRatings = [...ratings]
 
         newRatings[index] = value
+        console.log("🚀 ~ newRatings:", newRatings)
         setRatings(newRatings)
     }
 
@@ -63,7 +64,7 @@ const QuestionRating: FC<QuestionRatingProps> = ({
             )
 
             setDefaultValue(defaultV)
-            setRatings(new Array(arrayLength).fill(1))
+            // setRatings(new Array(arrayLength).fill(1))
         }
     }, [rubrique.questionEvaluations, arrayLength])
     if (!rubrique) {
