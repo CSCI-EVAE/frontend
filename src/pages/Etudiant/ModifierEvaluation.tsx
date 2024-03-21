@@ -13,6 +13,7 @@ import ModifierQuestionRating from "../../components/ModifierQuestionRating"
 import ModifierRecapitulatifReponses from "../../components/ModifierRecapitulatifReponses"
 import ButtonComponent from "../../common/Button"
 import { KeyboardBackspace } from "@mui/icons-material"
+import { CircularProgress } from "@mui/material"
 
 // Hook personnalisé pour le délai
 const useDelayRender = (delay: number): boolean => {
@@ -89,33 +90,53 @@ const ModifierEvaluation = () => {
         )
     }
     const navigate = useNavigate()
+
     return (
         <>
             <Header />
-            <div
-                style={{
-                    maxWidth: "90%",
-                    marginLeft: "75px",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "flex-start",
-                    marginBottom: "50px",
-                }}
-            >
-                <ButtonComponent
-                    text="Retour à  la page principale"
-                    variant="contained"
-                    icon={<KeyboardBackspace />}
-                    onClick={() => {
-                        navigate("/dashboard/etudiant")
+            {shouldRender ? (
+                <>
+                    <div
+                        style={{
+                            maxWidth: "90%",
+                            marginLeft: "75px",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "flex-start",
+                            marginBottom: "50px",
+                        }}
+                    >
+                        <ButtonComponent
+                            text="Retour à  la page principale"
+                            variant="contained"
+                            icon={<KeyboardBackspace />}
+                            onClick={() => {
+                                navigate("/dashboard/etudiant")
+                            }}
+                        />
+                    </div>
+                    <StepperComponent
+                        stepsCount={
+                            list ? list.rubriqueEvaluations.length + 1 : 1
+                        }
+                    >
+                        {stepItems}
+                    </StepperComponent>
+                </>
+            ) : (
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        margin: "auto",
+                        marginTop: "350px",
                     }}
-                />
-            </div>
-            <StepperComponent
-                stepsCount={list ? list.rubriqueEvaluations.length + 1 : 1}
-            >
-                {stepItems}
-            </StepperComponent>
+                >
+                    Chargement ...
+                    <CircularProgress />
+                </div>
+            )}
         </>
     )
 }

@@ -11,7 +11,6 @@ import { NotificationContextProvider } from "./context/notificationContext"
 import { AuthContextProvider } from "./context/authContext"
 import LandingPage from "./pages/LandingPage"
 
-
 function App() {
     return (
         <div className="App">
@@ -21,8 +20,8 @@ function App() {
                     <Routes>
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/logout" element={<Logout />} />
-                        <Route path="/" element={<LoginPage />} />
-                        <Route path="/accueil" element={<LandingPage />} />
+                        {/* <Route path="/" element={<LoginPage />} /> */}
+                        <Route path="/" element={<LandingPage />} />
 
                         <Route
                             path="/dashboard/*"
