@@ -4,6 +4,8 @@ import DetailsEvaluationComponent from "../../components/EvaeReponsesDetails"
 import { Typography } from "@mui/material"
 import { EvaluationContext } from "../../context/evaluationEnseignantContext"
 import { useParams } from "react-router-dom"
+import Header from "../../Layout/Header"
+import SideBarEnseignant from "../../Layout/sideBar/SideBarEnseignant"
 
 export default function ReponseEvaluationEnseignant() {
     const textStyle: React.CSSProperties = {
@@ -23,10 +25,14 @@ export default function ReponseEvaluationEnseignant() {
 
     return (
         <>
+        <SideBarEnseignant></SideBarEnseignant>
+        <Header></Header>
+        
             <DetailsEvaluationComponent
                 urlRetour="/dashboard/enseignant/unitésEnseignement"
                 evaluation={statistiqueList ?? []}
             />
+ 
 
             <div
                 style={{
