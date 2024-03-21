@@ -4,7 +4,10 @@ import ButtonComponent from "../common/Button"
 import { StepContext } from "../context/stepperContext"
 import { RubriqueEvaluation } from "../types/EvaluationTypes"
 import { ReponseEvaluation } from "../types"
-import { EvaluationEtudiantContext } from "../context/evaluationEtudiantContext"
+import {
+    EvaluationEtudiantContext,
+    convertToReponseEvaluation,
+} from "../context/evaluationEtudiantContext"
 import { useNavigate } from "react-router-dom"
 import { COLORS } from "../constants"
 
@@ -16,10 +19,16 @@ const RecapitulatifReponses: FC<ReponseProps> = ({ rubrique }) => {
     const { handleReset } = useContext(StepContext)
     const handleModifier = () => {
         handleReset()
+        const reponse = convertToReponseEvaluation(
+            rubrique ?? [],
+            reponseEvae.idEvaluationId ?? 0
+        )
+        updateReponseEvaluationByReponse(reponse)
     }
     const {
         soumettreReponseEtudiant,
         reponseEvae,
+        updateReponseEvaluationByReponse,
         // evaluationDetails
     } = useContext(EvaluationEtudiantContext)
 
@@ -36,7 +45,7 @@ const RecapitulatifReponses: FC<ReponseProps> = ({ rubrique }) => {
     const handleReponse = async () => {
         await soumettreReponseEtudiant({ ...reponseEvae })
         localStorage.removeItem("reponseEvaluation")
-        handleReset()
+        handleModifier()
         navigate("/dashboard/etudiant")
     }
     return (

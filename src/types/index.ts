@@ -276,7 +276,7 @@ export interface reponseQuestions {
 }
 
 export interface ReponseEvaluation {
-    idEvaluation: number
+    idEvaluationId: number
 
     commentaire: string
     nom: string

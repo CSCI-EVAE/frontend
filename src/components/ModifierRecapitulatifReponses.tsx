@@ -4,7 +4,10 @@ import ButtonComponent from "../common/Button"
 import { StepContext } from "../context/stepperContext"
 import { RubriqueEvaluation } from "../types/EvaluationTypes"
 import { ReponseEvaluation } from "../types"
-import { EvaluationEtudiantContext } from "../context/evaluationEtudiantContext"
+import {
+    EvaluationEtudiantContext,
+    convertToReponseEvaluation,
+} from "../context/evaluationEtudiantContext"
 import { useNavigate } from "react-router-dom"
 import { COLORS } from "../constants"
 
@@ -16,10 +19,14 @@ const ModifierRecapitulatifReponses: FC<ReponseProps> = ({ rubrique }) => {
     const { handleReset } = useContext(StepContext)
     const handleModifier = () => {
         handleReset()
+        const reponse = convertToReponseEvaluation(
+            rubrique ?? [],
+            reponseEvae.idEvaluationId ?? 0
+        )
+        updateReponseEvaeModifier(reponse)
     }
-    const { soumettreReponseEtudiant, modifierReponse } = useContext(
-        EvaluationEtudiantContext
-    )
+    const { soumettreReponseEtudiant, reponseEvae, updateReponseEvaeModifier } =
+        useContext(EvaluationEtudiantContext)
 
     const trouverPositionnementParId = (
         reponse: ReponseEvaluation,
@@ -32,7 +39,7 @@ const ModifierRecapitulatifReponses: FC<ReponseProps> = ({ rubrique }) => {
         return reponseQuestion.positionnement
     }
     const handleReponse = async () => {
-        await soumettreReponseEtudiant(modifierReponse)
+        await soumettreReponseEtudiant(reponseEvae)
         localStorage.removeItem("modifierEvaluation")
         handleReset()
         navigate("/dashboard/etudiant")
@@ -167,7 +174,7 @@ const ModifierRecapitulatifReponses: FC<ReponseProps> = ({ rubrique }) => {
                                                                     COLORS.color3,
                                                             }}
                                                             label={trouverPositionnementParId(
-                                                                modifierReponse,
+                                                                reponseEvae,
                                                                 questionItem.id
                                                             )}
                                                             size="medium"
