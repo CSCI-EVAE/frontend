@@ -16,13 +16,12 @@ import {
     Tooltip,
 } from "@mui/material"
 import Select, { SelectChangeEvent } from "@mui/material/Select"
-import { RemoveRedEye } from "@mui/icons-material"
+import { Edit, PlaylistAddCheck, RemoveRedEye } from "@mui/icons-material"
 import { ListContext } from "../../context/listContext"
-import EditNoteIcon from "@mui/icons-material/EditNote"
 import { COLORS, LIST_Etat_Etudiant } from "../../constants"
 import { AdjustColumns } from "../../context/evaluationEtudiantContext"
-import BorderColorIcon from "@mui/icons-material/BorderColor"
 import { useNavigate } from "react-router-dom"
+import { yellow } from "@mui/material/colors"
 
 interface Column {
     id: string
@@ -310,9 +309,9 @@ const ListComponent: React.FC<Props> = ({
                                                             title="Modifier les réponses"
                                                             arrow
                                                         >
-                                                            <EditNoteIcon
+                                                            <Edit
                                                                 sx={{
-                                                                    color: COLORS.color3,
+                                                                    color: yellow[700],
                                                                 }}
                                                             />
                                                         </Tooltip>
@@ -336,22 +335,15 @@ const ListComponent: React.FC<Props> = ({
                                                         updateSelectedRow(row)
                                                         createHandler &&
                                                             createHandler(row)
-                                                        console.log(
-                                                            "The result answer " +
-                                                                filteranswer[
-                                                                    row
-                                                                        .noEvaluation
-                                                                ]
-                                                        )
                                                     }}
                                                 >
                                                     <Tooltip
                                                         title="Répondre à l'évaluation"
                                                         arrow
                                                     >
-                                                        <BorderColorIcon
+                                                        <PlaylistAddCheck
                                                             sx={{
-                                                                color: COLORS.color2,
+                                                                color: COLORS.color3,
                                                             }}
                                                         />
                                                     </Tooltip>
