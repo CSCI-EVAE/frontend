@@ -40,33 +40,71 @@ export const transformQuestionsToReponseQuestions = (
 ): reponseQuestions[] => {
     return questions.map(transformQuestionToReponseQuestion)
 }
+
+export const convertToReponseQuestions = (
+    questions: QuestionEvaluation[]
+): reponseQuestions[] => {
+    return questions.map((question) => ({
+        idQuestionEvaluation: {
+            id: question.id,
+        },
+        positionnement: question.positionnement ?? 0,
+    }))
+}
+export const convertToReponseEvaluation = (
+    rubriques: RubriqueEvaluation[],
+    idEvaluation: number
+): ReponseEvaluation => {
+    console.log("🚀 ~ rubriques:", rubriques)
+    // Initialiser un tableau pour stocker les réponses aux questions
+    let reponseQuestionsArray: reponseQuestions[] = []
+
+    // Parcourir chaque rubrique et extraire les questions d'évaluation
+    rubriques.forEach((rubrique) => {
+        if (rubrique.questionEvaluations) {
+            reponseQuestionsArray = reponseQuestionsArray.concat(
+                convertToReponseQuestions(rubrique.questionEvaluations)
+            )
+        }
+    })
+
+    // Créer l'objet ReponseEvaluation
+    const reponseEvaluation: ReponseEvaluation = {
+        idEvaluationId: idEvaluation, // Mettez la valeur appropriée ici
+        commentaire: "",
+        nom: "",
+        prenom: "",
+        reponseQuestions: reponseQuestionsArray,
+    }
+    console.log("🚀 ~ reponseEvaluation:", reponseEvaluation)
+
+    return reponseEvaluation
+}
+
 export const createDefaultValue = (
-    reponseQuestions: reponseQuestions[],
-    questionEvaluations: QuestionEvaluation[]
+    reponses: reponseQuestions[]
 ): DefaultValue => {
-    const defaultValue: DefaultValue = {}
-    // Parcourt chaque réponse
-    reponseQuestions.forEach((reponse) => {
-        // Trouve la question correspondante dans les évaluations de questions
-        const question = questionEvaluations.find(
-            (q) => q.id === reponse.idQuestionEvaluation.id
-        )
-
-        // Si la question est trouvée, ajoute l'id de la question avec son positionnement à defaultValue
-        if (question) {
-            defaultValue[question.id] = reponse.positionnement
+    return reponses.reduce(
+        (defaultValue: DefaultValue, reponse: reponseQuestions) => {
+            const questionEvaluationId = reponse.idQuestionEvaluation.id
+            const positionnement = reponse.positionnement
+            defaultValue[questionEvaluationId] = positionnement
+            return defaultValue
+        },
+        {}
+    )
+}
+export const hasDefaultValueZero = (
+    defaultValue: DefaultValue,
+    questions: QuestionEvaluation[]
+): boolean => {
+    for (const question of questions) {
+        const defaultValueForKey = defaultValue[question.id] || 0
+        if (defaultValueForKey === 0) {
+            return true // S'il existe une clé correspondante avec une valeur de 0, retourne true
         }
-    })
-
-    // Parcourt chaque questionEvaluation pour vérifier si elle est présente dans defaultValue
-    questionEvaluations.forEach((question) => {
-        if (!(question.id in defaultValue)) {
-            // Si la question n'est pas présente, ajoute l'id de la question avec positionnement 0 à defaultValue
-            defaultValue[question.id] = 0
-        }
-    })
-
-    return defaultValue
+    }
+    return false // Si aucune clé correspondante avec une valeur de 0 n'est trouvée, retourne false
 }
 interface EvaluationContextProviderProps {
     children: ReactNode
@@ -144,134 +182,101 @@ export const EvaluationEtudiantContextProvider: React.FC<
         setEvaluationList(value)
     }, [])
 
-    const def: reponseQuestions[] = consulterReponse
-        .map((reponse) => {
-            if (reponse.questionEvaluations) {
-                // Transformez les questionEvaluations en reponseQuestions
-                return transformQuestionsToReponseQuestions(
-                    reponse.questionEvaluations
-                )
-            } else {
-                // Si questionEvaluations est null ou undefined, retournez un tableau vide
-                return []
-            }
-        })
-        .flat()
-
-    const [modifierReponse, setModifierReponse] = useState<ReponseEvaluation>({
+    const [reponseEvae, setReponseEvae] = useState<ReponseEvaluation>({
         commentaire: "",
-        idEvaluation: evaluationDetails?.id ?? 67,
+        idEvaluationId: 0,
         nom: "",
         prenom: "",
-        reponseQuestions: def,
+        reponseQuestions: [],
     })
-    const updateReponseEvaluationModifier = useCallback(
-        (idQuestion: number, positionnement: number) => {
-            setModifierReponse((prevState) => {
-                const newReponse: ReponseEvaluation = {
-                    ...prevState,
-                    reponseQuestions: [
-                        ...prevState.reponseQuestions,
-                        {
-                            idQuestionEvaluation: { id: idQuestion },
-                            positionnement: positionnement,
-                        },
-                    ],
-                }
-                localStorage.setItem(
-                    "modifierEvaluation",
-                    JSON.stringify(newReponse)
-                )
-                return newReponse
-            })
-        },
-        []
-    )
-    const updateNomPrenomCommentaireModifier = useCallback(
-        (nom: string, prenom: string, commentaire: string) => {
-            setModifierReponse((prevState) => {
-                const newReponse: ReponseEvaluation = {
-                    ...prevState,
-                    commentaire: commentaire,
-                    nom: nom,
-                    prenom: prenom,
-                }
-                localStorage.setItem(
-                    "modifierEvaluation",
-                    JSON.stringify(newReponse)
-                )
-                return newReponse
-            })
-        },
-        []
-    )
+    const [defaultValue, setDefaultValue] = useState<DefaultValue>({})
+    const updateDefaultValue = useCallback((value: DefaultValue) => {
+        setDefaultValue(value)
+    }, [])
 
-    useEffect(() => {
-        localStorage.setItem(
-            "modifierEvaluation",
-            JSON.stringify({
-                commentaire: modifierReponse.commentaire,
-                idEvaluation: {
-                    id: Number(0),
-                },
-                nom: modifierReponse.nom,
-                prenom: modifierReponse.prenom,
-                reponseQuestions: def,
-            })
-        )
-    }, [
-        def,
-        modifierReponse.nom,
-        modifierReponse.prenom,
-        modifierReponse.commentaire,
-    ])
-
-    const rep = localStorage.getItem("reponseEvaluation")
-
-    const evae: ReponseEvaluation = JSON.parse(
-        rep ||
-            '{"commentaire":"","idEvaluationId":67,"nom":"","prenom":"","reponseQuestions":[]}'
-    )
-    const [reponseEvae, setReponseEvae] = useState<ReponseEvaluation>(evae)
     const updateReponseEvaluation = useCallback(
         (idQuestion: number, positionnement: number) => {
             setReponseEvae((prevState) => {
-                const newReponse: ReponseEvaluation = {
-                    ...prevState,
-                    reponseQuestions: [
-                        ...prevState.reponseQuestions,
-                        {
-                            idQuestionEvaluation: { id: idQuestion },
-                            positionnement: positionnement,
-                        },
-                    ],
-                }
-                localStorage.setItem(
-                    "reponseEvaluation",
-                    JSON.stringify(newReponse)
+                // Vérifier si une réponse avec idQuestion existe déjà
+                const existingIndex = prevState.reponseQuestions.findIndex(
+                    (reponse) => reponse.idQuestionEvaluation.id === idQuestion
                 )
-                return newReponse
+
+                if (existingIndex !== -1) {
+                    // Si une réponse existe, mettre à jour son positionnement
+                    const newReponse = {
+                        ...prevState,
+                        reponseQuestions: prevState.reponseQuestions.map(
+                            (reponse, index) => {
+                                if (index === existingIndex) {
+                                    return {
+                                        ...reponse,
+                                        positionnement: positionnement,
+                                    }
+                                }
+
+                                return reponse
+                            }
+                        ),
+                    }
+                    const defaultV: DefaultValue = createDefaultValue(
+                        newReponse.reponseQuestions
+                    )
+                    updateDefaultValue(defaultV)
+                    return newReponse
+                } else {
+                    // Si aucune réponse n'existe, ajouter une nouvelle réponse
+                    const newReponse = {
+                        ...prevState,
+                        reponseQuestions: [
+                            ...prevState.reponseQuestions,
+                            {
+                                idQuestionEvaluation: { id: idQuestion },
+                                positionnement: positionnement,
+                            },
+                        ],
+                    }
+                    const defaultV: DefaultValue = createDefaultValue(
+                        newReponse.reponseQuestions
+                    )
+                    updateDefaultValue(defaultV)
+                    return newReponse
+                }
+                // localStorage.setItem(
+                //     "reponseEvaluation",
+                //     JSON.stringify(newReponse)
+                // )
             })
         },
-        []
+        [updateDefaultValue]
     )
-    const updateNomPrenomCommentaire = useCallback(
-        (nom: string, prenom: string, commentaire: string) => {
-            setReponseEvae((prevState) => {
-                const newReponse: ReponseEvaluation = {
-                    ...prevState,
-                    commentaire: commentaire,
-                    nom: nom,
-                    prenom: prenom,
-                }
-                localStorage.setItem(
-                    "reponseEvaluation",
-                    JSON.stringify(newReponse)
-                )
-                return newReponse
-            })
+
+    const updateReponseEvaluationByReponse = useCallback(
+        (reponse: ReponseEvaluation) => {
+            setReponseEvae(reponse)
+
+            const defaultV: DefaultValue = createDefaultValue(
+                reponse.reponseQuestions
+            )
+            updateDefaultValue(defaultV)
         },
-        []
+
+        [updateDefaultValue]
+    )
+    const updateReponseEvaeModifier = useCallback(
+        (reponse: ReponseEvaluation) => {
+            console.log("🚀 ~ reponse:", reponse)
+
+            setReponseEvae(reponse)
+
+            const defaultV: DefaultValue = createDefaultValue(
+                reponse.reponseQuestions
+            )
+            console.log("🚀 ~ defaultV:", defaultV)
+            updateDefaultValue(defaultV)
+        },
+
+        [updateDefaultValue]
     )
 
     useEffect(() => {
@@ -343,6 +348,7 @@ export const EvaluationEtudiantContextProvider: React.FC<
                 return
             }
             let list: EvaluationDetails = response.data.data
+
             setConsulterReponse(list.rubriqueEvaluations)
         },
         [showNotification]
@@ -351,10 +357,7 @@ export const EvaluationEtudiantContextProvider: React.FC<
         <EvaluationEtudiantContext.Provider
             value={{
                 reponseEvae,
-                modifierReponse,
-                updateNomPrenomCommentaireModifier,
-                updateReponseEvaluationModifier,
-                updateNomPrenomCommentaire,
+
                 updateReponseEvaluation,
                 updateEvaluationList,
                 evaluationList,
@@ -363,6 +366,10 @@ export const EvaluationEtudiantContextProvider: React.FC<
                 soumettreReponseEtudiant,
                 getEvaluationReponse,
                 consulterReponse,
+                updateReponseEvaluationByReponse,
+                defaultValue,
+                updateDefaultValue,
+                updateReponseEvaeModifier,
             }}
         >
             {children}

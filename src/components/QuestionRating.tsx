@@ -1,15 +1,14 @@
-import React, { FC, useContext, useEffect, useState } from "react"
+import React, { FC, useContext } from "react"
 import Rating from "@mui/material/Rating"
 import Typography from "@mui/material/Typography"
 import { Divider, Paper } from "@mui/material"
 import { StepContext } from "../context/stepperContext"
 import ButtonComponent from "../common/Button"
 import { RubriqueEvaluation } from "../types/EvaluationTypes"
-import { DefaultValue, ReponseEvaluation } from "../types"
 import { COLORS } from "../constants"
 import {
     EvaluationEtudiantContext,
-    createDefaultValue,
+    hasDefaultValueZero,
 } from "../context/evaluationEtudiantContext"
 
 interface QuestionRatingProps {
@@ -21,10 +20,9 @@ const QuestionRating: FC<QuestionRatingProps> = ({
     handleSubmit,
 }) => {
     const { activeStep, handleBack } = React.useContext(StepContext)
-    const { updateReponseEvaluation } = useContext(EvaluationEtudiantContext)
-    const arrayLength = rubrique.questionEvaluations?.length ?? 1
-
-    const [ratings, setRatings] = useState(new Array(arrayLength).fill(0))
+    const { updateReponseEvaluation, defaultValue } = useContext(
+        EvaluationEtudiantContext
+    )
 
     const handleRatingChange = (
         index: number,
@@ -32,41 +30,16 @@ const QuestionRating: FC<QuestionRatingProps> = ({
         idQuestion: number
     ) => {
         updateReponseEvaluation(idQuestion, value)
-        const newRatings = [...ratings]
-
-        newRatings[index] = value
-        console.log("🚀 ~ newRatings:", newRatings)
-        setRatings(newRatings)
     }
 
     const handleValidate = () => {
         // Soumettre les évaluations
 
         handleSubmit()
-        setRatings(new Array(arrayLength).fill(0))
+
         //handleComplete();
     }
-    const rep = localStorage.getItem("reponseEvaluation")
-    const evae: ReponseEvaluation = JSON.parse(rep ?? "{}")
-    const defaultV = createDefaultValue(
-        evae.reponseQuestions ?? [],
-        rubrique.questionEvaluations || []
-    )
-    const [defaultValue, setDefaultValue] = useState<DefaultValue>(defaultV)
-    useEffect(() => {
-        const rep = localStorage.getItem("reponseEvaluation")
 
-        if (rep && rubrique.questionEvaluations) {
-            const evae: ReponseEvaluation = JSON.parse(rep)
-            const defaultV = createDefaultValue(
-                evae.reponseQuestions,
-                rubrique.questionEvaluations
-            )
-
-            setDefaultValue(defaultV)
-            // setRatings(new Array(arrayLength).fill(1))
-        }
-    }, [rubrique.questionEvaluations, arrayLength])
     if (!rubrique) {
         return <>Loading</>
     }
@@ -236,8 +209,9 @@ const QuestionRating: FC<QuestionRatingProps> = ({
                     text="Suivant"
                     variant="contained"
                     onClick={handleValidate}
-                    disabled={ratings.some(
-                        (rating) => rating === 0 || rating === null
+                    disabled={hasDefaultValueZero(
+                        defaultValue,
+                        rubrique.questionEvaluations ?? []
                     )}
                 />
             </div>

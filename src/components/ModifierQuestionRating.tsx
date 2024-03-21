@@ -1,45 +1,16 @@
-import React, { FC, useContext, useEffect, useState } from "react"
+import React, { FC, useContext } from "react"
 import Rating from "@mui/material/Rating"
 import Typography from "@mui/material/Typography"
 import { Divider, Paper } from "@mui/material"
 import { StepContext } from "../context/stepperContext"
 import ButtonComponent from "../common/Button"
-import {
-    QuestionEvaluation,
-    RubriqueEvaluation,
-} from "../types/EvaluationTypes"
-import { DefaultValue, ReponseEvaluation, reponseQuestions } from "../types"
+import { RubriqueEvaluation } from "../types/EvaluationTypes"
 import { COLORS } from "../constants"
-import { EvaluationEtudiantContext } from "../context/evaluationEtudiantContext"
+import {
+    EvaluationEtudiantContext,
+    hasDefaultValueZero,
+} from "../context/evaluationEtudiantContext"
 
-const createDefaultValue = (
-    reponseQuestions: reponseQuestions[],
-    questionEvaluations: QuestionEvaluation[]
-): DefaultValue => {
-    const defaultValue: DefaultValue = {}
-    // Parcourt chaque réponse
-    reponseQuestions.forEach((reponse) => {
-        // Trouve la question correspondante dans les évaluations de questions
-        const question = questionEvaluations.find((q) => {
-            return q.id === reponse.idQuestionEvaluation.id
-        })
-
-        // Si la question est trouvée, ajoute l'id de la question avec son positionnement à defaultValue
-        if (question) {
-            defaultValue[question.id] = reponse.positionnement
-        }
-    })
-
-    // Parcourt chaque questionEvaluation pour vérifier si elle est présente dans defaultValue
-    questionEvaluations.forEach((question) => {
-        if (!(question.id in defaultValue)) {
-            // Si la question n'est pas présente, ajoute l'id de la question avec positionnement 0 à defaultValue
-            defaultValue[question.id] = 0
-        }
-    })
-
-    return defaultValue
-}
 interface QuestionRatingProps {
     rubrique: RubriqueEvaluation
     handleSubmit: () => void
@@ -49,68 +20,31 @@ const ModifierQuestionRating: FC<QuestionRatingProps> = ({
     handleSubmit,
 }) => {
     const { activeStep, handleBack } = React.useContext(StepContext)
-    const { updateReponseEvaluationModifier } = useContext(
+    const { updateReponseEvaluation, defaultValue } = useContext(
         EvaluationEtudiantContext
     )
-    const arrayLength = rubrique.questionEvaluations?.length ?? 1
-
-    const [ratings, setRatings] = useState(new Array(arrayLength).fill(0))
+    console.log("🚀 ~ defaultValue:", defaultValue)
 
     const handleRatingChange = (
         index: number,
         value: number,
         idQuestion: number
     ) => {
-        updateReponseEvaluationModifier(idQuestion, value)
-        const newRatings = [...ratings]
-
-        newRatings[index] = value
-        setRatings(newRatings)
+        updateReponseEvaluation(idQuestion, value)
     }
 
     const handleValidate = () => {
         // Soumettre les évaluations
 
         handleSubmit()
-        setRatings(new Array(arrayLength).fill(0))
+
         //handleComplete();
     }
-    const rep = localStorage.getItem("modifierEvaluation")
 
-    const evae: ReponseEvaluation = JSON.parse(rep ?? "{}")
-
-    const defaultV = createDefaultValue(
-        evae.reponseQuestions ?? [],
-        rubrique.questionEvaluations || []
-    )
-    const [defaultValue, setDefaultValue] = useState<DefaultValue>(defaultV)
-    useEffect(() => {
-        const rep = localStorage.getItem("modifierEvaluation")
-
-        if (rep && rubrique.questionEvaluations) {
-            console.log(
-                "🚀 ~ useEffect ~ rubrique:",
-                rubrique.questionEvaluations
-            )
-            console.log("🚀 ~ useEffect ~ rep:", rep)
-            const evae: ReponseEvaluation = JSON.parse(rep)
-            console.log("🚀 ~ useEffect ~ evae:", evae.reponseQuestions)
-
-            const defaultV = createDefaultValue(
-                evae.reponseQuestions,
-                rubrique.questionEvaluations
-            )
-            console.log("🚀 ~ defaultValue:", defaultV)
-
-            setDefaultValue(defaultV)
-            setRatings(new Array(arrayLength).fill(1))
-        }
-    }, [rep, rubrique.questionEvaluations, arrayLength])
     if (!rubrique) {
         return <>Loading</>
     }
-    console.log("🚀 ~ defaultValue:OUIH", defaultValue)
-    console.log("🚀 ~ defaulkjlkjlkjntValue:OUIH", defaultValue[54])
+
     return (
         <div
             style={{
@@ -277,8 +211,9 @@ const ModifierQuestionRating: FC<QuestionRatingProps> = ({
                     text="Suivant"
                     variant="contained"
                     onClick={handleValidate}
-                    disabled={ratings.some(
-                        (rating) => rating === 0 || rating === null
+                    disabled={hasDefaultValueZero(
+                        defaultValue,
+                        rubrique.questionEvaluations ?? []
                     )}
                 />
             </div>

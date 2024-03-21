@@ -5,17 +5,22 @@ import { StepContext } from "../../context/stepperContext"
 import RecapitulatifReponses from "../../components/RecapitulatifReponses"
 import Header from "../../Layout/Header"
 import { useNavigate, useParams } from "react-router-dom"
-import { EvaluationEtudiantContext } from "../../context/evaluationEtudiantContext"
+import {
+    EvaluationEtudiantContext,
+    convertToReponseEvaluation,
+} from "../../context/evaluationEtudiantContext"
 import { Evaluation } from "../../types/EvaluationTypes"
-import CommentaireEvalution from "../../components/CommentaireEvaluation"
 import ButtonComponent from "../../common/Button"
 import { KeyboardBackspace } from "@mui/icons-material"
 
 const ReponseEvaluation = () => {
     const idEvaluation = useParams().id
-    const { getEvaluationDetails, evaluationDetails } = useContext(
-        EvaluationEtudiantContext
-    )
+    const {
+        getEvaluationDetails,
+        evaluationDetails,
+        updateReponseEvaluationByReponse,
+    } = useContext(EvaluationEtudiantContext)
+
     const [list, setList] = useState<Evaluation>()
 
     useEffect(() => {
@@ -26,12 +31,21 @@ const ReponseEvaluation = () => {
         setList(evaluationDetails)
     }, [evaluationDetails])
 
+    useEffect(() => {
+        const reponse = convertToReponseEvaluation(
+            list?.rubriqueEvaluations ?? [],
+            list?.id ?? 0
+        )
+        console.log("🚀 ~ ReponseEvaluation ~ reponse:", reponse)
+        updateReponseEvaluationByReponse(reponse)
+    }, [list?.id, list?.rubriqueEvaluations, updateReponseEvaluationByReponse])
+
     const { activeStep, handleComplete } = useContext(StepContext)
 
     const handleValidateElement = () => {
         //traitement ajout
         //
-        if (activeStep !== (list?.rubriqueEvaluations?.length ?? 0) + 2) {
+        if (activeStep !== (list?.rubriqueEvaluations?.length ?? 0) + 1) {
             handleComplete()
         } else {
             //fin du remplissage
@@ -48,10 +62,6 @@ const ReponseEvaluation = () => {
           ))
         : []
     stepItems.push(
-        <CommentaireEvalution
-            key={"20"}
-            handleSubmit={handleValidateElement}
-        />,
         <RecapitulatifReponses
             key={"200"}
             rubrique={list ? list.rubriqueEvaluations : []}
@@ -81,7 +91,7 @@ const ReponseEvaluation = () => {
                 />
             </div>
             <StepperComponent
-                stepsCount={list ? list.rubriqueEvaluations.length + 2 : 2}
+                stepsCount={list ? list.rubriqueEvaluations.length + 1 : 1}
             >
                 {stepItems}
             </StepperComponent>

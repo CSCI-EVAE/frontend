@@ -39,7 +39,7 @@ export interface RubriqueEvaluation {
 }
 
 export interface Evaluation {
-    id: number
+    id?: number
     idEvaluationId?: number
     designation: string
     debutReponse: string
