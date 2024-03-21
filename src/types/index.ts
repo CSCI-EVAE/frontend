@@ -250,6 +250,7 @@ export interface Evaluation {
     anneUniv: string | null
     codeUe: string | null
     RubriqueQuestion: RubriqueEvaluation[]
+    nbEtuRepondu?: number
 }
 
 export interface UeToDisplay {

@@ -1,5 +1,5 @@
 import * as React from "react"
-import {useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 
 import {
     Grid,
@@ -50,14 +50,18 @@ export default function CreerEtudiant() {
     } = useForm({
         mode: "all",
     })
-    const [sexe,setSexe] = React.useState( "")
+    const [sexe, setSexe] = React.useState("")
 
-const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSexe(event.target.value);
-  };
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSexe(event.target.value)
+    }
 
-const [sexeError,setSexeError] = React.useState('')
+    const [sexeError, setSexeError] = React.useState("")
 
+    const [groupeTp, setGroupeTp] = React.useState("0")
+    const [groupeTpError, setGroupeTpError] = React.useState("")
+    const [groupeAnglais, setGroupeAnglais] = React.useState("0")
+    const [groupeAnglaisError, setGroupeAnglaisError] = React.useState("")
     const validateOtherElements = (data: any) => {
         if (universite === "") {
             setUniversiteError("l'université est obligatoire")
@@ -67,34 +71,44 @@ const [sexeError,setSexeError] = React.useState('')
             setPaysError("Le pays est obligatoire")
             return
         }
-        if(sexe ==="") {
-            setSexeError('Le sexe est obligatoire')
+        if (sexe === "") {
+            setSexeError("Le sexe est obligatoire")
             return
-        } 
+        }
+        if (groupeTp === "0") {
+            setGroupeTpError("Le groupe de Tp est obligatoire")
+            return
+        }
+        if (groupeAnglais === "0") {
+            setGroupeAnglaisError("Le groupe de Tp est obligatoire")
+            return
+        }
 
         onSubmit(data)
     }
     const validateNationalite = (value: string) => {
-
         if (value.trim() === "") return "La nationalité ne peut pas être vide"
-        if (contientChiffre(value)) return "La nationalité ne doit pas contenir des chiffres."
+        if (contientChiffre(value))
+            return "La nationalité ne doit pas contenir des chiffres."
 
         return true
     }
     const validateVille = (value: string) => {
-
         if (value.trim() === "") return "La ville ne peut pas être vide"
-        if (contientChiffre(value)) return "La ville ne doit pas contenir des chiffres."
+        if (contientChiffre(value))
+            return "La ville ne doit pas contenir des chiffres."
 
         return true
     }
     const validateLieu = (value: string) => {
-
-        if (value.trim() === "") return "Le lieu de naissance ne peut pas être vide"
-        if (contientChiffre(value)) return "Le lieu de naissance ne doit pas contenir des chiffres."
+        if (value.trim() === "")
+            return "Le lieu de naissance ne peut pas être vide"
+        if (contientChiffre(value))
+            return "Le lieu de naissance ne doit pas contenir des chiffres."
 
         return true
     }
+
     const onSubmit = (data: any) => {
         const etudiant: EtudiantDTO = {
             adresse: data.adresse,
@@ -102,8 +116,8 @@ const [sexeError,setSexeError] = React.useState('')
             dateNaissance: data.date,
             email: data.mail,
             emailUbo: data.mailUBO + "@etudiant.univ-brest.fr",
-            groupeAnglais: data.groupeAnglais,
-            groupeTp: data.groupeTP,
+            groupeAnglais: Number(groupeAnglais),
+            groupeTp: Number(groupeTp),
             lieuNaissance: data.lieu,
             mobile: data.mobile,
             nationalite: data.nationalite,
@@ -127,6 +141,10 @@ const [sexeError,setSexeError] = React.useState('')
         setPays("")
         setUniversiteError("")
         setPaysError("")
+        setGroupeAnglais("0")
+        setGroupeAnglaisError("")
+        setGroupeTp("0")
+        setGroupeTpError("")
         // navigate(
         //     `/dashboard/details-promotion/${codeFormation}/${anneeUniversitaire}`
         // )
@@ -648,41 +666,59 @@ const [sexeError,setSexeError] = React.useState('')
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                <FormControl
+                                    <FormControl
                                         style={styleInput}
                                         error={!!errors.sexe}
                                         component="fieldset"
                                     >
-                                         <FormLabel required component="legend">
+                                        <FormLabel required component="legend">
                                             Sexe
                                         </FormLabel>
-                                        
-                                        <div style={{ display: 'flex', flexDirection: 'row' }}> 
-<label style={{  marginLeft:"10px",marginRight: '10px' }}>
-          <input style={{marginRight : "12px"}}
-            type="radio"
-            value="H"
-            checked={sexe === 'H'}
-            onChange={handleChange}
-          />
-          Homme
-        </label><br />
-        <label>
-          <input  style={{marginRight : "12px"}}
-            type="radio"
-            value="F"
-            checked={sexe === 'F'}
-            onChange={handleChange}
-          />
-          Femme
-        </label><br />
-        </div>
-        {sexeError !== "" && (
+
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                flexDirection: "row",
+                                            }}
+                                        >
+                                            <label
+                                                style={{
+                                                    marginLeft: "10px",
+                                                    marginRight: "10px",
+                                                }}
+                                            >
+                                                <input
+                                                    style={{
+                                                        marginRight: "12px",
+                                                    }}
+                                                    type="radio"
+                                                    value="H"
+                                                    checked={sexe === "H"}
+                                                    onChange={handleChange}
+                                                />
+                                                Homme
+                                            </label>
+                                            <br />
+                                            <label>
+                                                <input
+                                                    style={{
+                                                        marginRight: "12px",
+                                                    }}
+                                                    type="radio"
+                                                    value="F"
+                                                    checked={sexe === "F"}
+                                                    onChange={handleChange}
+                                                />
+                                                Femme
+                                            </label>
+                                            <br />
+                                        </div>
+                                        {sexeError !== "" && (
                                             <FormHelperText error>
                                                 {sexeError}
                                             </FormHelperText>
                                         )}
-        </FormControl>
+                                    </FormControl>
                                 </Grid>
 
                                 <Grid item xs={12} sm={6}>
@@ -761,7 +797,7 @@ const [sexeError,setSexeError] = React.useState('')
                                         )}
                                     </FormControl>
                                 </Grid>
-                                <Grid item xs={12} sm={6}>
+                                {/* <Grid item xs={12} sm={6}>
                                     <FormControl style={styleInput}>
                                         <TextField
                                             //margin="normal"
@@ -823,6 +859,74 @@ const [sexeError,setSexeError] = React.useState('')
                                             ?.message === "string" && (
                                             <FormHelperText error>
                                                 {errors.groupeAnglais.message}
+                                            </FormHelperText>
+                                        )}
+                                    </FormControl>
+                                </Grid> */}
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl
+                                        required
+                                        style={styleInput}
+                                        error={!!groupeTpError}
+                                    >
+                                        <SelectComponent
+                                            onChange={(selectedValue) => {
+                                                setGroupeTp(
+                                                    selectedValue as string
+                                                )
+                                            }}
+                                            placeholder="Groupe TP"
+                                            name="groupeTP"
+                                            label="Groupe de Tp *"
+                                            options={[
+                                                {
+                                                    label: "Groupe 1",
+                                                    value: "1",
+                                                },
+                                                {
+                                                    label: "Groupe 2",
+                                                    value: "2",
+                                                },
+                                            ]}
+                                            value={groupeTp}
+                                        />
+                                        {groupeTpError !== "" && (
+                                            <FormHelperText error>
+                                                {groupeTpError}
+                                            </FormHelperText>
+                                        )}
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl
+                                        required
+                                        style={styleInput}
+                                        error={!!groupeAnglaisError}
+                                    >
+                                        <SelectComponent
+                                            onChange={(selectedValue) => {
+                                                setGroupeAnglais(
+                                                    selectedValue as string
+                                                )
+                                            }}
+                                            placeholder="Groupe d'Anglais"
+                                            name="groupeAnglais"
+                                            label="Groupe d'anglais*"
+                                            options={[
+                                                {
+                                                    label: "Groupe 1",
+                                                    value: "1",
+                                                },
+                                                {
+                                                    label: "Groupe 2",
+                                                    value: "2",
+                                                },
+                                            ]}
+                                            value={groupeAnglais}
+                                        />
+                                        {groupeAnglaisError !== "" && (
+                                            <FormHelperText error>
+                                                {groupeAnglaisError}
                                             </FormHelperText>
                                         )}
                                     </FormControl>

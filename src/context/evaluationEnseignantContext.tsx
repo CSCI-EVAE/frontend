@@ -87,7 +87,7 @@ export const EvaluationContextProvider: React.FC<
                     return
                 }
                 const { data } = response.data
-                // console.log("Les statistiques eval  "+JSON.stringify(data));
+                console.log("Les statistiques eval  ", data)
 
                 updateStatistiqueEvaluation(data)
             } catch (error) {

@@ -11,12 +11,11 @@ import {
     FormControl,
     FormHelperText,
     FormLabel,
-
 } from "@mui/material"
 import ButtonComponent from "../common/Button"
 import { ThemeProvider, createTheme } from "@mui/material/styles"
 import SelectComponent from "../common/Select/newSelect"
-import {PAYS_OPTIONS, UNIVERSITE_ORIGINE_OPTIONS } from "../constants"
+import { PAYS_OPTIONS, UNIVERSITE_ORIGINE_OPTIONS } from "../constants"
 import { EtudiantDTO } from "../types"
 import Header from "../Layout/Header"
 import { useNavigate, useParams } from "react-router-dom"
@@ -26,7 +25,7 @@ import { KeyboardBackspace } from "@mui/icons-material"
 
 const defaultTheme = createTheme()
 export function contientChiffre(chaine: string) {
-    return /\d/.test(chaine);
+    return /\d/.test(chaine)
 }
 export default function ModifierEtudiant() {
     const etudiantContext = React.useContext(EtudiantListContext)
@@ -52,6 +51,8 @@ export default function ModifierEtudiant() {
                 setUniversite(etud.universiteOrigine)
                 setPays(etud.paysOrigine)
                 setEtudiant(etud)
+                setGroupeAnglais(String(etud.groupeAnglais))
+                setGroupeTp(String(etud.groupeTp))
                 setIsLoading(false) // Data fetching is completed
             } catch (error) {
                 console.error(
@@ -81,10 +82,15 @@ export default function ModifierEtudiant() {
         setSexe(etudiant?.sexe)
     }, [etudiant])
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSexe(event.target.value);
-    };
+        setSexe(event.target.value)
+    }
 
-    const [sexeError, setSexeError] = React.useState('')
+    const [sexeError, setSexeError] = React.useState("")
+
+    const [groupeTp, setGroupeTp] = React.useState("0")
+    const [groupeTpError, setGroupeTpError] = React.useState("")
+    const [groupeAnglais, setGroupeAnglais] = React.useState("0")
+    const [groupeAnglaisError, setGroupeAnglaisError] = React.useState("")
 
     const validateOtherElements = (data: any) => {
         if (universite === "") {
@@ -96,10 +102,17 @@ export default function ModifierEtudiant() {
             return
         }
         if (sexe === "") {
-            setSexeError('Le sexe est obligatoire')
+            setSexeError("Le sexe est obligatoire")
             return
         }
-
+        if (groupeTp === "0") {
+            setGroupeTpError("Le groupe de Tp est obligatoire")
+            return
+        }
+        if (groupeAnglais === "0") {
+            setGroupeAnglaisError("Le groupe de Tp est obligatoire")
+            return
+        }
 
         // setVilleError("");
         onSubmit(data)
@@ -111,8 +124,8 @@ export default function ModifierEtudiant() {
             dateNaissance: data.date,
             email: data.mail,
             emailUbo: data.mailUBO,
-            groupeAnglais: data.groupeAnglais,
-            groupeTp: data.groupeTP,
+            groupeAnglais: Number(groupeAnglais),
+            groupeTp: Number(groupeTp),
             lieuNaissance: data.lieu,
             mobile: data.mobile,
             nationalite: data.nationalite,
@@ -155,23 +168,24 @@ export default function ModifierEtudiant() {
         )
     }
     const validateNationalite = (value: string) => {
-
         if (value.trim() === "") return "La nationalité ne peut pas être vide"
-        if (contientChiffre(value)) return "La nationalité ne doit pas contenir des chiffres."
+        if (contientChiffre(value))
+            return "La nationalité ne doit pas contenir des chiffres."
 
         return true
     }
     const validateVille = (value: string) => {
-
         if (value.trim() === "") return "La ville ne peut pas être vide"
-        if (contientChiffre(value)) return "La ville ne doit pas contenir des chiffres."
+        if (contientChiffre(value))
+            return "La ville ne doit pas contenir des chiffres."
 
         return true
     }
     const validateLieu = (value: string) => {
-
-        if (value.trim() === "") return "Le lieu de naissance ne peut pas être vide"
-        if (contientChiffre(value)) return "Le lieu de naissance ne doit pas contenir des chiffres."
+        if (value.trim() === "")
+            return "Le lieu de naissance ne peut pas être vide"
+        if (contientChiffre(value))
+            return "Le lieu de naissance ne doit pas contenir des chiffres."
 
         return true
     }
@@ -294,10 +308,10 @@ export default function ModifierEtudiant() {
                                         />
                                         {typeof errors.nom?.message ===
                                             "string" && (
-                                                <FormHelperText error>
-                                                    {errors.nom.message}
-                                                </FormHelperText>
-                                            )}
+                                            <FormHelperText error>
+                                                {errors.nom.message}
+                                            </FormHelperText>
+                                        )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -327,10 +341,10 @@ export default function ModifierEtudiant() {
                                         />
                                         {typeof errors.prenom?.message ===
                                             "string" && (
-                                                <FormHelperText error>
-                                                    {errors.prenom.message}
-                                                </FormHelperText>
-                                            )}
+                                            <FormHelperText error>
+                                                {errors.prenom.message}
+                                            </FormHelperText>
+                                        )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -357,10 +371,10 @@ export default function ModifierEtudiant() {
                                         />
                                         {typeof errors.mail?.message ===
                                             "string" && (
-                                                <FormHelperText error>
-                                                    {errors.mail.message}
-                                                </FormHelperText>
-                                            )}
+                                            <FormHelperText error>
+                                                {errors.mail.message}
+                                            </FormHelperText>
+                                        )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -389,10 +403,10 @@ export default function ModifierEtudiant() {
                                         />
                                         {typeof errors.mailUBO?.message ===
                                             "string" && (
-                                                <FormHelperText error>
-                                                    {errors.mailUBO.message}
-                                                </FormHelperText>
-                                            )}
+                                            <FormHelperText error>
+                                                {errors.mailUBO.message}
+                                            </FormHelperText>
+                                        )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -437,10 +451,10 @@ export default function ModifierEtudiant() {
                                         />
                                         {typeof errors.telephone?.message ===
                                             "string" && (
-                                                <FormHelperText error>
-                                                    {errors.telephone.message}
-                                                </FormHelperText>
-                                            )}
+                                            <FormHelperText error>
+                                                {errors.telephone.message}
+                                            </FormHelperText>
+                                        )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -483,10 +497,10 @@ export default function ModifierEtudiant() {
                                         />
                                         {typeof errors.mobile?.message ===
                                             "string" && (
-                                                <FormHelperText error>
-                                                    {errors.mobile.message}
-                                                </FormHelperText>
-                                            )}
+                                            <FormHelperText error>
+                                                {errors.mobile.message}
+                                            </FormHelperText>
+                                        )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -517,10 +531,10 @@ export default function ModifierEtudiant() {
                                         />
                                         {typeof errors.lieu?.message ===
                                             "string" && (
-                                                <FormHelperText error>
-                                                    {errors.lieu.message}
-                                                </FormHelperText>
-                                            )}
+                                            <FormHelperText error>
+                                                {errors.lieu.message}
+                                            </FormHelperText>
+                                        )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -550,10 +564,10 @@ export default function ModifierEtudiant() {
                                         />
                                         {typeof errors.nationalite?.message ===
                                             "string" && (
-                                                <FormHelperText error>
-                                                    {errors.nationalite.message}
-                                                </FormHelperText>
-                                            )}
+                                            <FormHelperText error>
+                                                {errors.nationalite.message}
+                                            </FormHelperText>
+                                        )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -583,10 +597,10 @@ export default function ModifierEtudiant() {
                                         />
                                         {typeof errors.adresse?.message ===
                                             "string" && (
-                                                <FormHelperText error>
-                                                    {errors.adresse.message}
-                                                </FormHelperText>
-                                            )}
+                                            <FormHelperText error>
+                                                {errors.adresse.message}
+                                            </FormHelperText>
+                                        )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -629,10 +643,10 @@ export default function ModifierEtudiant() {
                                         />
                                         {typeof errors.code?.message ===
                                             "string" && (
-                                                <FormHelperText error>
-                                                    {errors.code.message}
-                                                </FormHelperText>
-                                            )}
+                                            <FormHelperText error>
+                                                {errors.code.message}
+                                            </FormHelperText>
+                                        )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -650,8 +664,7 @@ export default function ModifierEtudiant() {
                                             {...register("ville", {
                                                 required:
                                                     "La ville est obligatoire..",
-                                                validate:validateVille
-                                                   ,
+                                                validate: validateVille,
                                                 maxLength: {
                                                     value: 255,
                                                     message:
@@ -661,14 +674,13 @@ export default function ModifierEtudiant() {
                                         />
                                         {typeof errors.ville?.message ===
                                             "string" && (
-                                                <FormHelperText error>
-                                                    {errors.ville.message}
-                                                </FormHelperText>
-                                            )}
+                                            <FormHelperText error>
+                                                {errors.ville.message}
+                                            </FormHelperText>
+                                        )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    
                                     <FormControl
                                         style={styleInput}
                                         error={!!errors.sexe}
@@ -678,25 +690,43 @@ export default function ModifierEtudiant() {
                                             Sexe
                                         </FormLabel>
 
-                                        <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                            <label style={{ marginLeft: "10px", marginRight: '10px' }}>
-                                                <input style={{ marginRight: "12px" }}
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                flexDirection: "row",
+                                            }}
+                                        >
+                                            <label
+                                                style={{
+                                                    marginLeft: "10px",
+                                                    marginRight: "10px",
+                                                }}
+                                            >
+                                                <input
+                                                    style={{
+                                                        marginRight: "12px",
+                                                    }}
                                                     type="radio"
                                                     value="H"
-                                                    checked={sexe === 'H'}
+                                                    checked={sexe === "H"}
                                                     onChange={handleChange}
                                                 />
                                                 Homme
-                                            </label><br />
+                                            </label>
+                                            <br />
                                             <label>
-                                                <input style={{ marginRight: "12px" }}
+                                                <input
+                                                    style={{
+                                                        marginRight: "12px",
+                                                    }}
                                                     type="radio"
                                                     value="F"
-                                                    checked={sexe === 'F'}
+                                                    checked={sexe === "F"}
                                                     onChange={handleChange}
                                                 />
                                                 Femme
-                                            </label><br />
+                                            </label>
+                                            <br />
                                         </div>
                                         {sexeError !== "" && (
                                             <FormHelperText error>
@@ -704,7 +734,6 @@ export default function ModifierEtudiant() {
                                             </FormHelperText>
                                         )}
                                     </FormControl>
-
                                 </Grid>
 
                                 <Grid item xs={12} sm={6}>
@@ -783,84 +812,82 @@ export default function ModifierEtudiant() {
                                         />
                                         {typeof errors.date?.message ===
                                             "string" && (
-                                                <FormHelperText error>
-                                                    {errors.date.message}
-                                                </FormHelperText>
-                                            )}
+                                            <FormHelperText error>
+                                                {errors.date.message}
+                                            </FormHelperText>
+                                        )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <FormControl style={styleInput}>
-                                        <TextField
-                                            //margin="normal"
-                                            type="number"
-                                            required
-                                            id="groupeTP"
-                                            label="Groupe de TP"
-                                            autoComplete="groupeTP"
-                                            defaultValue={
-                                                etudiant
-                                                    ? etudiant.groupeTp
-                                                    : ""
-                                            }
-                                            //  autoFocus
-                                            {...register("groupeTP", {
-                                                required:
-                                                    "Le groupe de TP est obligatoire...!",
-                                                validate: (value) =>
-                                                    value.trim() !== "" ||
-                                                    "Le groupe de TP ne peut pas être vide",
-                                                pattern: {
-                                                    value: /^[0-9]*$/, // Expression régulière pour vérifier que le numéro contient uniquement des chiffres
-                                                    message:
-                                                        "Le groupe TP doit contenir uniquement des chiffres",
-                                                },
-                                            })}
-                                            error={!!errors.groupeTP} // Set error prop based on the presence of errors
-                                        />
-                                        {typeof errors.groupeTP?.message ===
-                                            "string" && (
-                                                <FormHelperText error>
-                                                    {errors.groupeTP.message}
-                                                </FormHelperText>
+                                    <FormControl
+                                        required
+                                        style={styleInput}
+                                        error={!!groupeTpError}
+                                    >
+                                        <SelectComponent
+                                            defaultValue={String(
+                                                etudiant?.groupeTp
                                             )}
+                                            onChange={(selectedValue) => {
+                                                setGroupeTp(
+                                                    selectedValue as string
+                                                )
+                                            }}
+                                            placeholder="Groupe TP"
+                                            name="groupeTP"
+                                            label="Groupe de Tp *"
+                                            options={[
+                                                {
+                                                    label: "Groupe 1",
+                                                    value: "1",
+                                                },
+                                                {
+                                                    label: "Groupe 2",
+                                                    value: "2",
+                                                },
+                                            ]}
+                                            value={groupeTp}
+                                        />
+                                        {groupeTpError !== "" && (
+                                            <FormHelperText error>
+                                                {groupeTpError}
+                                            </FormHelperText>
+                                        )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <FormControl style={styleInput}>
-                                        <TextField
-                                            //margin="normal"
-                                            type="number"
-                                            required
-                                            id="groupeAnglais"
-                                            label="Groupe d'Anglais"
-                                            autoComplete="groupeAnglais"
-                                            defaultValue={
-                                                etudiant
-                                                    ? etudiant.groupeAnglais
-                                                    : ""
-                                            }
-                                            //  autoFocus
-                                            {...register("groupeAnglais", {
-                                                required:
-                                                    "Le groupe d'Anglais est obligatoire...!",
-                                                validate: (value) =>
-                                                    value.trim() !== "" ||
-                                                    "Le groupe d'Anglais ne peut pas être vide",
-                                                pattern: {
-                                                    value: /^[0-9]*$/, // Expression régulière pour vérifier que le numéro contient uniquement des chiffres
-                                                    message:
-                                                        "Le groupe Anglais doit contenir uniquement des chiffres",
+                                    <FormControl
+                                        required
+                                        style={styleInput}
+                                        error={!!groupeAnglaisError}
+                                    >
+                                        <SelectComponent
+                                            defaultValue={"1"}
+                                            onChange={(selectedValue) => {
+                                                setGroupeAnglais(
+                                                    selectedValue as string
+                                                )
+                                            }}
+                                            placeholder="Groupe d'Anglais"
+                                            name="groupeAnglais"
+                                            label="Groupe d'anglais*"
+                                            options={[
+                                                {
+                                                    label: "Groupe 1",
+                                                    value: "1",
                                                 },
-                                            })}
-                                            error={!!errors.groupeAnglais} // Set error prop based on the presence of errors
+                                                {
+                                                    label: "Groupe 2",
+                                                    value: "2",
+                                                },
+                                            ]}
+                                            value={groupeAnglais}
                                         />
-                                        {typeof errors.groupeAnglais
-                                            ?.message === "string" && (
-                                                <FormHelperText error>
-                                                    {errors.groupeAnglais.message}
-                                                </FormHelperText>
-                                            )}
+                                        {groupeAnglaisError !== "" && (
+                                            <FormHelperText error>
+                                                {groupeAnglaisError}
+                                            </FormHelperText>
+                                        )}
                                     </FormControl>
                                 </Grid>
                             </Grid>
@@ -870,7 +897,7 @@ export default function ModifierEtudiant() {
                                     variant="contained"
                                     text="Modifier"
 
-                                //  disabled={isSubmiting}
+                                    //  disabled={isSubmiting}
                                 />
                             </div>
                         </Box>

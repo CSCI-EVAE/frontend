@@ -18,21 +18,19 @@ export default function ReponseEvaluationEnseignant() {
     const { getStatistiques, statistiqueList } = useContext(EvaluationContext)
     const idEvaluation = useParams().id
 
-    console.log("aaa", statistiqueList)
     useEffect(() => {
         getStatistiques(idEvaluation)
     }, [getStatistiques, idEvaluation])
 
     return (
         <>
-        <SideBarEnseignant></SideBarEnseignant>
-        <Header></Header>
-        
+            <SideBarEnseignant></SideBarEnseignant>
+            <Header></Header>
+
             <DetailsEvaluationComponent
                 urlRetour="/dashboard/enseignant/unitésEnseignement"
                 evaluation={statistiqueList ?? []}
             />
- 
 
             <div
                 style={{
@@ -47,15 +45,7 @@ export default function ReponseEvaluationEnseignant() {
                     Détails des Réponses
                 </Typography>
             </div>
-            <div
-            // style={{
-            //     maxWidth: "90%",
-            //     marginLeft: "150px",
-            //     display: "flex",
-            //     flexDirection: "column",
-            //     alignItems: "center",
-            // }}
-            >
+            <div>
                 <ReponsesEvaluationDetails evaluation={statistiqueList ?? []} />
             </div>
         </>
