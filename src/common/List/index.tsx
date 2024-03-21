@@ -74,7 +74,7 @@ interface Props {
     redirect?: boolean
     url?: string
     filter?: boolean
-    supprimerHandler ?:(rowData: any) => void
+    supprimerHandler?: (rowData: any) => void
 }
 
 const ListComponent: React.FC<Props> = ({
@@ -101,8 +101,8 @@ const ListComponent: React.FC<Props> = ({
     url,
     redirect,
     filter,
-    
-    supprimerHandler
+
+    supprimerHandler,
 }) => {
     const [filters, setFilters] = useState<{ [key: string]: string }>({})
     const navigate = useNavigate()
@@ -160,7 +160,6 @@ const ListComponent: React.FC<Props> = ({
         marginTop: "20px",
         marginBottom: "50px",
     }
-    
 
     return (
         <div>
@@ -371,7 +370,7 @@ const ListComponent: React.FC<Props> = ({
                                                     </Tooltip>
                                                 )}
                                                 {row.detailsValue && (
-                                                    <Tooltip title="Consulter le détails de l'évaluation">
+                                                    <Tooltip title="Consulter le détail">
                                                         <IconButton
                                                             onClick={() => {
                                                                 if (redirect) {
@@ -460,7 +459,6 @@ const ListComponent: React.FC<Props> = ({
                                                 )}
 
                                                 {row.soumettreValue && (
-                                                
                                                     <Tooltip title="Soumettre l'évaluation">
                                                         <IconButton
                                                             onClick={() => {
@@ -482,10 +480,9 @@ const ListComponent: React.FC<Props> = ({
                                                             />
                                                         </IconButton>
                                                     </Tooltip>
-                                                    
-                                                    
                                                 )}
-                                                {row.delete && (<Tooltip title="Supprimer l'évaluation">
+                                                {row.delete && (
+                                                    <Tooltip title="Supprimer l'évaluation">
                                                         <IconButton
                                                             onClick={() => {
                                                                 setSelectedActions(
@@ -505,13 +502,20 @@ const ListComponent: React.FC<Props> = ({
                                                                 }}
                                                             />
                                                         </IconButton>
-                                                    </Tooltip>)}
+                                                    </Tooltip>
+                                                )}
                                                 {row.statistiques && (
                                                     <Tooltip title="Consulter les résultats">
                                                         <IconButton
                                                             onClick={() => {
                                                                 setSelectedActions(
                                                                     LIST_ACTIONS.statistiques
+                                                                )
+                                                                localStorage.setItem(
+                                                                    "stats",
+                                                                    JSON.stringify(
+                                                                        row
+                                                                    )
                                                                 )
 
                                                                 updateSelectedRow(
@@ -590,7 +594,7 @@ const ListComponent: React.FC<Props> = ({
                                 ?
                             </div>
                         )}
-                         {selectedAction === LIST_ACTIONS.supprimer && (
+                        {selectedAction === LIST_ACTIONS.supprimer && (
                             <div>
                                 Êtes-vous sûr de vouloir supprimer l'évaluation
                                 ?
@@ -636,13 +640,13 @@ const ListComponent: React.FC<Props> = ({
                                 />
                             </>
                         )}
-                         {selectedAction === LIST_ACTIONS.supprimer && (
+                        {selectedAction === LIST_ACTIONS.supprimer && (
                             <>
                                 <ButtonComponent
                                     text="Oui"
                                     onClick={() => {
                                         supprimerHandler &&
-                                        supprimerHandler(selectedRow)
+                                            supprimerHandler(selectedRow)
 
                                         updateModalOpen(false)
                                     }}

@@ -81,4 +81,5 @@ export interface CreateEvaluation {
     debutReponse: Date
     finReponse: Date
     rubriqueEvaluations: RubriqueEvaluation[]
+    nbEtuRepondu?: number
 }

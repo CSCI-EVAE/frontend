@@ -17,7 +17,6 @@ const PromotionPage: React.FC = () => {
     const newPromotionList = promotionList.map((promotion: Promotion) => {
         return { ...promotion, detailsValue: true }
     })
-    console.log("je suis liste", promotionList)
     return (
         <>
             <SideBarEnseignant />

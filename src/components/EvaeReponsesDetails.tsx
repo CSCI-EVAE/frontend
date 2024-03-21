@@ -6,7 +6,6 @@ import { Box, Grid, Typography } from "@mui/material"
 import { Evaluation } from "../types"
 import { formatDate } from "./detailsPromotionComponent"
 
-
 interface DetailsProps {
     evaluation: Evaluation
     urlRetour: string
@@ -34,7 +33,8 @@ const DetailsEvaluationComponent: FC<DetailsProps> = ({
         marginBottom: "50px",
     }
     const navigate = useNavigate()
-
+    const stats = localStorage.getItem("stats")
+    console.log("🚀 ~ stats:", stats)
     return (
         <>
             <div
@@ -160,6 +160,20 @@ const DetailsEvaluationComponent: FC<DetailsProps> = ({
                             <Typography variant="body1">
                                 <strong>Date de fin :</strong>{" "}
                                 {formatDate(evaluation.finReponse)}
+                            </Typography>
+                        </Grid>
+                        <Grid
+                            item
+                            sm={6}
+                            // component={Paper}
+                            //elevation={4}
+                            sx={{ marginBottom: "10px" }}
+                        >
+                            <Typography variant="body1">
+                                <strong>
+                                    Nombre d'étudiants ayant répondu :
+                                </strong>{" "}
+                                {evaluation.nbEtuRepondu}
                             </Typography>
                         </Grid>
                     </Grid>
