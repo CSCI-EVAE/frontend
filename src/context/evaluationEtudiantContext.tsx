@@ -21,7 +21,8 @@ import {
     reponseQuestions,
 } from "../types"
 import { getRequest, postRequest } from "../api/axios"
-import { formatDate } from "../components/detailsEvaluationComponent"
+import { formatDate } from "../components/detailsPromotionComponent"
+
 export const transformQuestionToReponseQuestion = (
     question: QuestionEvaluation
 ): reponseQuestions => {

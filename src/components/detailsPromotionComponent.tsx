@@ -10,6 +10,14 @@ interface DetailsProps {
     urlRetour: string
     effectifReel: number
 }
+export const formatDate = (dateString: string | null): string => {
+    if (dateString) {
+        const [year, month, day] = dateString.split('-'); // Suppose que la chaîne est au format "YYYY-MM-DD"
+        return `${day}-${month}-${year}`;
+    } else {
+        return "";
+    }
+};
 const DetailsPromotionComponent: FC<DetailsProps> = ({
     promotion,
     effectifReel,
@@ -24,18 +32,7 @@ const DetailsPromotionComponent: FC<DetailsProps> = ({
     }
     const navigate = useNavigate()
 
-    const formatDate = (dateString: string | null): string => {
-        if (dateString) {
-            const date = new Date(dateString)
-            const day = date.getDate().toString().padStart(2, "0")
-            const month = (date.getMonth() + 1).toString().padStart(2, "0")
-            const year = date.getFullYear().toString()
-            return `${day}-${month}-${year}`
-        } else {
-            return ""
-        }
-    }
-
+  
     return (
         <>
             <div

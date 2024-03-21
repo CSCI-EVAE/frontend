@@ -6,14 +6,14 @@ import { Box, Grid, Typography } from "@mui/material"
 import { Evaluation } from "../types/EvaluationTypes"
 import React from "react"
 
-export const formatDate = (dateString: string): string => {
-    const date = new Date(dateString)
-    console.log("🚀 ~ formatDate ~ date:", date)
-    const day = date.getDate().toString().padStart(2, "0")
-    const month = (date.getMonth() + 1).toString().padStart(2, "0")
-    const year = date.getFullYear().toString()
-    return `${day}-${month}-${year}`
-}
+const formatDate = (dateString: string | null): string => {
+    if (dateString) {
+        const [year, month, day] = dateString.split('-'); // Suppose que la chaîne est au format "YYYY-MM-DD"
+        return `${day}-${month}-${year}`;
+    } else {
+        return "";
+    }
+};
 
 interface DetailsProps {
     evaluation: Evaluation

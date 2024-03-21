@@ -14,6 +14,7 @@ import {
     postRequest,
     putRequest,
 } from "../api/axios"
+import { formatDate } from "../components/detailsPromotionComponent"
 // import { getRequest } from "../api/axios";
 
 interface EtudiantListProps {
@@ -52,13 +53,7 @@ export const EtudiantListContextPorvider: React.FC<EtudiantListProps> = ({
         setEtudiantList(value)
     }, [])
 
-    const formatDate = (dateString: string): string => {
-        const date = new Date(dateString)
-        const day = date.getDate().toString().padStart(2, "0")
-        const month = (date.getMonth() + 1).toString().padStart(2, "0")
-        const year = date.getFullYear().toString()
-        return `${day}-${month}-${year}`
-    }
+  
 
     const getList = useCallback(
         async (anneeUniversitaire: number, codeFormation: string) => {

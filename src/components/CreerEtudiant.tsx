@@ -691,6 +691,7 @@ export default function CreerEtudiant() {
                                             name="universite"
                                             label="Université d'origine"
                                             options={UNIVERSITE_ORIGINE_OPTIONS}
+                                            value={universite}
                                         />
                                         {universiteError !== "" && (
                                             <FormHelperText error>
@@ -713,6 +714,7 @@ export default function CreerEtudiant() {
                                             name="pays"
                                             label="Pays d'origine *"
                                             options={PAYS_OPTIONS}
+                                            value={pays}
                                         />
                                         {paysError !== "" && (
                                             <FormHelperText error>

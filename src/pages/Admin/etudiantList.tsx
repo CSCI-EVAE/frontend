@@ -27,6 +27,9 @@ const EtudiantListPage: React.FC<PromotionProps> = ({
         removeEtudiant(no_EtudiantSupp, anneeUniversitaire, codeFormation)
     }
 
+    
+   
+
     const navigate = useNavigate()
 
     const handleEdit = (rowData: any) => {
@@ -35,6 +38,12 @@ const EtudiantListPage: React.FC<PromotionProps> = ({
         )
     }
 
+
+    const handleDetails = (rowData: any) => {
+        navigate(
+            `/dashboard/details-promotion/${codeFormation}/${anneeUniversitaire}/details-etudiant/${rowData.noEtudiant}`
+        )
+    }
     const [data, setData] = useState<EtudiantDTO[]>([])
 
     useEffect(() => {
@@ -61,6 +70,9 @@ const EtudiantListPage: React.FC<PromotionProps> = ({
                 modifyHandler={handleEdit}
                 urlAdd={`/dashboard/details-promotion/${codeFormation}/${anneeUniversitaire}/creer-etudiant`}
                 redirectAdd={true}
+                detailsHandler={handleDetails}
+                details={true}
+               
             />
         </div>
     )

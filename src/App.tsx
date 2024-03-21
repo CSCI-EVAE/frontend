@@ -10,6 +10,7 @@ import Page404 from "./pages/Page404"
 import { NotificationContextProvider } from "./context/notificationContext"
 import { AuthContextProvider } from "./context/authContext"
 
+
 function App() {
     return (
         <div className="App">

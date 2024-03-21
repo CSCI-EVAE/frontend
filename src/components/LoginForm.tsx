@@ -1,11 +1,9 @@
 import React, { useContext, useState } from "react"
-import { TextField } from "@mui/material"
-import ButtonComponent from "../common/Button"
+import {TextField } from "@mui/material"
 import { useNavigate } from "react-router-dom"
 import { userInfos } from "../utils/authUtils"
-import { ROLE } from "../constants"
+import { COLORS, ROLE } from "../constants"
 import { AuthContext } from "../context/authContext"
-import Notification from "../common/Notification"
 
 interface Props {
     onLoginSuccess: () => void
@@ -40,16 +38,30 @@ const LoginForm: React.FC<Props> = ({ onLoginSuccess}) => {
             
         }
     }
+
+
+    const btnStyle: React.CSSProperties = {
+        backgroundColor: COLORS.color3,
+        color: 'white', 
+        borderRadius: '25px',
+        padding: '10px 20px', 
+        border:'none',
+        width:"160px",
+        height: "50px",
+        font: "18px bold"
+
+    }
  
     return (
         <>
-        <Notification />
+        
+        
 
             <form onSubmit={handleSubmit}>
                 
                 <TextField
                     label="Nom d'utilisateur"
-                    variant="outlined"
+                    variant="standard"
                     required
                     fullWidth
                     margin="normal"
@@ -60,19 +72,19 @@ const LoginForm: React.FC<Props> = ({ onLoginSuccess}) => {
                 <TextField
                     label="Mot de Passe"
                     type="password"
-                    variant="outlined"
+                    variant="standard"
                     required
                     fullWidth
                     margin="normal"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Entrez votre mot de passe"
-                />
-                <ButtonComponent
-                    text="Se Connecter"
+                /><br></br><br></br><br></br><br></br>
+                <button 
+                    style={btnStyle}
                     type="submit"
-                    variant="contained"
-                />
+                                    
+                >Connexion</button>
             </form>
         </>
     )
