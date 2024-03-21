@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom"
 import { isAuthenticated } from "../utils/authUtils"
 import Header from "../Layout/Header"
 import logo from "../images/echoSim.png"
+import Notification from "../common/Notification"
 
 const LoginPage: React.FC = () => {
     const navigate = useNavigate()
@@ -23,24 +24,45 @@ const LoginPage: React.FC = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "80vh",
+        width: "100%"
+
+
     }
 
     const paperStyle: React.CSSProperties = {
-        padding: "20px",
+        padding: "80px",
         textAlign: "center",
         background: "",
+        width: "50%",
+        borderRadius: "25px",
+        marginTop: "100px",
+        zIndex: "1"
+
     }
 
     const textStyle: React.CSSProperties = {
         fontFamily: "cursive",
         color: "#e3a12f",
         marginTop: "20px",
+      
+    }
+
+    const imgStyle: React.CSSProperties = {
+       height:"500px",
+       width: "100%",
+       marginTop:"-150px",
+       position: "absolute",
+       borderRadius:"40px"
+
     }
 
     return (
         <>
             <Header />
+            <Notification  />
+            <div >
+                <img src="../ubo.jpg" alt="" style={imgStyle} />
+            </div>
 
             <Container maxWidth="md" style={containerStyle}>
                 <Paper elevation={3} style={paperStyle}>
@@ -48,7 +70,7 @@ const LoginPage: React.FC = () => {
                         <img
                             src={logo}
                             alt="Logo"
-                            width="150"
+                            width="200"
                             style={{ margin: "-20px" }}
                         />
                     </Box>

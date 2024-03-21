@@ -4,6 +4,7 @@ import { NotificationContext } from "./notificationContext";
 // import { getRequest } from "../api/axios";
 import { ApiResponse, EtudiantDTO } from "../types";
 import { getRequest } from "../api/axios";
+import { formatDate } from "../components/detailsPromotionComponent";
 
 interface EtudiantListProps {
     children: ReactNode
@@ -21,14 +22,6 @@ const updateEtudiantList = useCallback((value: EtudiantDTO[]) => {
     setEtudiantList(value);
 }, []);
 
-const formatDate = (dateString: string): string => {
-    const date = new Date(dateString);
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear().toString();
-    return `${day}-${month}-${year}`;
-   
-  };
 
 
 

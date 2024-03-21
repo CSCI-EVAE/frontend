@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom"
 import { FC } from "react"
 import { Box, Grid, Typography } from "@mui/material"
 import { Evaluation } from "../types"
-import { formatDate } from "./detailsEvaluationComponent"
+import { formatDate } from "./detailsPromotionComponent"
+
 
 interface DetailsProps {
     evaluation: Evaluation

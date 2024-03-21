@@ -13,7 +13,8 @@ import { UEContext } from "../context/UeContext"
 import SelectComponent from "../common/Select/newSelect"
 import { Promotion } from "../types"
 import { EvaluationContext } from "../context/evaluationEnseignantContext"
-import { formatDate } from "./detailsEvaluationComponent"
+import { formatDate } from "./detailsPromotionComponent"
+
 
 const InfoGenerales: React.FC = () => {
     const navigate = useNavigate()
