@@ -9,6 +9,7 @@ import Page404 from "./pages/Page404"
 
 import { NotificationContextProvider } from "./context/notificationContext"
 import { AuthContextProvider } from "./context/authContext"
+import LandingPage from "./pages/LandingPage"
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/logout" element={<Logout />} />
                         <Route path="/" element={<LoginPage />} />
+                        <Route path="/accueil" element={<LandingPage />} />
 
                         <Route
                             path="/dashboard/*"

@@ -86,7 +86,7 @@ const DetailsPromotionAdmin = () => {
                     </AccordionSummary>
 
                     <AccordionDetails>
-                        <UeListComponent ue={ueList} />
+                        <UeListComponent  ue={ueList} />
                     </AccordionDetails>
                 </Accordion>
 
@@ -110,7 +110,12 @@ const DetailsPromotionAdmin = () => {
                     </AccordionSummary>
 
                     <AccordionDetails>
-                        <EtudiantListPage etudiantList={etudiantList} />
+                        <EtudiantListPage nombrePromotion={
+                            promotion.nbMaxEtudiant
+                            
+                            } nombreEtudiant={
+                                nombreEtudiants(etudiantList)
+                                } etudiantList={etudiantList} />
                     </AccordionDetails>
                 </Accordion>
             </div>

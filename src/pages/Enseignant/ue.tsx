@@ -41,6 +41,7 @@ const UePage: React.FC = () => {
             createValue: true,
             soumettreValue: false,
             statistiques: false,
+            delete : false
         }
 
         var newEtat = "En cours d'élaboration"
@@ -67,6 +68,7 @@ const UePage: React.FC = () => {
                 createValue: false,
                 soumettreValue: false,
                 statistiques: false,
+                delete : false
             }
 
             if (ue.etat === "ELA") {
@@ -74,12 +76,14 @@ const UePage: React.FC = () => {
                     ...extractedInfo,
                     soumettreValue: true,
                     statistiques: false,
+                    delete : true
                 }
             }
             if (ue.etat === "CLO") {
                 extractedInfo = {
                     ...extractedInfo,
                     statistiques: true,
+                    delete : false
                 }
             }
         }
@@ -112,7 +116,6 @@ const UePage: React.FC = () => {
                 ue.codeEc === rowData.codeEC
         )
 
-        console.log("jjjjjjj", selectedUe)
 
         if (selectedUe) {
             const rowDataInfo = extractNeededInfo(selectedUe)
@@ -147,8 +150,10 @@ const UePage: React.FC = () => {
     }
 
     const formation = ueList.map(extractNomFormation)
-    console.log("formation", formation)
-
+const handleDelete  = (row : any) => {
+    console.log("id ", row.idEvaluation)
+    ueContext.deleteEvae(row.idEvaluation)
+}
     return (
         <div>
             <SideBarEnseignant />
@@ -173,6 +178,7 @@ const UePage: React.FC = () => {
                 data={myData}
                 columnsFilter={UE_COLUMNS_FILTER}
                 afficherEtat={true}
+                supprimerHandler={handleDelete}
             />
         </div>
     )

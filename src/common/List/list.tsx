@@ -16,6 +16,7 @@ import {
     Typography,
     Tooltip,
     TablePagination,
+    Alert,
 } from "@mui/material"
 import {
     AddCircleOutline,
@@ -63,6 +64,8 @@ interface Props {
     filter?: boolean
     noBoutonAjouter?: boolean
     noBoutonRetour?: boolean
+    griser ?: boolean
+    texteGriser?:string
 }
 
 const ListComponent: React.FC<Props> = ({
@@ -91,6 +94,8 @@ const ListComponent: React.FC<Props> = ({
     filter,
     noBoutonAjouter,
     noBoutonRetour,
+    griser,
+    texteGriser
 }) => {
     const [filters, setFilters] = useState<{ [key: string]: string }>({})
     const [page, setPage] = useState(0) // État pour la pagination
@@ -198,20 +203,46 @@ const ListComponent: React.FC<Props> = ({
                     {title}
                 </Typography>
                 {!noBoutonAjouter && (
-                    <ButtonComponent
-                        text="Ajouter"
-                        variant="contained"
-                        icon={<AddCircleOutline />}
-                        onClick={() => {
-                            if (redirectAdd) {
-                                urlAdd && navigate(urlAdd)
-                            }
-                            setSelectedActions(LIST_ACTIONS.add)
-                            updateModalOpen(true)
-                            updateSelectedRow({})
-                        }}
-                    />
-                )}
+                <>
+     
+                    
+     {griser ? (
+   <> <Alert style={{ marginBottom:"16px"}} severity="warning">La promotion est complète. Impossible d'ajouter un nouveau étudiant.</Alert>
+   <ButtonComponent
+            text="Ajouter"
+            variant="contained"
+            icon={<AddCircleOutline />}
+            onClick={() => {
+                if (redirectAdd) {
+                    urlAdd && navigate(urlAdd)
+                }
+                setSelectedActions(LIST_ACTIONS.add)
+                updateModalOpen(true)
+                updateSelectedRow({})
+            }}
+            disabled
+        /></>
+        
+    
+) : (
+    <ButtonComponent
+        text="Ajouter"
+        variant="contained"
+        icon={<AddCircleOutline />}
+        onClick={() => {
+            if (redirectAdd) {
+                urlAdd && navigate(urlAdd)
+            }
+            setSelectedActions(LIST_ACTIONS.add)
+            updateModalOpen(true)
+            updateSelectedRow({})
+        }}
+    />
+)}
+                
+               
+               
+</>                  )}
                 <div style={{ height: "20px" }} />
 
                 <div style={{ width: "90%" }}>

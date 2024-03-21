@@ -21,6 +21,7 @@ export const COLORS = {
     color4: "#00334a",
     color5: "#fafafc",
     color7: "#c3defa",
+    color10 :"#005075"
 }
 
 export const UE_COLUMNS_LISTEtudiant = [
@@ -43,6 +44,8 @@ export const LIST_ACTIONS = {
     addRubriqueStandard: "ADD_RUBRIQUE_STANDARD",
     redirect: "REDIRECT",
     statistiques: "STATISTIQUES",
+    supprimer : "SUPPRIMER"
+    
 }
 
 export const LIST_ACTIONS_ETUDIANT = {
@@ -144,38 +147,38 @@ interface Dashboard {
 export const ADMIN_DASHBOARD: Dashboard[] = [
     {
         id: 1,
-        icon: <WidgetsIcon sx={{ color: COLORS.color4 }} />,
+        icon: <WidgetsIcon sx={{ color: COLORS.color10 }} />,
         title: "Menu",
         link: "/dashboard/admin",
     },
     {
         id: 2,
-        icon: <LiveHelpIcon sx={{ color: COLORS.color4 }} />,
+        icon: <LiveHelpIcon sx={{ color: COLORS.color10 }} />,
         title: "Questions",
         link: "/dashboard/questions",
     },
     {
         id: 3,
-        icon: <AltRouteIcon sx={{ color: COLORS.color4 }} />,
+        icon: <AltRouteIcon sx={{ color: COLORS.color10 }} />,
         title: "Qualificatifs",
         link: "/dashboard/qualificatif",
     },
     {
         id: 4,
-        icon: <AllOutIcon sx={{ color: COLORS.color4 }} />,
+        icon: <AllOutIcon sx={{ color: COLORS.color10}} />,
         title: "Rubriques",
         link: "/dashboard/rubrique",
     },
     {
         id: 5,
-        icon: <AccountTreeIcon sx={{ color: "#a0ccfa" }} />,
+        icon: <AccountTreeIcon sx={{ color: COLORS.color10 }} />,
         title: "Rubriques Composées",
         link: "/dashboard/rubriquecompose",
     },
 
     {
         id: 6,
-        icon: <List sx={{ color: "#a0ccfa" }} />,
+        icon: <List sx={{ color: COLORS.color10 }} />,
         title: "Promotions",
         link: "/dashboard/promotions",
     },
@@ -184,19 +187,19 @@ export const ADMIN_DASHBOARD: Dashboard[] = [
 export const ENSEIGNANT_DASHBOARD: Dashboard[] = [
     {
         id: 1,
-        icon: <WidgetsIcon sx={{ color: "#a0ccfa" }} />,
+        icon: <WidgetsIcon sx={{ color: COLORS.color10 }}  />,
         title: "Menu",
         link: "/dashboard/enseignant",
     },
     {
         id: 2,
-        icon: <FormatListBulleted sx={{ color: "#a0ccfa" }} />,
+        icon: <FormatListBulleted sx={{ color: COLORS.color10 }} />,
         title: "Unités d'enseignement",
         link: "/dashboard/enseignant/unitésEnseignement",
     },
     {
         id: 3,
-        icon: <AltRouteIcon sx={{ color: "#a0ccfa" }} />,
+        icon: <AltRouteIcon sx={{ color: COLORS.color10 }}  />,
         title: "Promotions",
         link: "/dashboard/enseignant/Promotion",
     },
