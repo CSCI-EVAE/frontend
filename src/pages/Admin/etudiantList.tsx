@@ -10,10 +10,12 @@ import { useNavigate, useParams } from "react-router-dom"
 
 type PromotionProps = {
     etudiantList: any[]
+    nombrePromotion : number,
+    nombreEtudiant: number
 }
 
 const EtudiantListPage: React.FC<PromotionProps> = ({
-    etudiantList,
+    etudiantList, nombreEtudiant, nombrePromotion
 }: PromotionProps) => {
     const { removeEtudiant } = useContext(EtudiantListContext)
 
@@ -26,6 +28,8 @@ const EtudiantListPage: React.FC<PromotionProps> = ({
         const no_EtudiantSupp = trouverIdEtudiant(rowData, etudiantList)
         removeEtudiant(no_EtudiantSupp, anneeUniversitaire, codeFormation)
     }
+
+    const griser = nombreEtudiant>= nombrePromotion
 
     
    
@@ -72,6 +76,7 @@ const EtudiantListPage: React.FC<PromotionProps> = ({
                 redirectAdd={true}
                 detailsHandler={handleDetails}
                 details={true}
+                griser={griser}
                
             />
         </div>

@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Controller, useForm } from "react-hook-form"
+import {useForm } from "react-hook-form"
 
 import {
     Grid,
@@ -11,15 +11,12 @@ import {
     FormControl,
     FormHelperText,
     FormLabel,
-    RadioGroup,
-    FormControlLabel,
-    Radio,
     InputAdornment,
 } from "@mui/material"
 import ButtonComponent from "../common/Button"
 import { ThemeProvider, createTheme } from "@mui/material/styles"
 import SelectComponent from "../common/Select/newSelect"
-import { GENDERS, PAYS_OPTIONS, UNIVERSITE_ORIGINE_OPTIONS } from "../constants"
+import { PAYS_OPTIONS, UNIVERSITE_ORIGINE_OPTIONS } from "../constants"
 import { EtudiantDTO } from "../types"
 import Header from "../Layout/Header"
 import { useNavigate, useParams } from "react-router-dom"
@@ -27,6 +24,7 @@ import { useContext } from "react"
 import { EtudiantListContext } from "../context/etudiantListContext"
 import Sidebar from "../Layout/sideBar/SidebarPage"
 import { KeyboardBackspace } from "@mui/icons-material"
+import { contientChiffre } from "./ModifierEtudiant"
 
 const defaultTheme = createTheme()
 
@@ -47,12 +45,19 @@ export default function CreerEtudiant() {
         register,
 
         handleSubmit: handleSubmitForm,
-        control,
         formState: { errors },
         reset,
     } = useForm({
         mode: "all",
     })
+    const [sexe,setSexe] = React.useState( "")
+
+const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSexe(event.target.value);
+  };
+
+const [sexeError,setSexeError] = React.useState('')
+
     const validateOtherElements = (data: any) => {
         if (universite === "") {
             setUniversiteError("l'université est obligatoire")
@@ -62,8 +67,33 @@ export default function CreerEtudiant() {
             setPaysError("Le pays est obligatoire")
             return
         }
+        if(sexe ==="") {
+            setSexeError('Le sexe est obligatoire')
+            return
+        } 
 
         onSubmit(data)
+    }
+    const validateNationalite = (value: string) => {
+
+        if (value.trim() === "") return "La nationalité ne peut pas être vide"
+        if (contientChiffre(value)) return "La nationalité ne doit pas contenir des chiffres."
+
+        return true
+    }
+    const validateVille = (value: string) => {
+
+        if (value.trim() === "") return "La ville ne peut pas être vide"
+        if (contientChiffre(value)) return "La ville ne doit pas contenir des chiffres."
+
+        return true
+    }
+    const validateLieu = (value: string) => {
+
+        if (value.trim() === "") return "Le lieu de naissance ne peut pas être vide"
+        if (contientChiffre(value)) return "Le lieu de naissance ne doit pas contenir des chiffres."
+
+        return true
     }
     const onSubmit = (data: any) => {
         const etudiant: EtudiantDTO = {
@@ -81,7 +111,7 @@ export default function CreerEtudiant() {
             nom: data.nom,
             paysOrigine: pays,
             prenom: data.prenom,
-            sexe: data.sexe,
+            sexe: sexe,
             telephone: data.telephone,
             universiteOrigine: universite,
             ville: data.ville,
@@ -91,6 +121,8 @@ export default function CreerEtudiant() {
 
         addNewEtudiant(etudiant, anneeUniversitaire, codeFormation)
         reset()
+        setSexe("")
+        setSexeError("")
         setUniversite("")
         setPays("")
         setUniversiteError("")
@@ -469,9 +501,7 @@ export default function CreerEtudiant() {
                                             {...register("lieu", {
                                                 required:
                                                     "Le lieu de Naissance est obligatoire..",
-                                                validate: (value) =>
-                                                    value.trim() !== "" ||
-                                                    "Le lieu de Naissance ne peut pas être vide",
+                                                validate: validateLieu,
                                                 maxLength: {
                                                     value: 255,
                                                     message:
@@ -500,9 +530,7 @@ export default function CreerEtudiant() {
                                             {...register("nationalite", {
                                                 required:
                                                     "La nationalité est obligatoire..",
-                                                validate: (value) =>
-                                                    value.trim() !== "" ||
-                                                    "La nationalité ne peut pas être vide",
+                                                validate: validateNationalite,
                                                 maxLength: {
                                                     value: 50,
                                                     message:
@@ -603,9 +631,7 @@ export default function CreerEtudiant() {
                                             {...register("ville", {
                                                 required:
                                                     "La ville est obligatoire..",
-                                                validate: (value) =>
-                                                    value.trim() !== "" ||
-                                                    "La ville ne peut pas être vide",
+                                                validate: validateVille,
                                                 maxLength: {
                                                     value: 255,
                                                     message:
@@ -622,57 +648,41 @@ export default function CreerEtudiant() {
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <FormControl
+                                <FormControl
                                         style={styleInput}
                                         error={!!errors.sexe}
                                         component="fieldset"
                                     >
-                                        <FormLabel required component="legend">
+                                         <FormLabel required component="legend">
                                             Sexe
                                         </FormLabel>
-                                        <Controller
-                                            control={control}
-                                            {...register("sexe", {
-                                                required:
-                                                    "Le sexe est obligatoire..",
-                                                validate: (value) => {
-                                                    if (!value) {
-                                                        return "Veuillez sélectionner le sexe."
-                                                    }
-                                                    return true
-                                                },
-                                            })}
-                                            //defaultValue={defaultValues.sexe}
-                                            render={({ field }) => (
-                                                <RadioGroup {...field} row>
-                                                    <FormControlLabel
-                                                        value={
-                                                            GENDERS.homme.value
-                                                        }
-                                                        control={<Radio />}
-                                                        label={
-                                                            GENDERS.homme.label
-                                                        }
-                                                    />
-                                                    <FormControlLabel
-                                                        value={
-                                                            GENDERS.femme.value
-                                                        }
-                                                        control={<Radio />}
-                                                        label={
-                                                            GENDERS.femme.label
-                                                        }
-                                                    />
-                                                </RadioGroup>
-                                            )}
-                                        />
-                                        {typeof errors.sexe?.message ===
-                                            "string" && (
+                                        
+                                        <div style={{ display: 'flex', flexDirection: 'row' }}> 
+<label style={{  marginLeft:"10px",marginRight: '10px' }}>
+          <input style={{marginRight : "12px"}}
+            type="radio"
+            value="H"
+            checked={sexe === 'H'}
+            onChange={handleChange}
+          />
+          Homme
+        </label><br />
+        <label>
+          <input  style={{marginRight : "12px"}}
+            type="radio"
+            value="F"
+            checked={sexe === 'F'}
+            onChange={handleChange}
+          />
+          Femme
+        </label><br />
+        </div>
+        {sexeError !== "" && (
                                             <FormHelperText error>
-                                                {errors.sexe.message}
+                                                {sexeError}
                                             </FormHelperText>
                                         )}
-                                    </FormControl>
+        </FormControl>
                                 </Grid>
 
                                 <Grid item xs={12} sm={6}>

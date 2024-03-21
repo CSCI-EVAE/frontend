@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Controller, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 
 import {
     Grid,
@@ -11,14 +11,12 @@ import {
     FormControl,
     FormHelperText,
     FormLabel,
-    RadioGroup,
-    FormControlLabel,
-    Radio,
+
 } from "@mui/material"
 import ButtonComponent from "../common/Button"
 import { ThemeProvider, createTheme } from "@mui/material/styles"
 import SelectComponent from "../common/Select/newSelect"
-import { GENDERS, PAYS_OPTIONS, UNIVERSITE_ORIGINE_OPTIONS } from "../constants"
+import {PAYS_OPTIONS, UNIVERSITE_ORIGINE_OPTIONS } from "../constants"
 import { EtudiantDTO } from "../types"
 import Header from "../Layout/Header"
 import { useNavigate, useParams } from "react-router-dom"
@@ -27,7 +25,9 @@ import Sidebar from "../Layout/sideBar/SidebarPage"
 import { KeyboardBackspace } from "@mui/icons-material"
 
 const defaultTheme = createTheme()
-
+export function contientChiffre(chaine: string) {
+    return /\d/.test(chaine);
+}
 export default function ModifierEtudiant() {
     const etudiantContext = React.useContext(EtudiantListContext)
     const { noEtudiant = "" } = useParams<{ noEtudiant?: string }>()
@@ -72,11 +72,19 @@ export default function ModifierEtudiant() {
         register,
 
         handleSubmit: handleSubmitForm,
-        control,
         formState: { errors },
     } = useForm({
         mode: "all",
     })
+    const [sexe, setSexe] = React.useState(etudiant?.sexe)
+    React.useEffect(() => {
+        setSexe(etudiant?.sexe)
+    }, [etudiant])
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSexe(event.target.value);
+    };
+
+    const [sexeError, setSexeError] = React.useState('')
 
     const validateOtherElements = (data: any) => {
         if (universite === "") {
@@ -87,6 +95,11 @@ export default function ModifierEtudiant() {
             setPaysError("Le pays est obligatoire")
             return
         }
+        if (sexe === "") {
+            setSexeError('Le sexe est obligatoire')
+            return
+        }
+
 
         // setVilleError("");
         onSubmit(data)
@@ -106,7 +119,7 @@ export default function ModifierEtudiant() {
             nom: data.nom,
             paysOrigine: pays,
             prenom: data.prenom,
-            sexe: data.sexe,
+            sexe: sexe ?? "",
             telephone: data.telephone,
             universiteOrigine: universite,
             ville: data.ville,
@@ -114,7 +127,7 @@ export default function ModifierEtudiant() {
             CodeFormation: codeFormation,
             noEtudiant: noEtudiant,
         }
-        console.log("🚀 ~ onSubmit ~ etudiant:", etudiant)
+
         etudiantContext.modifyEtudiant(
             noEtudiant,
             etudiant,
@@ -141,7 +154,27 @@ export default function ModifierEtudiant() {
             "La date ne peut pas etre inférieure à la date actuelle."
         )
     }
+    const validateNationalite = (value: string) => {
 
+        if (value.trim() === "") return "La nationalité ne peut pas être vide"
+        if (contientChiffre(value)) return "La nationalité ne doit pas contenir des chiffres."
+
+        return true
+    }
+    const validateVille = (value: string) => {
+
+        if (value.trim() === "") return "La ville ne peut pas être vide"
+        if (contientChiffre(value)) return "La ville ne doit pas contenir des chiffres."
+
+        return true
+    }
+    const validateLieu = (value: string) => {
+
+        if (value.trim() === "") return "Le lieu de naissance ne peut pas être vide"
+        if (contientChiffre(value)) return "Le lieu de naissance ne doit pas contenir des chiffres."
+
+        return true
+    }
     const styleInput: React.CSSProperties = {
         width: "70%",
         marginLeft: "60px",
@@ -261,10 +294,10 @@ export default function ModifierEtudiant() {
                                         />
                                         {typeof errors.nom?.message ===
                                             "string" && (
-                                            <FormHelperText error>
-                                                {errors.nom.message}
-                                            </FormHelperText>
-                                        )}
+                                                <FormHelperText error>
+                                                    {errors.nom.message}
+                                                </FormHelperText>
+                                            )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -294,10 +327,10 @@ export default function ModifierEtudiant() {
                                         />
                                         {typeof errors.prenom?.message ===
                                             "string" && (
-                                            <FormHelperText error>
-                                                {errors.prenom.message}
-                                            </FormHelperText>
-                                        )}
+                                                <FormHelperText error>
+                                                    {errors.prenom.message}
+                                                </FormHelperText>
+                                            )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -324,10 +357,10 @@ export default function ModifierEtudiant() {
                                         />
                                         {typeof errors.mail?.message ===
                                             "string" && (
-                                            <FormHelperText error>
-                                                {errors.mail.message}
-                                            </FormHelperText>
-                                        )}
+                                                <FormHelperText error>
+                                                    {errors.mail.message}
+                                                </FormHelperText>
+                                            )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -356,10 +389,10 @@ export default function ModifierEtudiant() {
                                         />
                                         {typeof errors.mailUBO?.message ===
                                             "string" && (
-                                            <FormHelperText error>
-                                                {errors.mailUBO.message}
-                                            </FormHelperText>
-                                        )}
+                                                <FormHelperText error>
+                                                    {errors.mailUBO.message}
+                                                </FormHelperText>
+                                            )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -404,10 +437,10 @@ export default function ModifierEtudiant() {
                                         />
                                         {typeof errors.telephone?.message ===
                                             "string" && (
-                                            <FormHelperText error>
-                                                {errors.telephone.message}
-                                            </FormHelperText>
-                                        )}
+                                                <FormHelperText error>
+                                                    {errors.telephone.message}
+                                                </FormHelperText>
+                                            )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -450,10 +483,10 @@ export default function ModifierEtudiant() {
                                         />
                                         {typeof errors.mobile?.message ===
                                             "string" && (
-                                            <FormHelperText error>
-                                                {errors.mobile.message}
-                                            </FormHelperText>
-                                        )}
+                                                <FormHelperText error>
+                                                    {errors.mobile.message}
+                                                </FormHelperText>
+                                            )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -473,9 +506,8 @@ export default function ModifierEtudiant() {
                                             {...register("lieu", {
                                                 required:
                                                     "Le lieu de Naissance est obligatoire..",
-                                                validate: (value) =>
-                                                    value.trim() !== "" ||
-                                                    "Le lieu de Naissance ne peut pas être vide",
+                                                validate: validateLieu,
+
                                                 maxLength: {
                                                     value: 255,
                                                     message:
@@ -485,10 +517,10 @@ export default function ModifierEtudiant() {
                                         />
                                         {typeof errors.lieu?.message ===
                                             "string" && (
-                                            <FormHelperText error>
-                                                {errors.lieu.message}
-                                            </FormHelperText>
-                                        )}
+                                                <FormHelperText error>
+                                                    {errors.lieu.message}
+                                                </FormHelperText>
+                                            )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -508,9 +540,7 @@ export default function ModifierEtudiant() {
                                             {...register("nationalite", {
                                                 required:
                                                     "La nationalité est obligatoire..",
-                                                validate: (value) =>
-                                                    value.trim() !== "" ||
-                                                    "La nationalité ne peut pas être vide",
+                                                validate: validateNationalite,
                                                 maxLength: {
                                                     value: 255,
                                                     message:
@@ -520,10 +550,10 @@ export default function ModifierEtudiant() {
                                         />
                                         {typeof errors.nationalite?.message ===
                                             "string" && (
-                                            <FormHelperText error>
-                                                {errors.nationalite.message}
-                                            </FormHelperText>
-                                        )}
+                                                <FormHelperText error>
+                                                    {errors.nationalite.message}
+                                                </FormHelperText>
+                                            )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -553,10 +583,10 @@ export default function ModifierEtudiant() {
                                         />
                                         {typeof errors.adresse?.message ===
                                             "string" && (
-                                            <FormHelperText error>
-                                                {errors.adresse.message}
-                                            </FormHelperText>
-                                        )}
+                                                <FormHelperText error>
+                                                    {errors.adresse.message}
+                                                </FormHelperText>
+                                            )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -599,10 +629,10 @@ export default function ModifierEtudiant() {
                                         />
                                         {typeof errors.code?.message ===
                                             "string" && (
-                                            <FormHelperText error>
-                                                {errors.code.message}
-                                            </FormHelperText>
-                                        )}
+                                                <FormHelperText error>
+                                                    {errors.code.message}
+                                                </FormHelperText>
+                                            )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -620,9 +650,8 @@ export default function ModifierEtudiant() {
                                             {...register("ville", {
                                                 required:
                                                     "La ville est obligatoire..",
-                                                validate: (value) =>
-                                                    value.trim() !== "" ||
-                                                    "La ville ne peut pas être vide",
+                                                validate:validateVille
+                                                   ,
                                                 maxLength: {
                                                     value: 255,
                                                     message:
@@ -632,13 +661,14 @@ export default function ModifierEtudiant() {
                                         />
                                         {typeof errors.ville?.message ===
                                             "string" && (
-                                            <FormHelperText error>
-                                                {errors.ville.message}
-                                            </FormHelperText>
-                                        )}
+                                                <FormHelperText error>
+                                                    {errors.ville.message}
+                                                </FormHelperText>
+                                            )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
+                                    
                                     <FormControl
                                         style={styleInput}
                                         error={!!errors.sexe}
@@ -647,54 +677,34 @@ export default function ModifierEtudiant() {
                                         <FormLabel required component="legend">
                                             Sexe
                                         </FormLabel>
-                                        <Controller
-                                            control={control}
-                                            {...register("sexe", {
-                                                required:
-                                                    "Le sexe est obligatoire..",
-                                                validate: (value) => {
-                                                    if (!value) {
-                                                        return "Veuillez sélectionner le sexe."
-                                                    }
-                                                    return true
-                                                },
-                                            })}
-                                            render={({ field }) => (
-                                                <RadioGroup
-                                                    {...field}
-                                                    row
-                                                    defaultValue={
-                                                        etudiant?.sexe
-                                                    }
-                                                >
-                                                    <FormControlLabel
-                                                        value={
-                                                            GENDERS.homme.value
-                                                        }
-                                                        control={<Radio />}
-                                                        label={
-                                                            GENDERS.homme.label
-                                                        }
-                                                    />
-                                                    <FormControlLabel
-                                                        value={
-                                                            GENDERS.femme.value
-                                                        }
-                                                        control={<Radio />}
-                                                        label={
-                                                            GENDERS.femme.label
-                                                        }
-                                                    />
-                                                </RadioGroup>
-                                            )}
-                                        />
-                                        {typeof errors.sexe?.message ===
-                                            "string" && (
+
+                                        <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                            <label style={{ marginLeft: "10px", marginRight: '10px' }}>
+                                                <input style={{ marginRight: "12px" }}
+                                                    type="radio"
+                                                    value="H"
+                                                    checked={sexe === 'H'}
+                                                    onChange={handleChange}
+                                                />
+                                                Homme
+                                            </label><br />
+                                            <label>
+                                                <input style={{ marginRight: "12px" }}
+                                                    type="radio"
+                                                    value="F"
+                                                    checked={sexe === 'F'}
+                                                    onChange={handleChange}
+                                                />
+                                                Femme
+                                            </label><br />
+                                        </div>
+                                        {sexeError !== "" && (
                                             <FormHelperText error>
-                                                {errors.sexe.message}
+                                                {sexeError}
                                             </FormHelperText>
                                         )}
                                     </FormControl>
+
                                 </Grid>
 
                                 <Grid item xs={12} sm={6}>
@@ -773,10 +783,10 @@ export default function ModifierEtudiant() {
                                         />
                                         {typeof errors.date?.message ===
                                             "string" && (
-                                            <FormHelperText error>
-                                                {errors.date.message}
-                                            </FormHelperText>
-                                        )}
+                                                <FormHelperText error>
+                                                    {errors.date.message}
+                                                </FormHelperText>
+                                            )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -810,10 +820,10 @@ export default function ModifierEtudiant() {
                                         />
                                         {typeof errors.groupeTP?.message ===
                                             "string" && (
-                                            <FormHelperText error>
-                                                {errors.groupeTP.message}
-                                            </FormHelperText>
-                                        )}
+                                                <FormHelperText error>
+                                                    {errors.groupeTP.message}
+                                                </FormHelperText>
+                                            )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -847,10 +857,10 @@ export default function ModifierEtudiant() {
                                         />
                                         {typeof errors.groupeAnglais
                                             ?.message === "string" && (
-                                            <FormHelperText error>
-                                                {errors.groupeAnglais.message}
-                                            </FormHelperText>
-                                        )}
+                                                <FormHelperText error>
+                                                    {errors.groupeAnglais.message}
+                                                </FormHelperText>
+                                            )}
                                     </FormControl>
                                 </Grid>
                             </Grid>
@@ -860,7 +870,7 @@ export default function ModifierEtudiant() {
                                     variant="contained"
                                     text="Modifier"
 
-                                    //  disabled={isSubmiting}
+                                //  disabled={isSubmiting}
                                 />
                             </div>
                         </Box>

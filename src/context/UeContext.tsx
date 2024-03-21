@@ -3,13 +3,15 @@ import React, {
     createContext,
     ReactNode,
     useCallback,
+    useContext,
     useEffect,
     useState,
 } from "react"
 import { Promotion, UE } from "../types"
 
-import { getRequest } from "../api/axios"
+import { deleteRequest, getRequest } from "../api/axios"
 import { ApiResponse } from "../types"
+import { NotificationContext } from "./notificationContext"
 
 
 interface UEContextProps {
@@ -51,7 +53,7 @@ export const UEContextProvider: React.FC<UEContextProps> = ({ children }) => {
     const [ueList, setUeList] = useState<UE[]>([])
     const [promotionList, setPromotionList] = useState<Promotion[]>([])
    
-
+const {showNotification} = useContext(NotificationContext)
 
     const fetchPromotionsPourFormation = useCallback(async (codeFormation: string) => {
         try {
@@ -103,6 +105,23 @@ export const UEContextProvider: React.FC<UEContextProps> = ({ children }) => {
        
     }, [])
 
+    const deleteEvae = useCallback(
+        async (id: number) => {
+            const response: ApiResponse = await deleteRequest(
+                `/evaluation/delete/${id}`
+            )
+
+            if (response.success) {
+                showNotification("Génial !", response.message, "success")
+                refreshList()
+                return
+            } else {
+                showNotification("Erreur", response.message, "error")
+            }
+        },
+        [ showNotification, refreshList]
+    )
+
     // const contextValue: UEContextData = {
     //     ueList,
     //     promotionList,
@@ -116,7 +135,7 @@ export const UEContextProvider: React.FC<UEContextProps> = ({ children }) => {
         <UEContext.Provider value={{ueList,
             promotionList,
             getUEList: fetchUEList,
-            refreshList,
+            refreshList, deleteEvae,
             getPromotionList: fetchPromotionsPourFormation}}>{children}</UEContext.Provider>
     )
 }
